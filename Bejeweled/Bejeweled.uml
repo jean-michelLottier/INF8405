@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_-e00YIkuEeOKNP8OHZKloA" name="Bejeweled">
+  <packagedElement xmi:type="uml:Class" xmi:id="_Be224IkvEeOKNP8OHZKloA" clientDependency="_JLKl0IkwEeOKNP8OHZKloA" name="GameController">
+    <ownedAttribute xmi:id="_bKiVcYkwEeOKNP8OHZKloA" name="iGameService" type="_zSJEEIkvEeOKNP8OHZKloA" aggregation="composite" association="_bKX9YIkwEeOKNP8OHZKloA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bKi8gIkwEeOKNP8OHZKloA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bKi8gYkwEeOKNP8OHZKloA" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_UcGkAIkvEeOKNP8OHZKloA" name="IGameController"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_wNm8EIkvEeOKNP8OHZKloA" clientDependency="_JoO8UIkwEeOKNP8OHZKloA" name="GameService"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_zSJEEIkvEeOKNP8OHZKloA" name="IGameService">
+    <ownedAttribute xmi:id="_bKdc8IkwEeOKNP8OHZKloA" name="gameController" type="_Be224IkvEeOKNP8OHZKloA" association="_bKX9YIkwEeOKNP8OHZKloA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bKhHUIkwEeOKNP8OHZKloA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bKiVcIkwEeOKNP8OHZKloA" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_JLKl0IkwEeOKNP8OHZKloA" client="_Be224IkvEeOKNP8OHZKloA" supplier="_UcGkAIkvEeOKNP8OHZKloA"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_JoO8UIkwEeOKNP8OHZKloA" client="_wNm8EIkvEeOKNP8OHZKloA" supplier="_zSJEEIkvEeOKNP8OHZKloA"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_bKX9YIkwEeOKNP8OHZKloA" name="" memberEnd="_bKdc8IkwEeOKNP8OHZKloA _bKiVcYkwEeOKNP8OHZKloA"/>
+</uml:Model>

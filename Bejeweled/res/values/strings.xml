@@ -3,6 +3,20 @@
 
     <string name="app_name">Bejeweled</string>
     <string name="action_settings">Settings</string>
+    <string name="m_bejeweled">Bejeweled</string>
+    <string name="m_exit">Quitter</string>
+    <string name="m_return">Retour</string>
+    <string name="m_newGame">Nouvelle partie</string>
+    <string name="m_score">Score</string>
+    <string name="m_speedMode">Mode vitesse</string>
+    <string name="m_tacticalMode">Mode tactique</string>
+    <string name="m_pause">Pause</string>
+    <string name="m_restart">Recommencer</string>
+    <string name="m_yesHigh">OUI</string>
+    <string name="m_noHigh">NON</string>
+    <string name="m_menu">Menu</string>
+    <string name="m_play">Jouer</string>
+    <string name="title_activity_game_menu">GameMenuActivity</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

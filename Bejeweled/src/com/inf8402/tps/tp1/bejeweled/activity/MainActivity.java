@@ -1,4 +1,8 @@
-package com.inf8402.tps.tp1.bejeweled;
+package com.inf8402.tps.tp1.bejeweled.activity;
+
+import com.inf8402.tps.tp1.bejeweled.R;
+import com.inf8402.tps.tp1.bejeweled.R.layout;
+import com.inf8402.tps.tp1.bejeweled.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;

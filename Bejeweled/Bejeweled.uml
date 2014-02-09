@@ -1,20 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_-e00YIkuEeOKNP8OHZKloA" name="Bejeweled">
   <packagedElement xmi:type="uml:Class" xmi:id="_Be224IkvEeOKNP8OHZKloA" clientDependency="_JLKl0IkwEeOKNP8OHZKloA" name="MainActivity">
-    <ownedAttribute xmi:id="_bKiVcYkwEeOKNP8OHZKloA" name="iGameService" type="_zSJEEIkvEeOKNP8OHZKloA" aggregation="composite" association="_bKX9YIkwEeOKNP8OHZKloA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bKi8gIkwEeOKNP8OHZKloA"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bKi8gYkwEeOKNP8OHZKloA" value="*"/>
+    <ownedAttribute xmi:id="_hbmnoJFDEeOYdI73TlAedQ" name="iMenuService" type="_zSJEEIkvEeOKNP8OHZKloA" association="_hbkycJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hbmnoZFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hbnOsJFDEeOYdI73TlAedQ" value="*"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Interface" xmi:id="_UcGkAIkvEeOKNP8OHZKloA" name="IGameController"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_wNm8EIkvEeOKNP8OHZKloA" clientDependency="_JoO8UIkwEeOKNP8OHZKloA" name="GameService"/>
-  <packagedElement xmi:type="uml:Interface" xmi:id="_zSJEEIkvEeOKNP8OHZKloA" name="IGameService">
-    <ownedAttribute xmi:id="_bKdc8IkwEeOKNP8OHZKloA" name="gameController" type="_Be224IkvEeOKNP8OHZKloA" association="_bKX9YIkwEeOKNP8OHZKloA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bKhHUIkwEeOKNP8OHZKloA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bKiVcIkwEeOKNP8OHZKloA" value="1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_wNm8EIkvEeOKNP8OHZKloA" clientDependency="_JoO8UIkwEeOKNP8OHZKloA" name="MenuService">
+    <ownedAttribute xmi:id="_KEBdMJFDEeOYdI73TlAedQ" name="playerDAO" type="_X9s_QJFCEeOYdI73TlAedQ" association="_KEAPEJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KECEQJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KECrUJFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_zSJEEIkvEeOKNP8OHZKloA" name="IMenuService">
+    <ownedAttribute xmi:id="_g1RAYJFDEeOYdI73TlAedQ" name="gameActivity" type="_Qi-vkJFBEeOYdI73TlAedQ" association="_g1QZUJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_g1RncJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_g1SOgJFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_hH0I8JFDEeOYdI73TlAedQ" name="gameMenuActivity" type="_yzH0cJFAEeOYdI73TlAedQ" association="_hHzh4JFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hH0wAJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hH0wAZFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_hblZgJFDEeOYdI73TlAedQ" name="mainActivity" type="_Be224IkvEeOKNP8OHZKloA" association="_hbkycJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hbmAkJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hbmAkZFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_h00Y4JFDEeOYdI73TlAedQ" name="scoresActivity" type="_BQrqMJFBEeOYdI73TlAedQ" association="_h0zx0JFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_h00_8JFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_h00_8ZFDEeOYdI73TlAedQ" value="*"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Dependency" xmi:id="_JLKl0IkwEeOKNP8OHZKloA" client="_Be224IkvEeOKNP8OHZKloA" supplier="_UcGkAIkvEeOKNP8OHZKloA"/>
   <packagedElement xmi:type="uml:Dependency" xmi:id="_JoO8UIkwEeOKNP8OHZKloA" client="_wNm8EIkvEeOKNP8OHZKloA" supplier="_zSJEEIkvEeOKNP8OHZKloA"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_bKX9YIkwEeOKNP8OHZKloA" name="" memberEnd="_bKdc8IkwEeOKNP8OHZKloA _bKiVcYkwEeOKNP8OHZKloA"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_yzH0cJFAEeOYdI73TlAedQ" name="GameMenuActivity">
+    <ownedAttribute xmi:id="_hH1XEJFDEeOYdI73TlAedQ" name="iMenuService" type="_zSJEEIkvEeOKNP8OHZKloA" association="_hHzh4JFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hH1-IJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hH1-IZFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_6YHP4JFAEeOYdI73TlAedQ" name="IGameService">
+    <ownedAttribute xmi:id="_d281IJFDEeOYdI73TlAedQ" name="gameActivity" type="_Qi-vkJFBEeOYdI73TlAedQ" association="_d28OEJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_d29cMJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_d2-DQJFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_BQrqMJFBEeOYdI73TlAedQ" name="ScoresActivity">
+    <ownedAttribute xmi:id="_h01nAJFDEeOYdI73TlAedQ" name="iMenuService" type="_zSJEEIkvEeOKNP8OHZKloA" association="_h0zx0JFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_h01nAZFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_h02OEJFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_H3gNMJFBEeOYdI73TlAedQ" clientDependency="_OMFwsJFBEeOYdI73TlAedQ" name="GameService">
+    <ownedAttribute xmi:id="_b8c3VJFDEeOYdI73TlAedQ" name="playerDAO" type="_X9s_QJFCEeOYdI73TlAedQ" association="_b8c3UJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_b8deYJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_b8deYZFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_OMFwsJFBEeOYdI73TlAedQ" client="_H3gNMJFBEeOYdI73TlAedQ" supplier="_6YHP4JFAEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Qi-vkJFBEeOYdI73TlAedQ" name="GameActivity">
+    <ownedAttribute xmi:id="_d2-DQZFDEeOYdI73TlAedQ" name="iGameService" type="_6YHP4JFAEeOYdI73TlAedQ" association="_d28OEJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_d2-qUJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_d2_RYJFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_g1SOgZFDEeOYdI73TlAedQ" name="iMenuService" type="_zSJEEIkvEeOKNP8OHZKloA" association="_g1QZUJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_g1S1kJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_g1S1kZFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_QK5xUJFCEeOYdI73TlAedQ" name="Player">
+    <ownedAttribute xmi:id="_FKtIYJFEEeOYdI73TlAedQ" name="playerID" visibility="public"/>
+    <ownedAttribute xmi:id="_HJHV0JFEEeOYdI73TlAedQ" name="pseudo" visibility="public"/>
+    <ownedAttribute xmi:id="_JX6vsJFEEeOYdI73TlAedQ" name="score" visibility="public"/>
+    <ownedAttribute xmi:id="_VajbIJFEEeOYdI73TlAedQ" name="rank" visibility="public"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_WuL4IJFCEeOYdI73TlAedQ" name="Player_1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_X9s_QJFCEeOYdI73TlAedQ" name="PlayerDAO">
+    <ownedAttribute xmi:id="_Cq4scZFDEeOYdI73TlAedQ" name="dAOBase" type="_4aIOUJFCEeOYdI73TlAedQ" association="_Cq3eUJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Cq5TgJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Cq56kJFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_KEA2IJFDEeOYdI73TlAedQ" name="menuService" type="_wNm8EIkvEeOKNP8OHZKloA" association="_KEAPEJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEA2IZFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KEA2IpFDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_b8c3UZFDEeOYdI73TlAedQ" name="gameService" type="_H3gNMJFBEeOYdI73TlAedQ" association="_b8c3UJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_b8c3UpFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_b8c3U5FDEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_4aIOUJFCEeOYdI73TlAedQ" name="DAOBase">
+    <ownedAttribute xmi:id="_SwlA0JFHEeOYdI73TlAedQ" name="databaseHandler" type="_GSkA8JFHEeOYdI73TlAedQ" association="_SwkZwJFHEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SwlA0ZFHEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SwlA0pFHEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Cq3eUJFDEeOYdI73TlAedQ" name="" memberEnd="_Cq3eUZFDEeOYdI73TlAedQ _Cq4scZFDEeOYdI73TlAedQ">
+    <ownedEnd xmi:id="_Cq3eUZFDEeOYdI73TlAedQ" name="playerDAO" type="_X9s_QJFCEeOYdI73TlAedQ" association="_Cq3eUJFDEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Cq4FYJFDEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Cq4scJFDEeOYdI73TlAedQ" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_KEAPEJFDEeOYdI73TlAedQ" name="" memberEnd="_KEA2IJFDEeOYdI73TlAedQ _KEBdMJFDEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_b8c3UJFDEeOYdI73TlAedQ" name="" memberEnd="_b8c3UZFDEeOYdI73TlAedQ _b8c3VJFDEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_d28OEJFDEeOYdI73TlAedQ" name="" memberEnd="_d281IJFDEeOYdI73TlAedQ _d2-DQZFDEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_g1QZUJFDEeOYdI73TlAedQ" name="" memberEnd="_g1RAYJFDEeOYdI73TlAedQ _g1SOgZFDEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_hHzh4JFDEeOYdI73TlAedQ" name="" memberEnd="_hH0I8JFDEeOYdI73TlAedQ _hH1XEJFDEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_hbkycJFDEeOYdI73TlAedQ" name="" memberEnd="_hblZgJFDEeOYdI73TlAedQ _hbmnoJFDEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_h0zx0JFDEeOYdI73TlAedQ" name="" memberEnd="_h00Y4JFDEeOYdI73TlAedQ _h01nAJFDEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_GSkA8JFHEeOYdI73TlAedQ" name="DatabaseHandler">
+    <ownedAttribute xmi:id="_SwlA05FHEeOYdI73TlAedQ" name="dAOBase" type="_4aIOUJFCEeOYdI73TlAedQ" association="_SwkZwJFHEeOYdI73TlAedQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SwlA1JFHEeOYdI73TlAedQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Swln4JFHEeOYdI73TlAedQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_SwkZwJFHEeOYdI73TlAedQ" name="" memberEnd="_SwlA0JFHEeOYdI73TlAedQ _SwlA05FHEeOYdI73TlAedQ"/>
 </uml:Model>

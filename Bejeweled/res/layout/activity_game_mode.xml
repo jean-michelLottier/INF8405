@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+    <FrameLayout 
+        
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1" >
+	    
+	    <ImageView
+	        android:id="@+id/imageSelection"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:paddingTop="10dp"
+	        android:layout_marginBottom="-10dp"
+	        android:background="@drawable/background_interface"
+	        android:adjustViewBounds="true" />
+	    
+    </FrameLayout>
+
+	<TextView style="@style/divider" />
+	<TextView style="@style/divider" />
+	
+	<ImageView
+		android:id="@+id/boutonMode_vitesse"
+		style="@style/boutonMenu"
+		android:background="@drawable/bouton_mode_vitesse" />
+	
+	<TextView style="@style/divider" />
+	
+	<ImageView
+		android:id="@+id/boutonMode_score"
+		style="@style/boutonMenu"
+		android:background="@drawable/bouton_mode_tactique" />
+	
+	<TextView style="@style/divider" />
+	
+	<ImageView
+		android:id="@+id/boutonMode_retour"
+		style="@style/boutonMenu"
+		android:background="@drawable/bouton_retour" />
+
+</LinearLayout>

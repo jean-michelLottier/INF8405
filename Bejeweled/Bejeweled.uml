@@ -8,9 +8,9 @@
   </packagedElement>
   <packagedElement xmi:type="uml:Interface" xmi:id="_UcGkAIkvEeOKNP8OHZKloA" name="IGameController"/>
   <packagedElement xmi:type="uml:Class" xmi:id="_wNm8EIkvEeOKNP8OHZKloA" clientDependency="_JoO8UIkwEeOKNP8OHZKloA" name="MenuService">
-    <ownedAttribute xmi:id="_KEBdMJFDEeOYdI73TlAedQ" name="playerDAO" type="_X9s_QJFCEeOYdI73TlAedQ" association="_KEAPEJFDEeOYdI73TlAedQ">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KECEQJFDEeOYdI73TlAedQ"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KECrUJFDEeOYdI73TlAedQ" value="*"/>
+    <ownedAttribute xmi:id="_FltYcJOsEeOMdYj6vJm33A" name="iPlayerDAO" type="__aDHcJOrEeOMdYj6vJm33A" association="_Flq8MJOsEeOMdYj6vJm33A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FltYcZOsEeOMdYj6vJm33A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FltYcpOsEeOMdYj6vJm33A" value="*"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Interface" xmi:id="_zSJEEIkvEeOKNP8OHZKloA" name="IMenuService">
@@ -52,9 +52,9 @@
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_H3gNMJFBEeOYdI73TlAedQ" clientDependency="_OMFwsJFBEeOYdI73TlAedQ" name="GameService">
-    <ownedAttribute xmi:id="_b8c3VJFDEeOYdI73TlAedQ" name="playerDAO" type="_X9s_QJFCEeOYdI73TlAedQ" association="_b8c3UJFDEeOYdI73TlAedQ">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_b8deYJFDEeOYdI73TlAedQ"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_b8deYZFDEeOYdI73TlAedQ" value="*"/>
+    <ownedAttribute xmi:id="_F4wQQJOsEeOMdYj6vJm33A" name="iPlayerDAO" type="__aDHcJOrEeOMdYj6vJm33A" association="_F4t0AJOsEeOMdYj6vJm33A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_F4w3UJOsEeOMdYj6vJm33A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_F4xeYJOsEeOMdYj6vJm33A" value="*"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Dependency" xmi:id="_OMFwsJFBEeOYdI73TlAedQ" client="_H3gNMJFBEeOYdI73TlAedQ" supplier="_6YHP4JFAEeOYdI73TlAedQ"/>
@@ -75,18 +75,10 @@
     <ownedAttribute xmi:id="_VajbIJFEEeOYdI73TlAedQ" name="rank" visibility="public"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_WuL4IJFCEeOYdI73TlAedQ" name="Player_1"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_X9s_QJFCEeOYdI73TlAedQ" name="PlayerDAO">
+  <packagedElement xmi:type="uml:Class" xmi:id="_X9s_QJFCEeOYdI73TlAedQ" clientDependency="_DSmtYJOsEeOMdYj6vJm33A" name="PlayerDAO">
     <ownedAttribute xmi:id="_Cq4scZFDEeOYdI73TlAedQ" name="dAOBase" type="_4aIOUJFCEeOYdI73TlAedQ" association="_Cq3eUJFDEeOYdI73TlAedQ">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Cq5TgJFDEeOYdI73TlAedQ"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Cq56kJFDEeOYdI73TlAedQ" value="*"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_KEA2IJFDEeOYdI73TlAedQ" name="menuService" type="_wNm8EIkvEeOKNP8OHZKloA" association="_KEAPEJFDEeOYdI73TlAedQ">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEA2IZFDEeOYdI73TlAedQ"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KEA2IpFDEeOYdI73TlAedQ" value="*"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_b8c3UZFDEeOYdI73TlAedQ" name="gameService" type="_H3gNMJFBEeOYdI73TlAedQ" association="_b8c3UJFDEeOYdI73TlAedQ">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_b8c3UpFDEeOYdI73TlAedQ"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_b8c3U5FDEeOYdI73TlAedQ" value="*"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_4aIOUJFCEeOYdI73TlAedQ" name="DAOBase">
@@ -101,8 +93,6 @@
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Cq4scJFDEeOYdI73TlAedQ" value="*"/>
     </ownedEnd>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_KEAPEJFDEeOYdI73TlAedQ" name="" memberEnd="_KEA2IJFDEeOYdI73TlAedQ _KEBdMJFDEeOYdI73TlAedQ"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_b8c3UJFDEeOYdI73TlAedQ" name="" memberEnd="_b8c3UZFDEeOYdI73TlAedQ _b8c3VJFDEeOYdI73TlAedQ"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_d28OEJFDEeOYdI73TlAedQ" name="" memberEnd="_d281IJFDEeOYdI73TlAedQ _d2-DQZFDEeOYdI73TlAedQ"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_g1QZUJFDEeOYdI73TlAedQ" name="" memberEnd="_g1RAYJFDEeOYdI73TlAedQ _g1SOgZFDEeOYdI73TlAedQ"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_hHzh4JFDEeOYdI73TlAedQ" name="" memberEnd="_hH0I8JFDEeOYdI73TlAedQ _hH1XEJFDEeOYdI73TlAedQ"/>
@@ -115,4 +105,17 @@
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_SwkZwJFHEeOYdI73TlAedQ" name="" memberEnd="_SwlA0JFHEeOYdI73TlAedQ _SwlA05FHEeOYdI73TlAedQ"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="__aDHcJOrEeOMdYj6vJm33A" name="IPlayerDAO">
+    <ownedAttribute xmi:id="_FlrjQJOsEeOMdYj6vJm33A" name="menuService" type="_wNm8EIkvEeOKNP8OHZKloA" association="_Flq8MJOsEeOMdYj6vJm33A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FlsxYJOsEeOMdYj6vJm33A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FlsxYZOsEeOMdYj6vJm33A" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_F4ubEJOsEeOMdYj6vJm33A" name="gameService" type="_H3gNMJFBEeOYdI73TlAedQ" association="_F4t0AJOsEeOMdYj6vJm33A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_F4vCIJOsEeOMdYj6vJm33A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_F4vpMJOsEeOMdYj6vJm33A" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_DSmtYJOsEeOMdYj6vJm33A" client="_X9s_QJFCEeOYdI73TlAedQ" supplier="__aDHcJOrEeOMdYj6vJm33A"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Flq8MJOsEeOMdYj6vJm33A" name="" memberEnd="_FlrjQJOsEeOMdYj6vJm33A _FltYcJOsEeOMdYj6vJm33A"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_F4t0AJOsEeOMdYj6vJm33A" name="" memberEnd="_F4ubEJOsEeOMdYj6vJm33A _F4wQQJOsEeOMdYj6vJm33A"/>
 </uml:Model>

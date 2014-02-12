@@ -11,7 +11,7 @@
     <visualProperties xmi:id="_OMIM8ZFBEeOYdI73TlAedQ"/>
     <nameVisual xmi:id="_OMIM8pFBEeOYdI73TlAedQ" text=""/>
   </edges>
-  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_Cq8W0JFDEeOYdI73TlAedQ" sourceAnchor="158.0,60.0" targetAnchor="0.0,58.0" target="_4aKDgJFCEeOYdI73TlAedQ" source="_X9u0cJFCEeOYdI73TlAedQ">
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_Cq8W0JFDEeOYdI73TlAedQ" sourceAnchor="158.0,58.0" targetAnchor="0.0,56.0" target="_4aKDgJFCEeOYdI73TlAedQ" source="_X9u0cJFCEeOYdI73TlAedQ">
     <modelElement href="Bejeweled.uml#_Cq3eUJFDEeOYdI73TlAedQ"/>
     <visualProperties xmi:id="_Cq894JFDEeOYdI73TlAedQ"/>
     <nameVisual xmi:id="_Cq894ZFDEeOYdI73TlAedQ" text="">
@@ -28,46 +28,6 @@
       <visualProperties xmi:id="_CxlxYZFDEeOYdI73TlAedQ" position="-112.0,2.0"/>
       <visibility xmi:id="_Cq895pFDEeOYdI73TlAedQ" label="+"/>
       <cardinality xmi:id="_Cq8955FDEeOYdI73TlAedQ" label="*" max="-1"/>
-    </targetRole>
-  </edges>
-  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_KEKAEJFDEeOYdI73TlAedQ" sourceAnchor="163.0,55.0" targetAnchor="62.0,0.0" target="_X9u0cJFCEeOYdI73TlAedQ" source="_wNp_YIkvEeOKNP8OHZKloA">
-    <modelElement href="Bejeweled.uml#_KEAPEJFDEeOYdI73TlAedQ"/>
-    <visualProperties xmi:id="_KEKAEZFDEeOYdI73TlAedQ"/>
-    <bendpoints xmi:id="_T2HskJFHEeOYdI73TlAedQ" sourceX="79" sourceY="1" targetX="-3" targetY="-137"/>
-    <nameVisual xmi:id="_KEKAEpFDEeOYdI73TlAedQ" text="">
-      <visualProperties xmi:id="_KHY6QJFDEeOYdI73TlAedQ" position="2.0,53.0"/>
-    </nameVisual>
-    <sourceRole xmi:id="_KEKAE5FDEeOYdI73TlAedQ" aggregationKind="NONE" name="menuService" navigable="true">
-      <modelElement href="Bejeweled.uml#_KEA2IJFDEeOYdI73TlAedQ"/>
-      <visualProperties xmi:id="_KHYTMJFDEeOYdI73TlAedQ" position="2.0,-47.0"/>
-      <visibility xmi:id="_KEKAFJFDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_KEKAFZFDEeOYdI73TlAedQ" label="*" max="-1"/>
-    </sourceRole>
-    <targetRole xmi:id="_KEKAFpFDEeOYdI73TlAedQ" aggregationKind="NONE" name="playerDAO" navigable="true">
-      <modelElement href="Bejeweled.uml#_KEBdMJFDEeOYdI73TlAedQ"/>
-      <visualProperties xmi:id="_KHY6QZFDEeOYdI73TlAedQ" position="-78.0,-95.0"/>
-      <visibility xmi:id="_KEKAF5FDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_KEKAGJFDEeOYdI73TlAedQ" label="*" max="-1"/>
-    </targetRole>
-  </edges>
-  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_b8hIwJFDEeOYdI73TlAedQ" sourceAnchor="0.0,56.0" targetAnchor="108.0,0.0" target="_X9u0cJFCEeOYdI73TlAedQ" source="_H3iCYJFBEeOYdI73TlAedQ">
-    <modelElement href="Bejeweled.uml#_b8c3UJFDEeOYdI73TlAedQ"/>
-    <visualProperties xmi:id="_b8hIwZFDEeOYdI73TlAedQ"/>
-    <bendpoints xmi:id="_T2JhwJFHEeOYdI73TlAedQ" sourceX="-58" targetY="-136"/>
-    <nameVisual xmi:id="_b8hIwpFDEeOYdI73TlAedQ" text="">
-      <visualProperties xmi:id="_b_07cJFDEeOYdI73TlAedQ" position="1.0,41.0"/>
-    </nameVisual>
-    <sourceRole xmi:id="_b8hIw5FDEeOYdI73TlAedQ" aggregationKind="NONE" name="gameService" navigable="true">
-      <modelElement href="Bejeweled.uml#_b8c3UZFDEeOYdI73TlAedQ"/>
-      <visualProperties xmi:id="_b_0UYJFDEeOYdI73TlAedQ" position="-75.0,-86.0"/>
-      <visibility xmi:id="_b8hIxJFDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_b8hIxZFDEeOYdI73TlAedQ" label="*" max="-1"/>
-    </sourceRole>
-    <targetRole xmi:id="_b8hIxpFDEeOYdI73TlAedQ" aggregationKind="NONE" name="playerDAO" navigable="true">
-      <modelElement href="Bejeweled.uml#_b8c3VJFDEeOYdI73TlAedQ"/>
-      <visualProperties xmi:id="_b_07cZFDEeOYdI73TlAedQ" position="2.0,-69.0"/>
-      <visibility xmi:id="_b8hIx5FDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_b8hIyJFDEeOYdI73TlAedQ" label="*" max="-1"/>
     </targetRole>
   </edges>
   <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_d3BtoJFDEeOYdI73TlAedQ" sourceAnchor="73.0,110.0" targetAnchor="69.0,0.0" target="_6YJFEJFAEeOYdI73TlAedQ" source="_QjAkwJFBEeOYdI73TlAedQ">
@@ -92,7 +52,7 @@
   <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_g1V44JFDEeOYdI73TlAedQ" sourceAnchor="0.0,54.0" targetAnchor="72.0,0.0" target="_zSK5QIkvEeOKNP8OHZKloA" source="_QjAkwJFBEeOYdI73TlAedQ">
     <modelElement href="Bejeweled.uml#_g1QZUJFDEeOYdI73TlAedQ"/>
     <visualProperties xmi:id="_g1V44ZFDEeOYdI73TlAedQ"/>
-    <bendpoints xmi:id="_T2I6sZFHEeOYdI73TlAedQ" sourceX="-267" targetX="-1" targetY="-150"/>
+    <bendpoints xmi:id="_F-57kJOsEeOMdYj6vJm33A" sourceX="-267" sourceY="-1" targetX="-1" targetY="-150"/>
     <nameVisual xmi:id="_g1V44pFDEeOYdI73TlAedQ" text="">
       <visualProperties xmi:id="_g4deUJFDEeOYdI73TlAedQ" position="1.0,41.00000000000003"/>
     </nameVisual>
@@ -104,7 +64,7 @@
     </sourceRole>
     <targetRole xmi:id="_g1V45pFDEeOYdI73TlAedQ" aggregationKind="NONE" name="iMenuService" navigable="true">
       <modelElement href="Bejeweled.uml#_g1SOgZFDEeOYdI73TlAedQ"/>
-      <visualProperties xmi:id="_g4deUZFDEeOYdI73TlAedQ" position="2.0,-71.99999999999997"/>
+      <visualProperties xmi:id="_g4deUZFDEeOYdI73TlAedQ" position="2.0,-71.99999999999991"/>
       <visibility xmi:id="_g1V455FDEeOYdI73TlAedQ" label="+"/>
       <cardinality xmi:id="_g1V46JFDEeOYdI73TlAedQ" label="*" max="-1"/>
     </targetRole>
@@ -112,7 +72,7 @@
   <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_hH4aYJFDEeOYdI73TlAedQ" sourceAnchor="143.0,54.0" targetAnchor="40.0,0.0" target="_zSK5QIkvEeOKNP8OHZKloA" source="_yzJpoJFAEeOYdI73TlAedQ">
     <modelElement href="Bejeweled.uml#_hHzh4JFDEeOYdI73TlAedQ"/>
     <visualProperties xmi:id="_hH4aYZFDEeOYdI73TlAedQ"/>
-    <bendpoints xmi:id="_T2IToJFHEeOYdI73TlAedQ" sourceX="200" sourceY="-1" targetY="-111"/>
+    <bendpoints xmi:id="_F-3fUJOsEeOMdYj6vJm33A" sourceX="200" sourceY="-2" targetY="-111"/>
     <nameVisual xmi:id="_hH4aYpFDEeOYdI73TlAedQ" text="">
       <visualProperties xmi:id="_hJ-sIJFDEeOYdI73TlAedQ" position="-13.0,53.0"/>
     </nameVisual>
@@ -148,11 +108,11 @@
       <cardinality xmi:id="_hbq5GJFDEeOYdI73TlAedQ" label="*" max="-1"/>
     </targetRole>
   </edges>
-  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_h08UsJFDEeOYdI73TlAedQ" sourceAnchor="145.0,48.0" targetAnchor="0.0,70.0" target="_zSK5QIkvEeOKNP8OHZKloA" source="_BQsRQJFBEeOYdI73TlAedQ">
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_h08UsJFDEeOYdI73TlAedQ" sourceAnchor="145.0,46.0" targetAnchor="0.0,70.0" target="_zSK5QIkvEeOKNP8OHZKloA" source="_BQsRQJFBEeOYdI73TlAedQ">
     <modelElement href="Bejeweled.uml#_h0zx0JFDEeOYdI73TlAedQ"/>
     <visualProperties xmi:id="_h08UsZFDEeOYdI73TlAedQ"/>
-    <bendpoints xmi:id="_T2IToZFHEeOYdI73TlAedQ" sourceX="114" sourceY="-2" targetX="-52" targetY="116"/>
-    <bendpoints xmi:id="_T2I6sJFHEeOYdI73TlAedQ" sourceX="111" sourceY="-118" targetX="-49"/>
+    <bendpoints xmi:id="_F-4GYJOsEeOMdYj6vJm33A" sourceX="81" targetX="-79" targetY="116"/>
+    <bendpoints xmi:id="_F-4tcJOsEeOMdYj6vJm33A" sourceX="111" sourceY="-116" targetX="-49"/>
     <nameVisual xmi:id="_h08UspFDEeOYdI73TlAedQ" text="">
       <visualProperties xmi:id="_h3FpwJFDEeOYdI73TlAedQ" position="2.0,-16.0"/>
     </nameVisual>
@@ -169,24 +129,69 @@
       <cardinality xmi:id="_h08UuJFDEeOYdI73TlAedQ" label="*" max="-1"/>
     </targetRole>
   </edges>
-  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_SwqgYJFHEeOYdI73TlAedQ" sourceAnchor="150.0,56.0" targetAnchor="82.0,118.0" target="_4aKDgJFCEeOYdI73TlAedQ" source="_GSl2IJFHEeOYdI73TlAedQ">
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_SwqgYJFHEeOYdI73TlAedQ" sourceAnchor="150.0,56.0" targetAnchor="80.0,118.0" target="_4aKDgJFCEeOYdI73TlAedQ" source="_GSl2IJFHEeOYdI73TlAedQ">
     <modelElement href="Bejeweled.uml#_SwkZwJFHEeOYdI73TlAedQ"/>
     <visualProperties xmi:id="_SwqgYZFHEeOYdI73TlAedQ"/>
-    <bendpoints xmi:id="_T2KI0JFHEeOYdI73TlAedQ" sourceX="274" targetY="110"/>
+    <bendpoints xmi:id="_F-8-4JOsEeOMdYj6vJm33A" sourceX="273" sourceY="-3" targetX="1" targetY="107"/>
     <nameVisual xmi:id="_SwqgYpFHEeOYdI73TlAedQ" text="">
-      <visualProperties xmi:id="_S0ZJ0JFHEeOYdI73TlAedQ" position="2.0,-56.714285714285666"/>
+      <visualProperties xmi:id="_S0ZJ0JFHEeOYdI73TlAedQ" position="2.0,-57.0"/>
     </nameVisual>
     <sourceRole xmi:id="_SwqgY5FHEeOYdI73TlAedQ" aggregationKind="NONE" name="databaseHandler" navigable="true">
       <modelElement href="Bejeweled.uml#_SwlA0JFHEeOYdI73TlAedQ"/>
-      <visualProperties xmi:id="_S0YiwJFHEeOYdI73TlAedQ" position="53.0,2.5"/>
+      <visualProperties xmi:id="_S0YiwJFHEeOYdI73TlAedQ" position="53.0,2.0"/>
       <visibility xmi:id="_SwqgZJFHEeOYdI73TlAedQ" label="+"/>
       <cardinality xmi:id="_SwqgZZFHEeOYdI73TlAedQ" label="*" max="-1"/>
     </sourceRole>
     <targetRole xmi:id="_SwqgZpFHEeOYdI73TlAedQ" aggregationKind="NONE" name="dAOBase" navigable="true">
       <modelElement href="Bejeweled.uml#_SwlA05FHEeOYdI73TlAedQ"/>
-      <visualProperties xmi:id="_S0Zw4JFHEeOYdI73TlAedQ" position="-68.0,24.5"/>
+      <visualProperties xmi:id="_S0Zw4JFHEeOYdI73TlAedQ" position="-68.0,24.0"/>
       <visibility xmi:id="_SwqgZ5FHEeOYdI73TlAedQ" label="+"/>
       <cardinality xmi:id="_SwqgaJFHEeOYdI73TlAedQ" label="*" max="-1"/>
+    </targetRole>
+  </edges>
+  <edges xsi:type="com.yattasolutions.diagrams:DependencyVisual" xmi:id="_DSn7gJOsEeOMdYj6vJm33A" sourceAnchor="78.0,0.0" targetAnchor="86.0,125.0" client="_X9u0cJFCEeOYdI73TlAedQ" supplier="__aJ1IJOrEeOMdYj6vJm33A">
+    <modelElement href="Bejeweled.uml#_DSmtYJOsEeOMdYj6vJm33A"/>
+    <visualProperties xmi:id="_DSn7gZOsEeOMdYj6vJm33A"/>
+    <nameVisual xmi:id="_DSn7gpOsEeOMdYj6vJm33A" text=""/>
+  </edges>
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_FlwbwJOsEeOMdYj6vJm33A" sourceAnchor="163.0,55.0" targetAnchor="48.0,3.0" target="__aJ1IJOrEeOMdYj6vJm33A" source="_wNp_YIkvEeOKNP8OHZKloA">
+    <modelElement href="Bejeweled.uml#_Flq8MJOsEeOMdYj6vJm33A"/>
+    <visualProperties xmi:id="_FlwbwZOsEeOMdYj6vJm33A"/>
+    <bendpoints xmi:id="_F-24QJOsEeOMdYj6vJm33A" sourceX="72" sourceY="-1" targetY="-171"/>
+    <nameVisual xmi:id="_FlwbwpOsEeOMdYj6vJm33A" text="">
+      <visualProperties xmi:id="_FoN54JOsEeOMdYj6vJm33A" position="2.0,74.0"/>
+    </nameVisual>
+    <sourceRole xmi:id="_Flwbw5OsEeOMdYj6vJm33A" aggregationKind="NONE" name="menuService" navigable="true">
+      <modelElement href="Bejeweled.uml#_FlrjQJOsEeOMdYj6vJm33A"/>
+      <visualProperties xmi:id="_FoNS0JOsEeOMdYj6vJm33A" position="11.0,41.0"/>
+      <visibility xmi:id="_FlwbxJOsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_FlwbxZOsEeOMdYj6vJm33A" label="*" max="-1"/>
+    </sourceRole>
+    <targetRole xmi:id="_FlwbxpOsEeOMdYj6vJm33A" aggregationKind="NONE" name="iPlayerDAO" navigable="true">
+      <modelElement href="Bejeweled.uml#_FltYcJOsEeOMdYj6vJm33A"/>
+      <visualProperties xmi:id="_FoOg8JOsEeOMdYj6vJm33A" position="-81.0,-76.0"/>
+      <visibility xmi:id="_Flwbx5OsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_FlwbyJOsEeOMdYj6vJm33A" label="*" max="-1"/>
+    </targetRole>
+  </edges>
+  <edges xsi:type="com.yattasolutions.uml.diagrams.classifier:AssociationVisual" xmi:id="_F40hsJOsEeOMdYj6vJm33A" sourceAnchor="0.0,58.0" targetAnchor="124.0,7.0" target="__aJ1IJOrEeOMdYj6vJm33A" source="_H3iCYJFBEeOYdI73TlAedQ">
+    <modelElement href="Bejeweled.uml#_F4t0AJOsEeOMdYj6vJm33A"/>
+    <visualProperties xmi:id="_F40hsZOsEeOMdYj6vJm33A"/>
+    <bendpoints xmi:id="_F-7JsJOsEeOMdYj6vJm33A" sourceX="-44" sourceY="1" targetY="-169"/>
+    <nameVisual xmi:id="_F40hspOsEeOMdYj6vJm33A" text="">
+      <visualProperties xmi:id="_F_B3YJOsEeOMdYj6vJm33A" position="1.0,41.5"/>
+    </nameVisual>
+    <sourceRole xmi:id="_F40hs5OsEeOMdYj6vJm33A" aggregationKind="NONE" name="gameService" navigable="true">
+      <modelElement href="Bejeweled.uml#_F4ubEJOsEeOMdYj6vJm33A"/>
+      <visualProperties xmi:id="_F_ACMJOsEeOMdYj6vJm33A" position="-97.0,-51.5"/>
+      <visibility xmi:id="_F40htJOsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_F40htZOsEeOMdYj6vJm33A" label="*" max="-1"/>
+    </sourceRole>
+    <targetRole xmi:id="_F40htpOsEeOMdYj6vJm33A" aggregationKind="NONE" name="iPlayerDAO" navigable="true">
+      <modelElement href="Bejeweled.uml#_F4wQQJOsEeOMdYj6vJm33A"/>
+      <visualProperties xmi:id="_F_B3YZOsEeOMdYj6vJm33A" position="2.0,-74.875"/>
+      <visibility xmi:id="_F40ht5OsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_F40huJOsEeOMdYj6vJm33A" label="*" max="-1"/>
     </targetRole>
   </edges>
   <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_BfCdEIkvEeOKNP8OHZKloA" name="MainActivity" associationsOut="_hbq5EJFDEeOYdI73TlAedQ">
@@ -239,16 +244,16 @@
       </type>
     </attributes>
   </nodes>
-  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_wNp_YIkvEeOKNP8OHZKloA" using="_JoT00IkwEeOKNP8OHZKloA" name="MenuService" associationsOut="_KEKAEJFDEeOYdI73TlAedQ">
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_wNp_YIkvEeOKNP8OHZKloA" using="_JoT00IkwEeOKNP8OHZKloA" name="MenuService" associationsOut="_FlwbwJOsEeOMdYj6vJm33A">
     <modelElement href="Bejeweled.uml#_wNm8EIkvEeOKNP8OHZKloA"/>
     <visualProperties xmi:id="_wNp_YYkvEeOKNP8OHZKloA" position="453.0,387.0" size="162.0,115.0"/>
     <visibility xmi:id="_wNp_YokvEeOKNP8OHZKloA" label="+"/>
-    <attributes xmi:id="_KENDYJFDEeOYdI73TlAedQ" name="playerDAO">
-      <modelElement href="Bejeweled.uml#_KEBdMJFDEeOYdI73TlAedQ"/>
-      <visibility xmi:id="_KENDYZFDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_KENDYpFDEeOYdI73TlAedQ" label="*" max="-1"/>
-      <type xmi:id="_KENDY5FDEeOYdI73TlAedQ" name="PlayerDAO">
-        <modelElement href="Bejeweled.uml#_X9s_QJFCEeOYdI73TlAedQ"/>
+    <attributes xmi:id="_Fly4AJOsEeOMdYj6vJm33A" name="iPlayerDAO">
+      <modelElement href="Bejeweled.uml#_FltYcJOsEeOMdYj6vJm33A"/>
+      <visibility xmi:id="_Fly4AZOsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_Fly4ApOsEeOMdYj6vJm33A" label="*" max="-1"/>
+      <type xmi:id="_Fly4A5OsEeOMdYj6vJm33A" name="IPlayerDAO">
+        <modelElement href="Bejeweled.uml#__aDHcJOrEeOMdYj6vJm33A"/>
       </type>
     </attributes>
   </nodes>
@@ -312,71 +317,16 @@
       </type>
     </attributes>
   </nodes>
-  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_H3iCYJFBEeOYdI73TlAedQ" using="_OMIM8JFBEeOYdI73TlAedQ" name="GameService" associationsOut="_b8hIwJFDEeOYdI73TlAedQ">
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_H3iCYJFBEeOYdI73TlAedQ" using="_OMIM8JFBEeOYdI73TlAedQ" name="GameService" associationsOut="_F40hsJOsEeOMdYj6vJm33A">
     <modelElement href="Bejeweled.uml#_H3gNMJFBEeOYdI73TlAedQ"/>
     <visualProperties xmi:id="_H3iCYZFBEeOYdI73TlAedQ" position="802.0,388.0" size="157.0,117.0"/>
     <visibility xmi:id="_H3iCYpFBEeOYdI73TlAedQ" label="+"/>
-    <attributes xmi:id="_b8kzIJFDEeOYdI73TlAedQ" name="playerDAO">
-      <modelElement href="Bejeweled.uml#_b8c3VJFDEeOYdI73TlAedQ"/>
-      <visibility xmi:id="_b8kzIZFDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_b8kzIpFDEeOYdI73TlAedQ" label="*" max="-1"/>
-      <type xmi:id="_b8kzI5FDEeOYdI73TlAedQ" name="PlayerDAO">
-        <modelElement href="Bejeweled.uml#_X9s_QJFCEeOYdI73TlAedQ"/>
-      </type>
-    </attributes>
-  </nodes>
-  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_X9u0cJFCEeOYdI73TlAedQ" name="PlayerDAO" associationsIn="_KEKAEJFDEeOYdI73TlAedQ _b8hIwJFDEeOYdI73TlAedQ" associationsOut="_Cq8W0JFDEeOYdI73TlAedQ">
-    <modelElement href="Bejeweled.uml#_X9s_QJFCEeOYdI73TlAedQ"/>
-    <visualProperties xmi:id="_X9u0cZFCEeOYdI73TlAedQ" position="636.0,580.0" size="158.0,118.0"/>
-    <visibility xmi:id="_X9u0cpFCEeOYdI73TlAedQ" label="+"/>
-    <attributes xmi:id="_Cq9k8JFDEeOYdI73TlAedQ" name="dAOBase">
-      <modelElement href="Bejeweled.uml#_Cq4scZFDEeOYdI73TlAedQ"/>
-      <visibility xmi:id="_Cq9k8ZFDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_Cq9k8pFDEeOYdI73TlAedQ" label="*" max="-1"/>
-      <type xmi:id="_Cq9k85FDEeOYdI73TlAedQ" name="DAOBase">
-        <modelElement href="Bejeweled.uml#_4aIOUJFCEeOYdI73TlAedQ"/>
-      </type>
-    </attributes>
-    <attributes xmi:id="_KEL1QJFDEeOYdI73TlAedQ" name="menuService">
-      <modelElement href="Bejeweled.uml#_KEA2IJFDEeOYdI73TlAedQ"/>
-      <visibility xmi:id="_KEL1QZFDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_KEL1QpFDEeOYdI73TlAedQ" label="*" max="-1"/>
-      <type xmi:id="_KEL1Q5FDEeOYdI73TlAedQ" name="MenuService">
-        <modelElement href="Bejeweled.uml#_wNm8EIkvEeOKNP8OHZKloA"/>
-      </type>
-    </attributes>
-    <attributes xmi:id="_b8i98JFDEeOYdI73TlAedQ" name="gameService">
-      <modelElement href="Bejeweled.uml#_b8c3UZFDEeOYdI73TlAedQ"/>
-      <visibility xmi:id="_b8i98ZFDEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_b8i98pFDEeOYdI73TlAedQ" label="*" max="-1"/>
-      <type xmi:id="_b8i985FDEeOYdI73TlAedQ" name="GameService">
-        <modelElement href="Bejeweled.uml#_H3gNMJFBEeOYdI73TlAedQ"/>
-      </type>
-    </attributes>
-  </nodes>
-  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_4aKDgJFCEeOYdI73TlAedQ" name="DAOBase" associationsIn="_Cq8W0JFDEeOYdI73TlAedQ _SwqgYJFHEeOYdI73TlAedQ">
-    <modelElement href="Bejeweled.uml#_4aIOUJFCEeOYdI73TlAedQ"/>
-    <visualProperties xmi:id="_4aKDgZFCEeOYdI73TlAedQ" position="994.0,582.0" size="164.0,118.0"/>
-    <visibility xmi:id="_4aKDgpFCEeOYdI73TlAedQ" label="+"/>
-    <attributes xmi:id="_SwtjsJFHEeOYdI73TlAedQ" name="databaseHandler">
-      <modelElement href="Bejeweled.uml#_SwlA0JFHEeOYdI73TlAedQ"/>
-      <visibility xmi:id="_SwtjsZFHEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_SwtjspFHEeOYdI73TlAedQ" label="*" max="-1"/>
-      <type xmi:id="_Swtjs5FHEeOYdI73TlAedQ" name="DatabaseHandler">
-        <modelElement href="Bejeweled.uml#_GSkA8JFHEeOYdI73TlAedQ"/>
-      </type>
-    </attributes>
-  </nodes>
-  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_GSl2IJFHEeOYdI73TlAedQ" name="DatabaseHandler" associationsOut="_SwqgYJFHEeOYdI73TlAedQ">
-    <modelElement href="Bejeweled.uml#_GSkA8JFHEeOYdI73TlAedQ"/>
-    <visualProperties xmi:id="_GSl2IZFHEeOYdI73TlAedQ" position="652.0,754.0" size="150.0,113.0"/>
-    <visibility xmi:id="_GSl2IpFHEeOYdI73TlAedQ" label="+"/>
-    <attributes xmi:id="_SwuKwJFHEeOYdI73TlAedQ" name="dAOBase">
-      <modelElement href="Bejeweled.uml#_SwlA05FHEeOYdI73TlAedQ"/>
-      <visibility xmi:id="_SwuKwZFHEeOYdI73TlAedQ" label="+"/>
-      <cardinality xmi:id="_SwuKwpFHEeOYdI73TlAedQ" label="*" max="-1"/>
-      <type xmi:id="_SwuKw5FHEeOYdI73TlAedQ" name="DAOBase">
-        <modelElement href="Bejeweled.uml#_4aIOUJFCEeOYdI73TlAedQ"/>
+    <attributes xmi:id="_F4298JOsEeOMdYj6vJm33A" name="iPlayerDAO">
+      <modelElement href="Bejeweled.uml#_F4wQQJOsEeOMdYj6vJm33A"/>
+      <visibility xmi:id="_F4298ZOsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_F4298pOsEeOMdYj6vJm33A" label="*" max="-1"/>
+      <type xmi:id="_F42985OsEeOMdYj6vJm33A" name="IPlayerDAO">
+        <modelElement href="Bejeweled.uml#__aDHcJOrEeOMdYj6vJm33A"/>
       </type>
     </attributes>
   </nodes>
@@ -403,6 +353,66 @@
       <modelElement href="Bejeweled.uml#_VajbIJFEEeOYdI73TlAedQ"/>
       <visibility xmi:id="_ValQUZFEEeOYdI73TlAedQ" label="+"/>
       <cardinality xmi:id="_ValQUpFEEeOYdI73TlAedQ" label="1" max="1" min="1"/>
+    </attributes>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_X9u0cJFCEeOYdI73TlAedQ" using="_DSn7gJOsEeOMdYj6vJm33A" name="PlayerDAO" associationsOut="_Cq8W0JFDEeOYdI73TlAedQ">
+    <modelElement href="Bejeweled.uml#_X9s_QJFCEeOYdI73TlAedQ"/>
+    <visualProperties xmi:id="_X9u0cZFCEeOYdI73TlAedQ" position="642.0,866.0" size="158.0,118.0"/>
+    <visibility xmi:id="_X9u0cpFCEeOYdI73TlAedQ" label="+"/>
+    <attributes xmi:id="_Cq9k8JFDEeOYdI73TlAedQ" name="dAOBase">
+      <modelElement href="Bejeweled.uml#_Cq4scZFDEeOYdI73TlAedQ"/>
+      <visibility xmi:id="_Cq9k8ZFDEeOYdI73TlAedQ" label="+"/>
+      <cardinality xmi:id="_Cq9k8pFDEeOYdI73TlAedQ" label="*" max="-1"/>
+      <type xmi:id="_Cq9k85FDEeOYdI73TlAedQ" name="DAOBase">
+        <modelElement href="Bejeweled.uml#_4aIOUJFCEeOYdI73TlAedQ"/>
+      </type>
+    </attributes>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_4aKDgJFCEeOYdI73TlAedQ" name="DAOBase" associationsIn="_Cq8W0JFDEeOYdI73TlAedQ _SwqgYJFHEeOYdI73TlAedQ">
+    <modelElement href="Bejeweled.uml#_4aIOUJFCEeOYdI73TlAedQ"/>
+    <visualProperties xmi:id="_4aKDgZFCEeOYdI73TlAedQ" position="1000.0,868.0" size="164.0,118.0"/>
+    <visibility xmi:id="_4aKDgpFCEeOYdI73TlAedQ" label="+"/>
+    <attributes xmi:id="_SwtjsJFHEeOYdI73TlAedQ" name="databaseHandler">
+      <modelElement href="Bejeweled.uml#_SwlA0JFHEeOYdI73TlAedQ"/>
+      <visibility xmi:id="_SwtjsZFHEeOYdI73TlAedQ" label="+"/>
+      <cardinality xmi:id="_SwtjspFHEeOYdI73TlAedQ" label="*" max="-1"/>
+      <type xmi:id="_Swtjs5FHEeOYdI73TlAedQ" name="DatabaseHandler">
+        <modelElement href="Bejeweled.uml#_GSkA8JFHEeOYdI73TlAedQ"/>
+      </type>
+    </attributes>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:ClassifierVisual" xmi:id="_GSl2IJFHEeOYdI73TlAedQ" name="DatabaseHandler" associationsOut="_SwqgYJFHEeOYdI73TlAedQ">
+    <modelElement href="Bejeweled.uml#_GSkA8JFHEeOYdI73TlAedQ"/>
+    <visualProperties xmi:id="_GSl2IZFHEeOYdI73TlAedQ" position="658.0,1040.0" size="150.0,113.0"/>
+    <visibility xmi:id="_GSl2IpFHEeOYdI73TlAedQ" label="+"/>
+    <attributes xmi:id="_SwuKwJFHEeOYdI73TlAedQ" name="dAOBase">
+      <modelElement href="Bejeweled.uml#_SwlA05FHEeOYdI73TlAedQ"/>
+      <visibility xmi:id="_SwuKwZFHEeOYdI73TlAedQ" label="+"/>
+      <cardinality xmi:id="_SwuKwpFHEeOYdI73TlAedQ" label="*" max="-1"/>
+      <type xmi:id="_SwuKw5FHEeOYdI73TlAedQ" name="DAOBase">
+        <modelElement href="Bejeweled.uml#_4aIOUJFCEeOYdI73TlAedQ"/>
+      </type>
+    </attributes>
+  </nodes>
+  <nodes xsi:type="com.yattasolutions.uml.diagrams.classifier:InterfaceVisual" xmi:id="__aJ1IJOrEeOMdYj6vJm33A" supplying="_DSn7gJOsEeOMdYj6vJm33A" name="IPlayerDAO" associationsIn="_FlwbwJOsEeOMdYj6vJm33A _F40hsJOsEeOMdYj6vJm33A">
+    <modelElement href="Bejeweled.uml#__aDHcJOrEeOMdYj6vJm33A"/>
+    <visualProperties xmi:id="__aJ1IZOrEeOMdYj6vJm33A" position="634.0,609.0" size="172.0,125.0"/>
+    <visibility xmi:id="__aJ1IpOrEeOMdYj6vJm33A" label="+"/>
+    <attributes xmi:id="_Flxp4JOsEeOMdYj6vJm33A" name="menuService">
+      <modelElement href="Bejeweled.uml#_FlrjQJOsEeOMdYj6vJm33A"/>
+      <visibility xmi:id="_Flxp4ZOsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_Flxp4pOsEeOMdYj6vJm33A" label="*" max="-1"/>
+      <type xmi:id="_Flxp45OsEeOMdYj6vJm33A" name="MenuService">
+        <modelElement href="Bejeweled.uml#_wNm8EIkvEeOKNP8OHZKloA"/>
+      </type>
+    </attributes>
+    <attributes xmi:id="_F41v0JOsEeOMdYj6vJm33A" name="gameService">
+      <modelElement href="Bejeweled.uml#_F4ubEJOsEeOMdYj6vJm33A"/>
+      <visibility xmi:id="_F41v0ZOsEeOMdYj6vJm33A" label="+"/>
+      <cardinality xmi:id="_F41v0pOsEeOMdYj6vJm33A" label="*" max="-1"/>
+      <type xmi:id="_F41v05OsEeOMdYj6vJm33A" name="GameService">
+        <modelElement href="Bejeweled.uml#_H3gNMJFBEeOYdI73TlAedQ"/>
+      </type>
     </attributes>
   </nodes>
 </com.yattasolutions.uml.diagrams.classifier:ClassDiagram>

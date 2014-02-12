@@ -1,16 +1,44 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".GameMenuActivity" >
+    
+    <ImageView
+        android:id="@+id/imageTitre"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="-10dp"
+        android:src="@drawable/ecran_titre"
+        android:adjustViewBounds="true"
+        android:layout_weight="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+	<TextView style="@style/divider" />
+	<TextView style="@style/divider" />
+	
+	<ImageView
+		android:id="@+id/boutonMenu_jouer"
+		style="@style/boutonMenu"
+		android:background="@drawable/bouton_jouer" />
+	
+	<TextView style="@style/divider" />
+	
+	<ImageView
+		android:id="@+id/boutonMenu_score"
+		style="@style/boutonMenu"
+		android:background="@drawable/bouton_score" />
+	
+	<TextView style="@style/divider" />
+	
+	<ImageView
+		android:id="@+id/boutonMenu_quitter"
+		style="@style/boutonMenu"
+		android:background="@drawable/bouton_quitter" />
 
-</RelativeLayout>
+</LinearLayout>

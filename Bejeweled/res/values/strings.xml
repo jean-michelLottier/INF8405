@@ -17,5 +17,7 @@
     <string name="m_yesHigh">OUI</string>
     <string name="m_noHigh">NON</string>
     <string name="m_menu">Menu</string>
+    <string name="title_activity_game_score">GameScoreActivity</string>
+    <string name="title_activity_list_score_speed">ListScoreSpeed</string>
 
 </resources>

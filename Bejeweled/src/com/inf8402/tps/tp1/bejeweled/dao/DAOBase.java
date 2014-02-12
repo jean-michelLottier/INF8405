@@ -19,8 +19,7 @@ public abstract class DAOBase {
 	protected DatabaseHandler databaseHandler = null;
 
 	public DAOBase(Context pContext) {
-		this.databaseHandler = new DatabaseHandler(pContext, NAME, null,
-				VERSION);
+		this.databaseHandler = new DatabaseHandler(pContext, NAME, null, VERSION);
 	}
 
 	public SQLiteDatabase open() {

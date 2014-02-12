@@ -14,13 +14,21 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.inf8402.tps.tp1.bejeweled.MainActivity"
+            android:name="com.inf8402.tps.tp1.bejeweled.activity.GameMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.inf8402.tps.tp1.bejeweled.activity.GameScoreActivity"
+            android:label="@string/title_activity_game_score" >
+        </activity>
+        <activity
+            android:name="com.inf8402.tps.tp1.bejeweled.activity.ListScoreSpeed"
+            android:label="@string/title_activity_list_score_speed" >
         </activity>
     </application>
 

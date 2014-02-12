@@ -11,28 +11,33 @@ package com.inf8402.tps.tp1.bejeweled.dao;
 public class Player {
 	private int playerID;
 	private String pseudo;
-	private int score;
+	private int scoreSpeedMode;
+	private int scoreTacticMode;
 	private int rank;
 
 	public Player() {
 
 	}
 
-	public Player(String pseudo, int score) {
+	public Player(String pseudo, int scoreSpeedMode, int scoreTacticMode) {
 		this.pseudo = pseudo;
-		this.score = score;
+		this.scoreSpeedMode = scoreSpeedMode;
+		this.scoreTacticMode = scoreTacticMode;
 	}
 
-	public Player(int id, String pseudo, int score) {
+	public Player(int id, String pseudo, int scoreSpeedMode, int scoreTacticMode) {
 		this.playerID = id;
 		this.pseudo = pseudo;
-		this.score = score;
+		this.scoreSpeedMode = scoreSpeedMode;
+		this.scoreTacticMode = scoreTacticMode;
 	}
 
-	public Player(int id, String pseudo, int score, int rank) {
+	public Player(int id, String pseudo, int scoreSpeedMode,
+			int scoreTacticMode, int rank) {
 		this.playerID = id;
 		this.pseudo = pseudo;
-		this.score = score;
+		this.scoreSpeedMode = scoreSpeedMode;
+		this.scoreTacticMode = scoreTacticMode;
 		this.rank = rank;
 	}
 
@@ -52,12 +57,20 @@ public class Player {
 		this.pseudo = pseudo;
 	}
 
-	public int getScore() {
-		return score;
+	public int getScoreSpeedMode() {
+		return scoreSpeedMode;
 	}
 
-	public void setScore(int score) {
-		this.score = score;
+	public void setScoreSpeedMode(int scoreSpeedMode) {
+		this.scoreSpeedMode = scoreSpeedMode;
+	}
+
+	public int getScoreTacticMode() {
+		return scoreTacticMode;
+	}
+
+	public void setScoreTacticMode(int scoreTacticMode) {
+		this.scoreTacticMode = scoreTacticMode;
 	}
 
 	public int getRank() {

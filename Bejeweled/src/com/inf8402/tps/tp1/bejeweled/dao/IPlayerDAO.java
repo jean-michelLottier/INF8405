@@ -7,6 +7,7 @@ public interface IPlayerDAO {
 	 * <p>
 	 * Add a player into databases.
 	 * </p>
+	 * 
 	 * @param player
 	 */
 	public void addPlayer(Player player);
@@ -15,35 +16,52 @@ public interface IPlayerDAO {
 	 * <p>
 	 * Remove a player from his id.
 	 * </p>
+	 * 
 	 * @param playerID
 	 * @return Number of rows deleted
 	 */
 	public int deletePlayer(int playerID);
 
 	/**
-	 * <p>Find a player by his id.</p>
+	 * <p>
+	 * Find a player by his id.
+	 * </p>
+	 * 
 	 * @param playerID
 	 * @return player found otherwise null
 	 */
 	public Player findPlayerByID(int playerID);
 
 	/**
-	 * <p>Find a player by his pseudo.</p>
+	 * <p>
+	 * Find a player by his pseudo.
+	 * </p>
+	 * 
 	 * @param pseudo
 	 * @return player found otherwise null
 	 */
 	public Player findPlayerByPseudo(String pseudo);
 
 	/**
-	 * <p>Get all player registered into databases order by score.</p>
+	 * <p>
+	 * Get all player registered into databases order by score.
+	 * </p>
+	 * 
 	 * @return list of players otherwise null
 	 */
-	public List<Player> getAllPlayersOrderByScore();
+	public List<Player> getAllPlayersOrderByScoreSpeedMode();
+
+	public List<Player> getAllPlayersOrderByScoreTacticMode();
 
 	/**
-	 * <p>Get list of X best players.</p>
+	 * <p>
+	 * Get list of X best players.
+	 * </p>
+	 * 
 	 * @param xFirstPlayers
 	 * @return list of players otherwise null
 	 */
-	public List<Player> getTopXPlayers(int xFirstPlayers);
+	public List<Player> getTopXPlayersSpeedMode(int xFirstPlayers);
+
+	public List<Player> getTopXPlayersTacticMode(int xFirstPlayers);
 }

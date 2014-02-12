@@ -16,14 +16,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String PLAYER_KEY = "id";
 	public static final String PLAYER_PSEUDO = "pseudo";
-	public static final String PLAYER_SCORE = "score";
+	public static final String PLAYER_SCORE_SPEED_MODE = "score_speed_mode";
+	public static final String PLAYER_SCORE_TACTIC_MODE = "score_tactic_mode";
 	// public static final String PLAYER_RANK = "rank";
 
 	public static final String PLAYER_TABLE_NAME = "Player";
 	public static final String PLAYER_TABLE_CREATE = "CREATE TABLE"
 			+ PLAYER_TABLE_NAME + " (" + PLAYER_KEY
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT" + PLAYER_PSEUDO + " TEXT, "
-			+ PLAYER_SCORE + " INTEGER);";
+			+ PLAYER_SCORE_SPEED_MODE + " INTEGER, " + PLAYER_SCORE_TACTIC_MODE
+			+ " INTEGER);";
 	public static final String PLAYER_TABLE_DROP = "DROP TABLE IF EXISTS "
 			+ PLAYER_TABLE_NAME + ";";
 

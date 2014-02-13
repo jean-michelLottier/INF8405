@@ -44,24 +44,36 @@ public interface IPlayerDAO {
 
 	/**
 	 * <p>
-	 * Get all player registered into databases order by score.
+	 * Get all player registered into databases order by speed score.
 	 * </p>
 	 * 
 	 * @return list of players otherwise null
 	 */
 	public List<Player> getAllPlayersOrderByScoreSpeedMode();
 
+	/**
+	 * <p>Get all player registered into databases order by tactic score.</p>
+	 * @return
+	 */
 	public List<Player> getAllPlayersOrderByScoreTacticMode();
 
 	/**
 	 * <p>
-	 * Get list of X best players.
+	 * Get list of X best players for speed mode.
 	 * </p>
 	 * 
 	 * @param xFirstPlayers
-	 * @return list of players otherwise null
+	 * @return list of players otherwise empty list
 	 */
 	public List<Player> getTopXPlayersSpeedMode(int xFirstPlayers);
 
+	/**
+	 * <p>
+	 * Get list of X best players for tactic mode.
+	 * </p>
+	 * 
+	 * @param xFirstPlayers
+	 * @return list of players otherwise empty list
+	 */
 	public List<Player> getTopXPlayersTacticMode(int xFirstPlayers);
 }

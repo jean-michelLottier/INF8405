@@ -21,11 +21,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// public static final String PLAYER_RANK = "rank";
 
 	public static final String PLAYER_TABLE_NAME = "Player";
-	public static final String PLAYER_TABLE_CREATE = "CREATE TABLE"
+	public static final String PLAYER_TABLE_CREATE = "CREATE TABLE "
 			+ PLAYER_TABLE_NAME + " (" + PLAYER_KEY
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT" + PLAYER_PSEUDO + " TEXT, "
-			+ PLAYER_SCORE_SPEED_MODE + " INTEGER, " + PLAYER_SCORE_TACTIC_MODE
-			+ " INTEGER);";
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + PLAYER_PSEUDO
+			+ " TEXT, " + PLAYER_SCORE_SPEED_MODE + " INTEGER, "
+			+ PLAYER_SCORE_TACTIC_MODE + " INTEGER);";
 	public static final String PLAYER_TABLE_DROP = "DROP TABLE IF EXISTS "
 			+ PLAYER_TABLE_NAME + ";";
 
@@ -39,14 +39,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		db.execSQL(PLAYER_TABLE_CREATE);
-
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
-		db.execSQL(PLAYER_TABLE_DROP);
+		db.execSQL("DROP TABLE IF EXISTS " + PLAYER_TABLE_DROP);
 		onCreate(db);
 	}
-
 }

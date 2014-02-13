@@ -24,6 +24,7 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 
 	public PlayerDao(Context pContext) {
 		super(pContext);
+		open();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -98,9 +99,29 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 	public List<Player> getTopXPlayersSpeedMode(int xFirstPlayers) {
 		String strQuery = "SELECT * FROM " + PLAYER_TABLE_NAME + " ORDER BY "
 				+ PLAYER_SCORE_SPEED_MODE + " DESC LIMIT ?";
+
 		Cursor cursor = sqLiteDatabase.rawQuery(strQuery,
 				new String[] { String.valueOf(xFirstPlayers) });
 
+		List<Player> playerList = new ArrayList<Player>();
+
+		if (!cursor.moveToFirst()) {
+			return playerList;
+		}
+
+		while (cursor.moveToNext()) {
+			Player player = cursorToPlayer(cursor);
+			playerList.add(player);
+		}
+
+		return playerList;
+	}
+
+	@Override
+	public List<Player> getAllPlayersOrderByScoreTacticMode() {
+		String strQuery = "SELECT *" + " FROM " + PLAYER_TABLE_NAME
+				+ " ORDER BY " + PLAYER_SCORE_TACTIC_MODE + " DESC";
+		Cursor cursor = sqLiteDatabase.rawQuery(strQuery, null);
 		if (!cursor.moveToFirst()) {
 			return null;
 		}
@@ -116,15 +137,25 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 	}
 
 	@Override
-	public List<Player> getAllPlayersOrderByScoreTacticMode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Player> getTopXPlayersTacticMode(int xFirstPlayers) {
-		// TODO Auto-generated method stub
-		return null;
+		String strQuery = "SELECT * FROM " + PLAYER_TABLE_NAME + " ORDER BY "
+				+ PLAYER_SCORE_TACTIC_MODE + " DESC LIMIT ?";
+
+		Cursor cursor = sqLiteDatabase.rawQuery(strQuery,
+				new String[] { String.valueOf(xFirstPlayers) });
+
+		List<Player> playerList = new ArrayList<Player>();
+
+		if (!cursor.moveToFirst()) {
+			return playerList;
+		}
+
+		while (cursor.moveToNext()) {
+			Player player = cursorToPlayer(cursor);
+			playerList.add(player);
+		}
+
+		return playerList;
 	}
 
 	private Player cursorToPlayer(Cursor cursor) {

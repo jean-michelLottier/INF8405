@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
  * <p>
  * Permet d'accéder à la base de données du jeu Bejeweled
  * </p>
+ * 
  * @author jean-michel
- *
+ * 
  */
 public abstract class DAOBase {
 
@@ -19,7 +20,8 @@ public abstract class DAOBase {
 	protected DatabaseHandler databaseHandler = null;
 
 	public DAOBase(Context pContext) {
-		this.databaseHandler = new DatabaseHandler(pContext, NAME, null, VERSION);
+		this.databaseHandler = new DatabaseHandler(pContext, NAME, null,
+				VERSION);
 	}
 
 	public SQLiteDatabase open() {

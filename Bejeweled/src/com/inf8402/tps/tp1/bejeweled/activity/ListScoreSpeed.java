@@ -15,6 +15,7 @@ import com.inf8402.tps.tp1.bejeweled.adapter.PlayerAdapter;
 import com.inf8402.tps.tp1.bejeweled.dao.Player;
 import com.inf8402.tps.tp1.bejeweled.exception.BadInputParameterException;
 import com.inf8402.tps.tp1.bejeweled.service.IMenuService;
+import com.inf8402.tps.tp1.bejeweled.service.MenuService;
 
 public class ListScoreSpeed extends Fragment {
 
@@ -22,15 +23,28 @@ public class ListScoreSpeed extends Fragment {
 	private PlayerAdapter playerAdapter;
 	private IMenuService menuService;
 
+	public IMenuService getMenuService() {
+		if (menuService == null) {
+			menuService = new MenuService(getActivity().getApplicationContext());
+		}
+		return menuService;
+	}
+
+	public void setMenuService(IMenuService menuService) {
+		this.menuService = menuService;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
 		List<Player> topTenPlayers = new ArrayList<Player>();
 		try {
+			menuService = getMenuService();
 			topTenPlayers = menuService
 					.getTopTenPlayers(menuService.SPEED_MODE);
 		} catch (BadInputParameterException e) {
-			topTenPlayers = null;
+			topTenPlayers = new ArrayList<Player>();
 		}
 		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers);
 

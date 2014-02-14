@@ -23,6 +23,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.inf8402.tps.tp1.bejeweled.activity.GameModeActivity"
+            android:label="@string/title_activity_game_mode" >
+        </activity>
+        <activity
             android:name="com.inf8402.tps.tp1.bejeweled.activity.GameScoreActivity"
             android:label="@string/title_activity_game_score" >
         </activity>

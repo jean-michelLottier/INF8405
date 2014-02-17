@@ -30,6 +30,7 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 
 	@Override
 	public void addPlayer(Player player) {
+		System.out.println("*************addPlayer method*************");
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(PLAYER_PSEUDO, player.getPseudo());
 		contentValues.put(PLAYER_SCORE_SPEED_MODE, player.getScoreSpeedMode());
@@ -62,6 +63,8 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 
 	@Override
 	public Player findPlayerByPseudo(String pseudo) {
+		System.out
+				.println("*************findPlayerByPseudo method*************");
 		String strQuery = "SELECT *" + " FROM " + PLAYER_TABLE_NAME + " WHERE "
 				+ PLAYER_PSEUDO + " = ?";
 		Cursor cursor = sqLiteDatabase.rawQuery(strQuery,
@@ -72,6 +75,10 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		}
 
 		Player player = cursorToPlayer(cursor);
+		System.out.println("ID: " + player.getPlayerID() + ", pseudo: "
+				+ player.getPseudo() + ", score SM: "
+				+ player.getScoreSpeedMode() + ", score TM: "
+				+ player.getScoreTacticMode());
 
 		return player;
 	}
@@ -162,10 +169,20 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		Player player = new Player();
 		player.setPlayerID(cursor.getInt(cursor.getColumnIndex(PLAYER_KEY)));
 		player.setPseudo(cursor.getString(cursor.getColumnIndex(PLAYER_PSEUDO)));
-		player.setScoreSpeedMode(cursor.getInt(cursor
-				.getColumnIndex(PLAYER_SCORE_SPEED_MODE)));
-		player.setScoreTacticMode(cursor.getInt(cursor
-				.getColumnIndex(PLAYER_SCORE_TACTIC_MODE)));
+
+		if (cursor.getColumnIndex(PLAYER_SCORE_SPEED_MODE) == -1) {
+			player.setScoreSpeedMode(0);
+		} else {
+			player.setScoreSpeedMode(cursor.getInt(cursor
+					.getColumnIndex(PLAYER_SCORE_SPEED_MODE)));
+		}
+
+		if (cursor.getColumnIndex(PLAYER_SCORE_TACTIC_MODE) == -1) {
+			player.setScoreTacticMode(cursor.getInt(0));
+		} else {
+			player.setScoreTacticMode(cursor.getInt(cursor
+					.getColumnIndex(PLAYER_SCORE_TACTIC_MODE)));
+		}
 
 		return player;
 	}

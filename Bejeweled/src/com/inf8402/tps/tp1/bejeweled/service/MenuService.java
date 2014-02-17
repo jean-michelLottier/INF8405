@@ -53,4 +53,22 @@ public class MenuService implements IMenuService {
 		return playerDAO.getTopXPlayersSpeedMode(TOP_TEN);
 	}
 
+	@Override
+	public Player startPlayerSession(String pseudo)
+			throws BadInputParameterException {
+		if (pseudo == null || pseudo.isEmpty() || pseudo.length() < 4) {
+			throw new BadInputParameterException(
+					"pseudo is null or empty or too short");
+		}
+
+		playerDAO = getPlayerDAO();
+		Player player = playerDAO.findPlayerByPseudo(pseudo);
+		if (player == null) {
+			player = new Player(pseudo, 0, 0);
+			playerDAO.addPlayer(player);
+		}
+
+		return player;
+	}
+
 }

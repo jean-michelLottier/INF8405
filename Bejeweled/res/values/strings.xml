@@ -23,5 +23,6 @@
     <string name="m_okHigh">OK</string>
     <string name="m_pseudo">Pseudo</string>
     <string name="m_interface_desciption">interface box dialog</string>
+    <string name="title_activity_game">GameActivity</string>
 
 </resources>

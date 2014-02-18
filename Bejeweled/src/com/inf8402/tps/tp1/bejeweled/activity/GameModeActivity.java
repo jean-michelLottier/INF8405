@@ -2,7 +2,6 @@ package com.inf8402.tps.tp1.bejeweled.activity;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -48,14 +47,11 @@ public class GameModeActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = null;
 			switch (v.getId()) {
 			case R.id.boutonMode_retour:
-				intent = new Intent(GameModeActivity.this,
-						GameMenuActivity.class);
 				session = new SessionManager(getApplicationContext());
 				session.clearSession();
-				startActivity(intent);
+				finish();
 				break;
 
 			default:

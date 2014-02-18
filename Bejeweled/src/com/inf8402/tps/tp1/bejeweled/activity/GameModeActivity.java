@@ -2,6 +2,7 @@ package com.inf8402.tps.tp1.bejeweled.activity;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -9,12 +10,15 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
+import com.inf8402.tps.tp1.bejeweled.dao.SessionManager;
 
 public class GameModeActivity extends Activity {
 
 	private ImageView button_speed;
 	private ImageView button_tactic;
 	private ImageView button_return;
+
+	private SessionManager session;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,9 @@ public class GameModeActivity extends Activity {
 				GameDialogFragment.BOX_DIALOG_REGISTER);
 		dialog.setArguments(args);
 		dialog.show(getFragmentManager(), "GameDialogFragment");
+
+		button_return = (ImageView) findViewById(R.id.boutonMode_retour);
+		button_return.setOnClickListener(onClickListener);
 
 	}
 
@@ -41,9 +48,14 @@ public class GameModeActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			Intent intent = null;
 			switch (v.getId()) {
-			case R.id.register_dialog_butt:
+			case R.id.boutonMode_retour:
+				intent = new Intent(GameModeActivity.this,
+						GameMenuActivity.class);
+				session = new SessionManager(getApplicationContext());
+				session.clearSession();
+				startActivity(intent);
 				break;
 
 			default:

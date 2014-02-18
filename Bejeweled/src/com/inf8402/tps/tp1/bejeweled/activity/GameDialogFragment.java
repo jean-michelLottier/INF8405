@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.inf8402.tps.tp1.bejeweled.R;
@@ -43,6 +44,12 @@ public class GameDialogFragment extends DialogFragment {
 
 	private static final String BOX_DIALOG_REGISTER_TITLE = "Bejeweled - Pseudo";
 	private static final String BOX_DIALOG_REGISTER_ALERT = "Veuillez saisir un pseudo valide!";
+
+	// Player informations
+	private static final String PLAYER_INF_SCORE_TITLE = "Vos scores :";
+	private static final String PLAYER_INF_SPEED_SCORE = "Vitesse : ";
+	private static final String PLAYER_INF_TACTIC_SCORE = "Tactique : ";
+	private static final String PLAYER_INF_SELECT_MODE = "Sélectionnez un mode de jeu";
 
 	private IMenuService menuService;
 	private SessionManager session;
@@ -150,8 +157,6 @@ public class GameDialogFragment extends DialogFragment {
 					Toast.makeText(v.getContext(), BOX_DIALOG_REGISTER_ALERT,
 							Toast.LENGTH_SHORT).show();
 				} else {
-					System.out.println("******************pseudo:"
-							+ pseudo.toString() + "*****************");
 					menuService = getMenuService();
 					Player player = new Player();
 					try {
@@ -171,6 +176,24 @@ public class GameDialogFragment extends DialogFragment {
 				}
 
 				if (isRegister) {
+					TextView textView = (TextView) getActivity().findViewById(
+							R.id.textViewPseudo);
+					textView.setText(session.getPlayerPseudo());
+					textView = (TextView) getActivity().findViewById(
+							R.id.textViewScoreTitle);
+					textView.setText(PLAYER_INF_SCORE_TITLE);
+					textView = (TextView) getActivity().findViewById(
+							R.id.textViewSpeedScore);
+					textView.setText(PLAYER_INF_SPEED_SCORE
+							+ session.getPlayerScoreSpeedMode());
+					textView = (TextView) getActivity().findViewById(
+							R.id.textViewTacticScore);
+					textView.setText(PLAYER_INF_TACTIC_SCORE
+							+ session.getPlayerScoreTacticMode());
+					textView = (TextView) getActivity().findViewById(
+							R.id.textViewSelectGameMode);
+					textView.setText(PLAYER_INF_SELECT_MODE);
+
 					dismiss();
 				}
 

@@ -30,7 +30,6 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 
 	@Override
 	public void addPlayer(Player player) {
-		System.out.println("*************addPlayer method*************");
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(PLAYER_PSEUDO, player.getPseudo());
 		contentValues.put(PLAYER_SCORE_SPEED_MODE, player.getScoreSpeedMode());
@@ -63,8 +62,6 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 
 	@Override
 	public Player findPlayerByPseudo(String pseudo) {
-		System.out
-				.println("*************findPlayerByPseudo method*************");
 		String strQuery = "SELECT *" + " FROM " + PLAYER_TABLE_NAME + " WHERE "
 				+ PLAYER_PSEUDO + " = ?";
 		Cursor cursor = sqLiteDatabase.rawQuery(strQuery,
@@ -88,11 +85,12 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		String strQuery = "SELECT *" + " FROM " + PLAYER_TABLE_NAME
 				+ " ORDER BY " + PLAYER_SCORE_SPEED_MODE + " DESC";
 		Cursor cursor = sqLiteDatabase.rawQuery(strQuery, null);
-		if (!cursor.moveToFirst()) {
-			return null;
-		}
 
 		List<Player> playerList = new ArrayList<Player>();
+
+		if (cursor == null || cursor.getCount() == 0) {
+			return playerList;
+		}
 
 		while (cursor.moveToNext()) {
 			Player player = cursorToPlayer(cursor);
@@ -112,7 +110,7 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 
 		List<Player> playerList = new ArrayList<Player>();
 
-		if (!cursor.moveToFirst()) {
+		if (cursor == null || cursor.getCount() == 0) {
 			return playerList;
 		}
 
@@ -129,11 +127,12 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		String strQuery = "SELECT *" + " FROM " + PLAYER_TABLE_NAME
 				+ " ORDER BY " + PLAYER_SCORE_TACTIC_MODE + " DESC";
 		Cursor cursor = sqLiteDatabase.rawQuery(strQuery, null);
-		if (!cursor.moveToFirst()) {
-			return null;
-		}
 
 		List<Player> playerList = new ArrayList<Player>();
+
+		if (cursor == null || cursor.getCount() == 0) {
+			return playerList;
+		}
 
 		while (cursor.moveToNext()) {
 			Player player = cursorToPlayer(cursor);
@@ -153,7 +152,7 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 
 		List<Player> playerList = new ArrayList<Player>();
 
-		if (!cursor.moveToFirst()) {
+		if (cursor == null || cursor.getCount() == 0) {
 			return playerList;
 		}
 

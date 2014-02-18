@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.widget.ImageView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.adapter.TabsPagerAdapter;
@@ -17,6 +18,8 @@ public class GameScoreActivity extends FragmentActivity implements TabListener {
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	private final String[] tabs = { "Mode Vitesse", "Mode Tactique" };
+
+	private ImageView button_return;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class GameScoreActivity extends FragmentActivity implements TabListener {
 			actionBar.addTab(actionBar.newTab().setText(tab_name)
 					.setTabListener(this));
 		}
+
 	}
 
 	@Override
@@ -81,5 +85,4 @@ public class GameScoreActivity extends FragmentActivity implements TabListener {
 		// TODO Auto-generated method stub
 
 	}
-
 }

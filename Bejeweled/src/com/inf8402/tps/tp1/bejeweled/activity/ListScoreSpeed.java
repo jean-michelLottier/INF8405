@@ -46,7 +46,8 @@ public class ListScoreSpeed extends Fragment {
 		} catch (BadInputParameterException e) {
 			topTenPlayers = new ArrayList<Player>();
 		}
-		System.out.println("is topTenPlayers empty? " + topTenPlayers.isEmpty());
+		System.out
+				.println("is topTenPlayers empty? " + topTenPlayers.isEmpty());
 		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers);
 
 		listView = (ListView) container.findViewById(R.id.listViewSpeed);

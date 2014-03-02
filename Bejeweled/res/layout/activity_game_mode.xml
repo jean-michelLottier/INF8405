@@ -80,7 +80,7 @@
     <TextView style="@style/divider" />
 
     <ImageView
-        android:id="@+id/boutonMode_score"
+        android:id="@+id/boutonMode_tactic"
         style="@style/boutonMenu"
         android:background="@drawable/bouton_mode_tactique" />
 

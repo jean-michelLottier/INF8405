@@ -2,6 +2,7 @@ package com.inf8402.tps.tp1.bejeweled.activity;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -34,6 +35,12 @@ public class GameModeActivity extends Activity {
 		button_return = (ImageView) findViewById(R.id.boutonMode_retour);
 		button_return.setOnClickListener(onClickListener);
 
+		button_speed = (ImageView) findViewById(R.id.boutonMode_vitesse);
+		button_speed.setOnClickListener(onClickListener);
+
+		button_tactic = (ImageView) findViewById(R.id.boutonMode_tactic);
+		button_tactic.setOnClickListener(onClickListener);
+
 	}
 
 	@Override
@@ -47,13 +54,24 @@ public class GameModeActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
+			Intent intent = null;
 			switch (v.getId()) {
 			case R.id.boutonMode_retour:
 				session = new SessionManager(getApplicationContext());
 				session.clearSession();
 				finish();
 				break;
-
+			case R.id.boutonMode_vitesse:
+				intent = new Intent(GameModeActivity.this, GameActivity.class);
+				intent.putExtra(GameActivity.KEY_SPEED_MODE, true);
+				intent.putExtra(GameActivity.KEY_TACTIC_MODE, false);
+				startActivity(intent);
+				break;
+			case R.id.boutonMode_tactic:
+				intent = new Intent(GameModeActivity.this, GameActivity.class);
+				intent.putExtra(GameActivity.KEY_TACTIC_MODE, true);
+				intent.putExtra(GameActivity.KEY_SPEED_MODE, false);
+				startActivity(intent);
 			default:
 				break;
 			}

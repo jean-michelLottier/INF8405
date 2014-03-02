@@ -31,14 +31,16 @@
             android:name="com.inf8402.tps.tp1.bejeweled.activity.GameScoreActivity"
             android:label="@string/title_activity_game_score" >
         </activity>
-        <!-- <activity -->
-        <!-- android:name="com.inf8402.tps.tp1.bejeweled.activity.ListScoreSpeed" -->
-        <!-- android:label="@string/title_activity_list_score_speed" > -->
-        <!-- </activity> -->
         <activity
             android:name="com.inf8402.tps.tp1.bejeweled.activity.GameActivity"
             android:label="@string/title_activity_game" >
         </activity>
+
+        <service
+            android:name="com.inf8402.tps.tp1.bejeweled.service.MediaService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="MediaService" />
     </application>
 
 </manifest>

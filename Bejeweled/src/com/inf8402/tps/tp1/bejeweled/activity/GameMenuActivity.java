@@ -1,7 +1,6 @@
 package com.inf8402.tps.tp1.bejeweled.activity;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,17 +9,22 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
+import com.inf8402.tps.tp1.bejeweled.service.MediaService;
 
 public class GameMenuActivity extends Activity {
 
 	private ImageView button_play = null;
 	private ImageView button_score = null;
 	private ImageView button_quit = null;
+	private Intent intentMediaService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_menu);
+
+		intentMediaService = new Intent(this, MediaService.class);
+		getApplicationContext().startService(intentMediaService);
 
 		button_score = (ImageView) findViewById(R.id.boutonMenu_score);
 		button_score.setOnClickListener(onClickListener);
@@ -57,11 +61,12 @@ public class GameMenuActivity extends Activity {
 				startActivity(intent);
 				break;
 			case R.id.boutonMenu_quitter:
-				DialogFragment dialog = new GameDialogFragment();
+				GameDialogFragment dialog = new GameDialogFragment();
 				Bundle args = new Bundle();
 				args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
 						GameDialogFragment.BOX_DIALOG_QUIT);
 				dialog.setArguments(args);
+				dialog.setIntentMediaService(intentMediaService);
 				dialog.show(getFragmentManager(), "GameDialogFragment");
 				break;
 			default:

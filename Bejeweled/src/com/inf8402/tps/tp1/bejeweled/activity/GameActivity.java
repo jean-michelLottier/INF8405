@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import com.inf8402.tps.tp1.bejeweled.R;
-import com.inf8402.tps.tp1.bejeweled.R.layout;
-import com.inf8402.tps.tp1.bejeweled.R.menu;
 import com.inf8402.tps.tp1.bejeweled.service.GameService;
 import com.inf8402.tps.tp1.bejeweled.service.IGameService;
 
@@ -20,6 +18,9 @@ import com.inf8402.tps.tp1.bejeweled.service.IGameService;
  */
 public class GameActivity extends Activity {
 
+	public static final String KEY_SPEED_MODE = "speed_mode";
+	public static final String KEY_TACTIC_MODE = "tactic_mode";
+	
 	private IGameService gameService;
 
 	public IGameService getGameService() {

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class GameDialogFragment extends DialogFragment {
 	private static final String PLAYER_INF_SELECT_MODE = "Sélectionnez un mode de jeu";
 
 	private IMenuService menuService;
+	private Intent intentMediaService;
 	private SessionManager session;
 
 	public IMenuService getMenuService() {
@@ -63,6 +65,14 @@ public class GameDialogFragment extends DialogFragment {
 
 	public void setMenuService(IMenuService menuService) {
 		this.menuService = menuService;
+	}
+
+	public Intent getIntentMediaService() {
+		return intentMediaService;
+	}
+
+	public void setIntentMediaService(Intent intentMediaService) {
+		this.intentMediaService = intentMediaService;
 	}
 
 	/**
@@ -123,6 +133,8 @@ public class GameDialogFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
+						getActivity().stopService(getIntentMediaService());
+
 						getActivity().finish();
 					}
 				});

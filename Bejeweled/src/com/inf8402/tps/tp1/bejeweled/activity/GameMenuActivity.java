@@ -1,39 +1,45 @@
 package com.inf8402.tps.tp1.bejeweled.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.service.MediaService;
+import com.inf8402.tps.tp1.bejeweled.service.MenuService;
 
-public class GameMenuActivity extends Activity {
+public class GameMenuActivity extends IActivity {
 
-	private ImageView button_play = null;
-	private ImageView button_score = null;
-	private ImageView button_quit = null;
+	/*
+	 * private ImageView button_play = null; private ImageView button_score =
+	 * null; private ImageView button_quit = null;
+	 */
+
+	private LinearLayout buttons = null;
 	private Intent intentMediaService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_menu);
+		menuService = new MenuService(this);
+		/*
+		 * button_score = (ImageView) findViewById(R.id.boutonMenu_score);
+		 * button_score.setOnClickListener(onClickListener);
+		 * 
+		 * button_play = (ImageView) findViewById(R.id.boutonMenu_jouer);
+		 * button_play.setOnClickListener(onClickListener);
+		 * 
+		 * button_quit = (ImageView) findViewById(R.id.boutonMenu_quitter);
+		 * button_quit.setOnClickListener(onClickListener);
+		 */
+		buttons = (LinearLayout) findViewById(R.id.menuButtonsLayout);
+		buttons.setOnTouchListener(multipleButtonsListener);
 
 		intentMediaService = new Intent(this, MediaService.class);
 		getApplicationContext().startService(intentMediaService);
 
-		button_score = (ImageView) findViewById(R.id.boutonMenu_score);
-		button_score.setOnClickListener(onClickListener);
-
-		button_play = (ImageView) findViewById(R.id.boutonMenu_jouer);
-		button_play.setOnClickListener(onClickListener);
-
-		button_quit = (ImageView) findViewById(R.id.boutonMenu_quitter);
-		button_quit.setOnClickListener(onClickListener);
 	}
 
 	@Override
@@ -43,36 +49,23 @@ public class GameMenuActivity extends Activity {
 		return true;
 	}
 
-	private final OnClickListener onClickListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			Intent intent = null;
-			switch (v.getId()) {
-			case R.id.boutonMenu_score:
-				intent = new Intent(GameMenuActivity.this,
-						GameScoreActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.boutonMenu_jouer:
-				intent = new Intent(GameMenuActivity.this,
-						GameModeActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.boutonMenu_quitter:
-				GameDialogFragment dialog = new GameDialogFragment();
-				Bundle args = new Bundle();
-				args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
-						GameDialogFragment.BOX_DIALOG_QUIT);
-				dialog.setArguments(args);
-				dialog.setIntentMediaService(intentMediaService);
-				dialog.show(getFragmentManager(), "GameDialogFragment");
-				break;
-			default:
-				break;
-			}
+	@Override
+	void buttonManager(int id) {
+		// TODO Auto-generated method stub
+		switch (id) {
+		case R.id.boutonMenu_score:
+			menuService.goListScores();
+			break;
+		case R.id.boutonMenu_jouer:
+			menuService.goPlayGame();
+			break;
+		case R.id.boutonMenu_quitter:
+			menuService.goQuit(intentMediaService);
+			break;
+		default:
+			break;
 		}
-	};
+		
+	}
 
 }

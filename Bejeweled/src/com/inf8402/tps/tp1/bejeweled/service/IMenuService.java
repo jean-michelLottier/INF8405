@@ -2,6 +2,8 @@ package com.inf8402.tps.tp1.bejeweled.service;
 
 import java.util.List;
 
+import android.content.Intent;
+
 import com.inf8402.tps.tp1.bejeweled.dao.Player;
 import com.inf8402.tps.tp1.bejeweled.exception.BadInputParameterException;
 
@@ -35,4 +37,23 @@ public interface IMenuService {
 	 */
 	public Player startPlayerSession(String pseudo)
 			throws BadInputParameterException;
+
+	public void goQuit(Intent intent);
+
+	public void goPlayGame();
+
+	public void goSpeedGame();
+
+	public void goTacticalGame();
+
+	public void goListScores();
+
+	public void goBackFromMode();
+
+	public void goBackFromScore();
+
+	public void initSession();
+
+	public void quitSession();
+
 }

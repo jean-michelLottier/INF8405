@@ -58,7 +58,7 @@ public class GameDialogFragment extends DialogFragment {
 
 	public IMenuService getMenuService() {
 		if (menuService == null) {
-			menuService = new MenuService(getActivity().getApplicationContext());
+			menuService = new MenuService(getActivity());
 		}
 		return menuService;
 	}

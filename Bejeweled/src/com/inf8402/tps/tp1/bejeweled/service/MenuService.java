@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.inf8402.tps.tp1.bejeweled.activity.GameActivity;
 import com.inf8402.tps.tp1.bejeweled.activity.GameDialogFragment;
 import com.inf8402.tps.tp1.bejeweled.activity.GameModeActivity;
 import com.inf8402.tps.tp1.bejeweled.activity.GameScoreActivity;
@@ -24,7 +25,7 @@ public class MenuService implements IMenuService {
 	private Intent intent = null;
 	public static SessionManager session;
 	public FragmentActivity activity;
-	
+
 	public MenuService(Context context) {
 		this.context = context;
 		activity = (FragmentActivity) context;
@@ -81,22 +82,19 @@ public class MenuService implements IMenuService {
 
 		return player;
 	}
-	
+
 	@Override
-	public void initSession()
-	{
-		 session = new SessionManager(context);
+	public void initSession() {
+		session = new SessionManager(context);
 	}
-	
+
 	@Override
-	public void quitSession()
-	{
+	public void quitSession() {
 		session.clearSession();
 	}
-	
+
 	@Override
-	public void goQuit(Intent intent)
-	{
+	public void goQuit(Intent intent) {
 		GameDialogFragment dialog = new GameDialogFragment();
 		Bundle args = new Bundle();
 		args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
@@ -105,43 +103,40 @@ public class MenuService implements IMenuService {
 		dialog.setIntentMediaService(intent);
 		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
 	}
-	
+
 	@Override
-	public void goListScores()
-	{
-		intent = new Intent(context,
-				GameScoreActivity.class);
+	public void goListScores() {
+		intent = new Intent(context, GameScoreActivity.class);
 		context.startActivity(intent);
 	}
+
 	@Override
-	public void goPlayGame()
-	{
-		intent = new Intent(context,
-				GameModeActivity.class);
+	public void goPlayGame() {
+		intent = new Intent(context, GameModeActivity.class);
 		context.startActivity(intent);
 	}
-	
+
 	@Override
-	public void goBackFromMode()
-	{
+	public void goBackFromMode() {
 		activity.finish();
 	}
-	
+
 	@Override
-	public void goBackFromScore()
-	{
+	public void goBackFromScore() {
 		activity.finish();
 	}
 
 	@Override
 	public void goSpeedGame() {
-		// TODO Auto-generated method stub
-		
+		intent = new Intent(context, GameActivity.class);
+		intent.putExtra(GameActivity.KEY_SPEED_MODE, true);
+		context.startActivity(intent);
 	}
 
 	@Override
 	public void goTacticalGame() {
-		// TODO Auto-generated method stub
-		
+		intent = new Intent(context, GameActivity.class);
+		intent.putExtra(GameActivity.KEY_TACTIC_MODE, true);
+		context.startActivity(intent);
 	}
 }

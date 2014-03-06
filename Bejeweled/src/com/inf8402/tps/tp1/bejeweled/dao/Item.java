@@ -7,7 +7,17 @@ import android.support.v4.util.ArrayMap;
 public class Item {
 	private int itemID;
 	private ArrayList<Integer> coordinate;
-	private ArrayMap<String, ArrayList<Integer>> neighbours;
+	private ArrayMap<String, ArrayList<Integer>> neighbors;
+
+	public Item() {
+
+	}
+
+	public Item(Item item) {
+		this.itemID = item.getItemID();
+		this.coordinate = item.getCoordinate();
+		this.neighbors = item.getNeighbors();
+	}
 
 	public Item(int itemID) {
 		this.itemID = itemID;
@@ -34,12 +44,12 @@ public class Item {
 		this.coordinate = coordinate;
 	}
 
-	public ArrayMap<String, ArrayList<Integer>> getNeighbours() {
-		return neighbours;
+	public ArrayMap<String, ArrayList<Integer>> getNeighbors() {
+		return neighbors;
 	}
 
-	public void setNeighbours(ArrayMap<String, ArrayList<Integer>> neighbours) {
-		this.neighbours = neighbours;
+	public void setNeighbors(ArrayMap<String, ArrayList<Integer>> neighbors) {
+		this.neighbors = neighbors;
 	}
 
 }

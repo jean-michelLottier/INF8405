@@ -1,5 +1,7 @@
 package com.inf8402.tps.tp1.bejeweled.adapter;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +14,17 @@ import com.inf8402.tps.tp1.bejeweled.dao.Item;
 public class GridAdapter extends BaseAdapter {
 
 	private final Context context;
-	private final Item[] items;
+	// private Item[] items = null;
+	private ArrayList<Item> items = null;
 
-	public GridAdapter(Context context, Item[] items) {
+	public GridAdapter(Context context, ArrayList<Item> items) {
 		this.context = context;
 		this.items = items;
 	}
 
 	@Override
 	public int getCount() {
-		return items.length;
+		return items.size();
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class GridAdapter extends BaseAdapter {
 		} else {
 			imageView = (ImageView) convertView;
 		}
-		imageView.setImageResource(items[position].getItemID());
+		imageView.setImageResource(items.get(position).getItemID());
 		return imageView;
 	}
 

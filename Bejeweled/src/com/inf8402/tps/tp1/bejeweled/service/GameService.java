@@ -10,12 +10,6 @@ import com.inf8402.tps.tp1.bejeweled.dao.Item;
 
 public class GameService implements IGameService {
 
-	private static final int X = 0;
-	private static final int Y = 1;
-	private static final String NORTH = "north";
-	private static final String SOUTH = "south";
-	private static final String EAST = "east";
-	private static final String WEST = "west";
 	private static final int GRID_LENGTH = 64;
 
 	private static final ArrayList<Integer> itemsID;
@@ -44,44 +38,107 @@ public class GameService implements IGameService {
 		}
 
 		for (Item current : items) {
-			ArrayList<Integer> coordinate = (ArrayList<Integer>) current
-					.getCoordinate().clone();
-			ArrayMap<String, ArrayList<Integer>> neighbours = new ArrayMap<String, ArrayList<Integer>>();
-			int x = coordinate.get(X);
-			int y = coordinate.get(Y);
-			// NORTH
-			if (y != 0) {
-				coordinate.add(Y, y - 1);
-			} else {
-				coordinate.add(Y, -1);
-			}
-			neighbours.put(NORTH, coordinate);
-			// SOUTH
-			if (y != 7) {
-				coordinate.add(Y, y + 1);
-			} else {
-				coordinate.add(Y, -1);
-			}
-			neighbours.put(SOUTH, coordinate);
-			coordinate.add(Y, y);
-			// EAST
-			if (x != 7) {
-				coordinate.add(X, x + 1);
-			} else {
-				coordinate.add(X, -1);
-			}
-			neighbours.put(EAST, coordinate);
-			// WEST
-			if (x != 0) {
-				coordinate.add(X, x - 1);
-			} else {
-				coordinate.add(X, -1);
-			}
-			neighbours.put(WEST, coordinate);
-
-			current.setNeighbours(neighbours);
+			current = fillNeighborsMap(current);
 		}
 
 		return items;
+	}
+
+	@Override
+	public ArrayList<Integer> generateAffineFunction(int xa, int ya, int xb,
+			int yb) {
+		ArrayList<Integer> coefficients = new ArrayList<Integer>();
+		int a = (yb - ya) / (xb - xa);
+		int b = (xb * ya - xa * yb) / (xb - xa);
+		coefficients.add(a);
+		coefficients.add(b);
+
+		return coefficients;
+	}
+
+	@Override
+	public ArrayList<Item> moveItem(ArrayList<Item> items, Item item,
+			String direction) {
+		if (item == null || direction == null || direction.isEmpty()) {
+			return items;
+		}
+
+		int positionItem1 = translateCoordByPosition(item.getCoordinate());
+		int positionItem2 = translateCoordByPosition(item.getNeighbors().get(
+				direction));
+
+		Item item1 = new Item(items.get(positionItem1));
+		Item item2 = new Item(items.get(positionItem2));
+
+		item1.setCoordinate(item2.getCoordinate());
+		item1 = fillNeighborsMap(item1);
+		item2.setCoordinate(item.getCoordinate());
+		item2 = fillNeighborsMap(item2);
+
+		items.set(positionItem1, item2);
+		items.set(positionItem2, item1);
+
+		return items;
+	}
+
+	/**
+	 * <p>
+	 * This method find and insert neighbors' item put in input parameter.
+	 * </p>
+	 * 
+	 * @param item
+	 * @return
+	 */
+	private Item fillNeighborsMap(Item item) {
+		ArrayList<Integer> coordinate = (ArrayList<Integer>) item
+				.getCoordinate().clone();
+		ArrayMap<String, ArrayList<Integer>> neighbors = new ArrayMap<String, ArrayList<Integer>>();
+		int x = coordinate.get(X);
+		int y = coordinate.get(Y);
+		// NORTH
+		coordinate = new ArrayList<Integer>();
+		coordinate.add(x);
+		if (y != 0) {
+			coordinate.add(y - 1);
+		} else {
+			coordinate.add(-1);
+		}
+		neighbors.put(NORTH, coordinate);
+		// SOUTH
+		coordinate = new ArrayList<Integer>();
+		coordinate.add(x);
+		if (y != 7) {
+			coordinate.add(y + 1);
+		} else {
+			coordinate.add(-1);
+		}
+		neighbors.put(SOUTH, coordinate);
+		// coordinate.add(Y, y);
+		// EAST
+		coordinate = new ArrayList<Integer>();
+		if (x != 7) {
+			coordinate.add(x + 1);
+		} else {
+			coordinate.add(-1);
+		}
+		coordinate.add(y);
+		neighbors.put(EAST, coordinate);
+		// WEST
+		coordinate = new ArrayList<Integer>();
+		if (x != 0) {
+			coordinate.add(x - 1);
+		} else {
+			coordinate.add(-1);
+		}
+		coordinate.add(y);
+		neighbors.put(WEST, coordinate);
+
+		item.setNeighbors(neighbors);
+
+		return item;
+	}
+
+	private int translateCoordByPosition(ArrayList<Integer> coordinate) {
+		return (coordinate.get(Y) * 8 + coordinate.get(X));
 	}
 }

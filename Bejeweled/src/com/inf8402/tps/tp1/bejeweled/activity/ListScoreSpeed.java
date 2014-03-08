@@ -22,39 +22,39 @@ public class ListScoreSpeed extends Fragment {
 	private ListView listView;
 	private PlayerAdapter playerAdapter;
 	private IMenuService menuService;
-
-	public IMenuService getMenuService() {
+	/*public IMenuService getMenuService() {
 		if (menuService == null) {
-			menuService = new MenuService(getActivity().getApplicationContext());
+			menuService = new MenuService(getActivity());
 		}
 		return menuService;
 	}
 
 	public void setMenuService(IMenuService menuService) {
 		this.menuService = menuService;
-	}
+	}*/
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		List<Player> topTenPlayers = new ArrayList<Player>();
-		try {
-			menuService = getMenuService();
-			topTenPlayers = menuService
-					.getTopTenPlayers(menuService.SPEED_MODE);
-		} catch (BadInputParameterException e) {
-			topTenPlayers = new ArrayList<Player>();
-		}
-		System.out
-				.println("is topTenPlayers empty? " + topTenPlayers.isEmpty());
-		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers);
-
-		listView = (ListView) container.findViewById(R.id.listViewSpeed);
-		listView.setAdapter(playerAdapter);
-
 		View rootView = inflater.inflate(R.layout.score_category_speed,
 				container, false);
+		listView = (ListView) rootView.findViewById(R.id.listViewSpeed);
+		
+		List<Player> topTenPlayers = new ArrayList<Player>();
+		try {
+			menuService = new MenuService(getActivity());
+			topTenPlayers = menuService
+					.getTopTenPlayers(IMenuService.SPEED_MODE);
+		} catch (BadInputParameterException e) {
+			topTenPlayers = new ArrayList<Player>();
+			
+		}
+		/*topTenPlayers = new ArrayList<Player>();
+		topTenPlayers.add(new Player("Bob",216,331));*/
+		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers,IMenuService.SPEED_MODE);
+		
+		listView.setAdapter(playerAdapter);
 		return rootView;
 	}
 

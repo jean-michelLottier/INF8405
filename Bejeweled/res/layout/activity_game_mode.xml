@@ -68,27 +68,35 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </FrameLayout>
 
-    <TextView style="@style/divider" />
-
-    <TextView style="@style/divider" />
-
-    <ImageView
-        android:id="@+id/boutonMode_vitesse"
-        style="@style/boutonMenu"
-        android:background="@drawable/bouton_mode_vitesse" />
-
-    <TextView style="@style/divider" />
-
-    <ImageView
-        android:id="@+id/boutonMode_tactic"
-        style="@style/boutonMenu"
-        android:background="@drawable/bouton_mode_tactique" />
-
-    <TextView style="@style/divider" />
-
-    <ImageView
-        android:id="@+id/boutonMode_retour"
-        style="@style/boutonMenu"
-        android:background="@drawable/bouton_retour" />
-
+    <LinearLayout
+        android:id="@+id/modeButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+	    android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical" >
+			"
+	    <TextView style="@style/divider" />
+	
+	    <TextView style="@style/divider" />
+	
+	    <ImageView
+	        android:id="@+id/boutonMode_vitesse"
+	        style="@style/boutonMenu"
+	        android:background="@drawable/bouton_mode_vitesse" />
+	
+	    <TextView style="@style/divider" />
+	
+	    <ImageView
+	        android:id="@+id/boutonMode_tactique"
+	        style="@style/boutonMenu"
+	        android:background="@drawable/bouton_mode_tactique" />
+	
+	    <TextView style="@style/divider" />
+	
+	    <ImageView
+	        android:id="@+id/boutonMode_retour"
+	        style="@style/boutonMenu"
+	        android:background="@drawable/bouton_retour" />
+	</LinearLayout>
 </LinearLayout>

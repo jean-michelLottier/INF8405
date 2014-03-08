@@ -1,8 +1,25 @@
-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:gravity="center"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:id="@+id/score_linear_background"
+	    android:background="@drawable/background" >
+	    
+    <android.support.v4.view.ViewPager
+	    android:id="@+id/pager"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight="0.4"
+	    android:background="@drawable/background_liste_score" >"
 
-    <include layout="@layout/score_category_speed"/>
-    <include layout="@layout/score_category_tactic"/>
-</android.support.v4.view.ViewPager>
+	</android.support.v4.view.ViewPager>
+	
+    <TextView style="@style/divider" />
+    
+	<ImageView
+			android:id="@+id/boutonScore_retour"
+			style="@style/boutonMenu"
+			android:background="@drawable/bouton_retour" />
+
+</LinearLayout>

@@ -2,43 +2,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:gravity="center"
+    android:background="@drawable/background_ecran_titre"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:id="@+id/menuFullLayout"
     tools:context=".GameMenuActivity" >
-    
+	        
     <ImageView
         android:id="@+id/imageTitre"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="-10dp"
-        android:src="@drawable/ecran_titre"
-        android:adjustViewBounds="true"
-        android:layout_weight="1" />
-
-	<TextView style="@style/divider" />
-	<TextView style="@style/divider" />
+        android:background="@drawable/logo_ecran_titre"
+        android:layout_marginLeft="@dimen/image_menu_margin"
+        android:layout_marginRight="@dimen/image_menu_margin"
+        android:layout_marginTop="10dp"
+    	android:layout_weight="1" />
+	    
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight="2"
+	    android:gravity="center"
+	    android:orientation="vertical"
+	    android:id="@+id/menuButtonsLayout" >
+	    
+		<TextView style="@style/divider" />
+		<TextView style="@style/divider" />
+		
+		<ImageView
+			android:id="@+id/boutonMenu_jouer"
+			style="@style/boutonMenu"
+			android:background="@drawable/bouton_jouer" />
+		
+		<TextView style="@style/divider" />
+		
+		<ImageView
+			android:id="@+id/boutonMenu_score"
+			style="@style/boutonMenu"
+			android:background="@drawable/bouton_score" />
+		
+		<TextView style="@style/divider" />
+		
+		<ImageView
+			android:id="@+id/boutonMenu_quitter"
+			style="@style/boutonMenu"
+			android:background="@drawable/bouton_quitter" />
+		
+	</LinearLayout>
 	
-	<ImageView
-		android:id="@+id/boutonMenu_jouer"
-		style="@style/boutonMenu"
-		android:background="@drawable/bouton_jouer" />
-	
-	<TextView style="@style/divider" />
-	
-	<ImageView
-		android:id="@+id/boutonMenu_score"
-		style="@style/boutonMenu"
-		android:background="@drawable/bouton_score" />
-	
-	<TextView style="@style/divider" />
-	
-	<ImageView
-		android:id="@+id/boutonMenu_quitter"
-		style="@style/boutonMenu"
-		android:background="@drawable/bouton_quitter" />
-
 </LinearLayout>

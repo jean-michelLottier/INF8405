@@ -8,8 +8,8 @@ import com.inf8402.tps.tp1.bejeweled.dao.Player;
 import com.inf8402.tps.tp1.bejeweled.exception.BadInputParameterException;
 
 public interface IMenuService {
-	public static final String SPEED_MODE = "speed_mode";
-	public static final String TACTIC_MODE = "tactic_mode";
+	public static final int SPEED_MODE = 1;
+	public static final int TACTIC_MODE = 2;
 
 	/**
 	 * <p>
@@ -21,7 +21,7 @@ public interface IMenuService {
 	 * @return return a list of players otherwise empty list
 	 * @throws BadInputParameterException
 	 */
-	public List<Player> getTopTenPlayers(String typeMode)
+	public List<Player> getTopTenPlayers(int mode)
 			throws BadInputParameterException;
 
 	/**
@@ -37,23 +37,24 @@ public interface IMenuService {
 	 */
 	public Player startPlayerSession(String pseudo)
 			throws BadInputParameterException;
-
+	
 	public void goQuit(Intent intent);
-
+	
 	public void goPlayGame();
-
-	public void goSpeedGame();
-
-	public void goTacticalGame();
-
+	
+	public void goSpeedMode();
+	
+	public void goTacticMode();
+	
 	public void goListScores();
-
+	
 	public void goBackFromMode();
-
+	
 	public void goBackFromScore();
-
+	
 	public void initSession();
-
+	
 	public void quitSession();
-
+	
+	
 }

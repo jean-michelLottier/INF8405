@@ -1,30 +1,26 @@
 package com.inf8402.tps.tp1.bejeweled.activity;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.inf8402.tps.tp1.bejeweled.R;
-import com.inf8402.tps.tp1.bejeweled.dao.SessionManager;
+import com.inf8402.tps.tp1.bejeweled.service.MenuService;
 
-public class GameModeActivity extends Activity {
+public class GameModeActivity extends IActivity {
 
-	private ImageView button_speed;
-	private ImageView button_tactic;
 	private ImageView button_return;
 
-	private SessionManager session;
-
+	private LinearLayout buttons;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game_mode);
 
+		menuService = new MenuService(this);
+		setContentView(R.layout.activity_game_mode);
 		DialogFragment dialog = new GameDialogFragment();
 		Bundle args = new Bundle();
 		args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
@@ -32,14 +28,11 @@ public class GameModeActivity extends Activity {
 		dialog.setArguments(args);
 		dialog.show(getFragmentManager(), "GameDialogFragment");
 
+		buttons = (LinearLayout) findViewById(R.id.modeButtonsLayout);
+		buttons.setOnTouchListener(multipleButtonsListener);
+
 		button_return = (ImageView) findViewById(R.id.boutonMode_retour);
-		button_return.setOnClickListener(onClickListener);
-
-		button_speed = (ImageView) findViewById(R.id.boutonMode_vitesse);
-		button_speed.setOnClickListener(onClickListener);
-
-		button_tactic = (ImageView) findViewById(R.id.boutonMode_tactic);
-		button_tactic.setOnClickListener(onClickListener);
+		button_return.setOnTouchListener(singleButtonListener);
 
 	}
 
@@ -50,32 +43,24 @@ public class GameModeActivity extends Activity {
 		return true;
 	}
 
-	private final OnClickListener onClickListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			Intent intent = null;
-			switch (v.getId()) {
-			case R.id.boutonMode_retour:
-				session = new SessionManager(getApplicationContext());
-				session.clearSession();
-				finish();
-				break;
-			case R.id.boutonMode_vitesse:
-				intent = new Intent(GameModeActivity.this, GameActivity.class);
-				intent.putExtra(GameActivity.KEY_SPEED_MODE, true);
-				intent.putExtra(GameActivity.KEY_TACTIC_MODE, false);
-				startActivity(intent);
-				break;
-			case R.id.boutonMode_tactic:
-				intent = new Intent(GameModeActivity.this, GameActivity.class);
-				intent.putExtra(GameActivity.KEY_TACTIC_MODE, true);
-				intent.putExtra(GameActivity.KEY_SPEED_MODE, false);
-				startActivity(intent);
-			default:
-				break;
-			}
+	@Override
+	void buttonManager(int id) {
+		// TODO Auto-generated method stub
+		switch (id) {
+		case R.id.boutonMode_vitesse:
+			menuService.goSpeedMode();
+			break;
+		case R.id.boutonMode_tactique:
+			menuService.goTacticMode();
+			break;
+		case R.id.boutonMode_retour:
+			menuService.initSession();
+			menuService.quitSession();
+			menuService.goBackFromMode();
+			break;
+		default:
+			break;
 		}
-	};
+	}
 
 }

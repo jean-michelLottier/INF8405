@@ -3,12 +3,14 @@ package com.inf8402.tps.tp1.bejeweled.activity;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.adapter.GridAdapter;
@@ -29,6 +31,16 @@ public class GameActivity extends Activity {
 	public static final String KEY_SPEED_MODE = "speed_mode";
 	public static final String KEY_TACTIC_MODE = "tactic_mode";
 
+	private TextView chrono;
+	private TextView restant;
+	private TextView nbrRestant;
+	private TextView chaines;
+	private TextView score;
+	private TextView points;
+	private TextView bonus;
+	
+	
+	
 	private IGameService gameService;
 	private ArrayList<Item> items;
 	private GridAdapter gridAdapter;
@@ -51,6 +63,29 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 
+		chrono = (TextView) findViewById(R.id.Game_txtchrono);
+		restant = (TextView) findViewById(R.id.Game_coupsRestants);
+		nbrRestant = (TextView) findViewById(R.id.Game_nbrCoupsRestants);
+		chaines = (TextView) findViewById(R.id.Game_nbrChaines);
+		score = (TextView) findViewById(R.id.Game_score);
+		points = (TextView) findViewById(R.id.Game_points);
+		bonus = (TextView) findViewById(R.id.Game_bonus);
+		
+		Typeface flipbash = Typeface.createFromAsset(getAssets(), "fonts/Flipbash.ttf");
+		Typeface geminacad = Typeface.createFromAsset(getAssets(), "fonts/gemina2acad.ttf");
+		Typeface gemina = Typeface.createFromAsset(getAssets(), "fonts/gemina2.ttf");
+		Typeface tron = Typeface.createFromAsset(getAssets(), "fonts/Tr2n.ttf");
+		
+		chrono.setTypeface(geminacad);
+		chaines.setTypeface(geminacad);
+		restant.setTypeface(gemina);
+		nbrRestant.setTypeface(gemina);
+		score.setTypeface(flipbash);
+		points.setTypeface(tron);
+		bonus.setTypeface(tron);
+		
+		bonus.setTextSize((float)(points.getTextSize()/1.5));
+		
 		gameService = getGameService();
 		items = gameService.initGrid();
 

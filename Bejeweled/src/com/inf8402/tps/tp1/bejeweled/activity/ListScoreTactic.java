@@ -23,35 +23,42 @@ public class ListScoreTactic extends Fragment {
 	private PlayerAdapter playerAdapter;
 	private IMenuService menuService;
 
-	public IMenuService getMenuService() {
+	/*public IMenuService getMenuService() {
 		if (menuService == null) {
-			menuService = new MenuService(getActivity().getApplicationContext());
+			menuService = new MenuService(getActivity());
 		}
 		return menuService;
 	}
 
 	public void setMenuService(IMenuService menuService) {
 		this.menuService = menuService;
-	}
+	}*/
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		List<Player> topTenPlayers = new ArrayList<Player>();
-		try {
-			menuService = getMenuService();
-			topTenPlayers = menuService
-					.getTopTenPlayers(menuService.TACTIC_MODE);
-		} catch (BadInputParameterException e) {
-			topTenPlayers = new ArrayList<Player>();
-		}
-		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers);
-
-		listView = (ListView) container.findViewById(R.id.listViewTactic);
-		listView.setAdapter(playerAdapter);
 
 		View rootView = inflater.inflate(R.layout.score_category_tactic,
 				container, false);
+		listView = (ListView) rootView.findViewById(R.id.listViewTactic);
+		
+		List<Player> topTenPlayers = new ArrayList<Player>();
+		try {
+			menuService = new MenuService(getActivity());
+			topTenPlayers = menuService
+					.getTopTenPlayers(IMenuService.TACTIC_MODE);
+		} catch (BadInputParameterException e) {
+			topTenPlayers = new ArrayList<Player>();
+			
+		}
+
+		topTenPlayers = new ArrayList<Player>();
+		topTenPlayers.add(new Player("Bob",216,331));
+		topTenPlayers.add(new Player("Brian",157,310));
+		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers, IMenuService.TACTIC_MODE);
+
+		listView.setAdapter(playerAdapter);
+		
 		return rootView;
 	}
 

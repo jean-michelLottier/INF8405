@@ -28,7 +28,7 @@ public class SessionManager {
 		editor.putInt(KEY_ID, player.getPlayerID());
 		editor.putString(KEY_PSEUDO, player.getPseudo());
 		editor.putInt(KEY_SCORE_SPEED_MODE, player.getScoreSpeedMode());
-		editor.putInt(KEY_SCORE_TACTIC_MODE, player.getScoreTacticMode());
+		editor.putInt(KEY_SCORE_TACTIC_MODE, player.getScoreTacticalMode());
 
 		editor.commit();
 	}
@@ -55,7 +55,7 @@ public class SessionManager {
 		player.setPlayerID(this.getPlayerID());
 		player.setPseudo(this.getPlayerPseudo());
 		player.setScoreSpeedMode(this.getPlayerScoreSpeedMode());
-		player.setScoreTacticMode(this.getPlayerScoreTacticMode());
+		player.setScoreTacticalMode(this.getPlayerScoreTacticMode());
 
 		return player;
 	}

@@ -5,33 +5,49 @@ import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.widget.ImageView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.adapter.TabsPagerAdapter;
+import com.inf8402.tps.tp1.bejeweled.service.MenuService;
 
-public class GameScoreActivity extends FragmentActivity implements TabListener {
+public class GameScoreActivity extends IActivity implements TabListener {
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
+	private OnPageChangeListener onPageChange;
 	private final String[] tabs = { "Mode Vitesse", "Mode Tactique" };
-
 	private ImageView button_return;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game_score);
 
+		setContentView(R.layout.activity_game_score);
+		
 		viewPager = (ViewPager) findViewById(R.id.pager);
+		menuService = new MenuService(this);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 		viewPager.setAdapter(mAdapter);
-		actionBar.setNavigationMode(actionBar.NAVIGATION_MODE_TABS);
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
+		button_return = (ImageView) findViewById(R.id.boutonScore_retour);
+		button_return.setOnTouchListener(singleButtonListener);
+		
+		
+
+		
+		for (String tab_name : tabs) {
+			actionBar.addTab(actionBar.newTab().setText(tab_name)
+					.setTabListener(this));
+		}
+		
+		onPageChange = new ViewPager.OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
@@ -51,12 +67,10 @@ public class GameScoreActivity extends FragmentActivity implements TabListener {
 				// TODO Auto-generated method stub
 
 			}
-		});
+		};
+		
 
-		for (String tab_name : tabs) {
-			actionBar.addTab(actionBar.newTab().setText(tab_name)
-					.setTabListener(this));
-		}
+		viewPager.setOnPageChangeListener(onPageChange);
 
 	}
 
@@ -85,4 +99,18 @@ public class GameScoreActivity extends FragmentActivity implements TabListener {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	void buttonManager(int id) {
+		// TODO Auto-generated method stub
+		switch (id) {
+		case R.id.boutonScore_retour:
+			menuService.goBackFromScore();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	
 }

@@ -39,7 +39,7 @@ public class GameDialogFragment extends DialogFragment {
 
 	// Box dialog contents
 	private static final String BOX_DIALOG_QUIT_TITLE = "Bejeweled - Quitter";
-	private static final String BOX_DIALOG_QUIT_MESSAGE = "Êtes-vous sûr de vouloir quitter l'application?";
+	private static final String BOX_DIALOG_QUIT_MESSAGE = "Etes-vous sur de vouloir quitter l'application?";
 	private static final String BOX_DIALOG_BUTTON_YES = "OUI";
 	private static final String BOX_DIALOG_BUTTON_NO = "NON";
 
@@ -50,7 +50,7 @@ public class GameDialogFragment extends DialogFragment {
 	private static final String PLAYER_INF_SCORE_TITLE = "Vos scores :";
 	private static final String PLAYER_INF_SPEED_SCORE = "Vitesse : ";
 	private static final String PLAYER_INF_TACTIC_SCORE = "Tactique : ";
-	private static final String PLAYER_INF_SELECT_MODE = "Sélectionnez un mode de jeu";
+	private static final String PLAYER_INF_SELECT_MODE = "Selectionnez un mode de jeu";
 
 	private IMenuService menuService;
 	private Intent intentMediaService;

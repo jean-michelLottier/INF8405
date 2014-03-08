@@ -12,32 +12,32 @@ public class Player {
 	private int playerID;
 	private String pseudo;
 	private int scoreSpeedMode;
-	private int scoreTacticMode;
+	private int scoreTacticalMode;
 	private int rank;
 
 	public Player() {
 
 	}
 
-	public Player(String pseudo, int scoreSpeedMode, int scoreTacticMode) {
+	public Player(String pseudo, int scoreSpeedMode, int scoreTacticalMode) {
 		this.pseudo = pseudo;
 		this.scoreSpeedMode = scoreSpeedMode;
-		this.scoreTacticMode = scoreTacticMode;
+		this.scoreTacticalMode = scoreTacticalMode;
 	}
 
-	public Player(int id, String pseudo, int scoreSpeedMode, int scoreTacticMode) {
+	public Player(int id, String pseudo, int scoreSpeedMode, int scoreTacticalMode) {
 		this.playerID = id;
 		this.pseudo = pseudo;
 		this.scoreSpeedMode = scoreSpeedMode;
-		this.scoreTacticMode = scoreTacticMode;
+		this.scoreTacticalMode = scoreTacticalMode;
 	}
 
 	public Player(int id, String pseudo, int scoreSpeedMode,
-			int scoreTacticMode, int rank) {
+			int scoreTacticalMode, int rank) {
 		this.playerID = id;
 		this.pseudo = pseudo;
 		this.scoreSpeedMode = scoreSpeedMode;
-		this.scoreTacticMode = scoreTacticMode;
+		this.scoreTacticalMode = scoreTacticalMode;
 		this.rank = rank;
 	}
 
@@ -65,12 +65,12 @@ public class Player {
 		this.scoreSpeedMode = scoreSpeedMode;
 	}
 
-	public int getScoreTacticMode() {
-		return scoreTacticMode;
+	public int getScoreTacticalMode() {
+		return scoreTacticalMode;
 	}
 
-	public void setScoreTacticMode(int scoreTacticMode) {
-		this.scoreTacticMode = scoreTacticMode;
+	public void setScoreTacticalMode(int scoreTacticalMode) {
+		this.scoreTacticalMode = scoreTacticalMode;
 	}
 
 	public int getRank() {
@@ -80,4 +80,5 @@ public class Player {
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
+	
 }

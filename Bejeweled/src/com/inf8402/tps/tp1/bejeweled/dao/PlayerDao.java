@@ -34,7 +34,7 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		contentValues.put(PLAYER_PSEUDO, player.getPseudo());
 		contentValues.put(PLAYER_SCORE_SPEED_MODE, player.getScoreSpeedMode());
 		contentValues
-				.put(PLAYER_SCORE_TACTIC_MODE, player.getScoreTacticMode());
+				.put(PLAYER_SCORE_TACTIC_MODE, player.getScoreTacticalMode());
 		sqLiteDatabase.insert(PLAYER_TABLE_NAME, null, contentValues);
 	}
 
@@ -75,7 +75,7 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		System.out.println("ID: " + player.getPlayerID() + ", pseudo: "
 				+ player.getPseudo() + ", score SM: "
 				+ player.getScoreSpeedMode() + ", score TM: "
-				+ player.getScoreTacticMode());
+				+ player.getScoreTacticalMode());
 
 		return player;
 	}
@@ -177,9 +177,9 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		}
 
 		if (cursor.getColumnIndex(PLAYER_SCORE_TACTIC_MODE) == -1) {
-			player.setScoreTacticMode(cursor.getInt(0));
+			player.setScoreTacticalMode(cursor.getInt(0));
 		} else {
-			player.setScoreTacticMode(cursor.getInt(cursor
+			player.setScoreTacticalMode(cursor.getInt(cursor
 					.getColumnIndex(PLAYER_SCORE_TACTIC_MODE)));
 		}
 

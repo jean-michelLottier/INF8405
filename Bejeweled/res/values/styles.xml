@@ -19,11 +19,21 @@
     <style name="boutonMenu">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">2.5</item>
+         <item name="android:layout_weight">2.5</item> 
+        <!--  <item name="android:clickable">true</item>-->
+        <item name="android:focusable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:src">@drawable/button_menu</item>
     </style>
     <style name="divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+    <style name="v_divider">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/divider</item>
     </style>
     

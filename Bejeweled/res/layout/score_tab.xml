@@ -1,20 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@drawable/score_tab"
+    android:gravity="center"
+    android:id="@+id/tmainScoreView" >
     
     <TextView
         android:id="@+id/tabScore_player"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="35sp"
-        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="45sp"
+        android:padding="30dp"
         android:textStyle="bold"
+        android:layout_alignParentLeft="true"
         android:textColor="@color/white"
-        android:background="@color/black_shadow"
         android:text="TextView" />
-    
-    <View style="@style/menuArrayDivider"/>
 
-</LinearLayout>
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tabScore_player"
+        android:layout_marginRight="30dp"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:gravity="center" >
+        
+	    <TextView
+	        android:id="@+id/tabScore_score"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="10dp"
+	        android:text="TextView"
+	        android:textColor="@color/white"
+	        android:textSize="45sp"
+	        android:textStyle="bold" />
+	    
+	    <ImageView
+	        android:id="@+id/tabScore_point"
+	        android:layout_height="120dp"
+	        android:layout_width="100dp"
+	        android:background="@drawable/point" />
+	        
+    </LinearLayout>
+</RelativeLayout>

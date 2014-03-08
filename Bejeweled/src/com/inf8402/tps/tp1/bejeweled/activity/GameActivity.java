@@ -24,6 +24,7 @@ import com.inf8402.tps.tp1.bejeweled.service.IGameService;
  * </p>
  * 
  * @author jean-michel
+ * @author Kevin
  * 
  */
 public class GameActivity extends Activity {

@@ -24,6 +24,7 @@ public class GameService implements IGameService {
 
 	@Override
 	public ArrayList<Item> initGrid() {
+		//TODO
 		ArrayList<Item> items = new ArrayList<Item>();
 		Random random = new Random();
 		for (int i = 0; i < GRID_LENGTH; i++) {

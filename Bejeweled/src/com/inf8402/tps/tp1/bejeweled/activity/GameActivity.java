@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -39,9 +40,7 @@ public class GameActivity extends Activity {
 	private TextView score;
 	private TextView points;
 	private TextView bonus;
-	
-	
-	
+
 	private IGameService gameService;
 	private ArrayList<Item> items;
 	private GridAdapter gridAdapter;
@@ -71,12 +70,15 @@ public class GameActivity extends Activity {
 		score = (TextView) findViewById(R.id.Game_score);
 		points = (TextView) findViewById(R.id.Game_points);
 		bonus = (TextView) findViewById(R.id.Game_bonus);
-		
-		Typeface flipbash = Typeface.createFromAsset(getAssets(), "fonts/Flipbash.ttf");
-		Typeface geminacad = Typeface.createFromAsset(getAssets(), "fonts/gemina2acad.ttf");
-		Typeface gemina = Typeface.createFromAsset(getAssets(), "fonts/gemina2.ttf");
+
+		Typeface flipbash = Typeface.createFromAsset(getAssets(),
+				"fonts/Flipbash.ttf");
+		Typeface geminacad = Typeface.createFromAsset(getAssets(),
+				"fonts/gemina2acad.ttf");
+		Typeface gemina = Typeface.createFromAsset(getAssets(),
+				"fonts/gemina2.ttf");
 		Typeface tron = Typeface.createFromAsset(getAssets(), "fonts/Tr2n.ttf");
-		
+
 		chrono.setTypeface(geminacad);
 		chaines.setTypeface(geminacad);
 		restant.setTypeface(gemina);
@@ -84,13 +86,15 @@ public class GameActivity extends Activity {
 		score.setTypeface(flipbash);
 		points.setTypeface(tron);
 		bonus.setTypeface(tron);
-		
-		bonus.setTextSize((float)(points.getTextSize()/1.5));
-		
+
+		points.setTextSize((float) (score.getTextSize() / 1.2));
+		bonus.setTextSize((float) (points.getTextSize() / 1.2));
+
 		gameService = getGameService();
 		items = gameService.initGrid();
 
 		GridView gridView = (GridView) findViewById(R.id.gridViewItems);
+
 		// gridAdapter = new GridAdapter(this,
 		// items.toArray(new Item[items.size()]));
 		gridAdapter = new GridAdapter(this, items);

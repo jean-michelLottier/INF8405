@@ -43,11 +43,20 @@ public class GameService implements IGameService {
 			combination.addItemVisited(item);
 			combination = findCombination(items, item, combination);
 			ArrayList<Item> result = combination.getCombination();
-			if (!result.isEmpty()) {
+			int counter = 0;
+			while (!result.isEmpty()) {
 				value = (value + 1) % 5;
 				items.remove(item);
 				item.setItemID(itemsID.get(value));
 				items.add(item);
+				combination = new Combination();
+				combination.addHorizontalAxisMovement(item);
+				combination.addVerticalAxisMovement(item);
+				combination.addItemVisited(item);
+				result = combination.getCombination();
+				counter++;
+				if (counter == 5)
+					break;
 			}
 		}
 

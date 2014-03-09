@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -42,12 +43,17 @@ public class GridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView imageView;
+		int width = parent.getWidth() / 8;
+		int height = parent.getHeight() / 8;
 		if (convertView == null) {
 			imageView = new ImageView(context);
-			imageView.setLayoutParams(new GridView.LayoutParams(60, 60));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			imageView.setLayoutParams(new GridView.LayoutParams(width, height));
+			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 		} else {
 			imageView = (ImageView) convertView;
+			if (imageView.getHeight() == 0)
+				imageView.setLayoutParams(new GridView.LayoutParams(width,
+						height));
 		}
 		imageView.setImageResource(items.get(position).getItemID());
 		return imageView;

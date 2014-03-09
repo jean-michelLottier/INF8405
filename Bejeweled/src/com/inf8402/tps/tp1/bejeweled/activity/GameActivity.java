@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Chronometer;
+import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -33,9 +36,11 @@ public class GameActivity extends Activity {
 	public static final String KEY_SPEED_MODE = "speed_mode";
 	public static final String KEY_TACTIC_MODE = "tactic_mode";
 
-	private TextView chrono;
+	private TextView txt_chrono;
+	private Chronometer chrono;
 	private TextView restant;
 	private TextView nbrRestant;
+	private TextView txt_chaines;
 	private TextView chaines;
 	private TextView score;
 	private TextView points;
@@ -63,10 +68,14 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 
-		chrono = (TextView) findViewById(R.id.Game_txtchrono);
+		gameService = getGameService();
+
+		txt_chrono = (TextView) findViewById(R.id.Game_txtchrono);
+		chrono = (Chronometer) findViewById(R.id.Game_chrono);
 		restant = (TextView) findViewById(R.id.Game_coupsRestants);
 		nbrRestant = (TextView) findViewById(R.id.Game_nbrCoupsRestants);
 		chaines = (TextView) findViewById(R.id.Game_nbrChaines);
+		txt_chaines = (TextView) findViewById(R.id.Game_chaines);
 		score = (TextView) findViewById(R.id.Game_score);
 		points = (TextView) findViewById(R.id.Game_points);
 		bonus = (TextView) findViewById(R.id.Game_bonus);
@@ -79,7 +88,9 @@ public class GameActivity extends Activity {
 				"fonts/gemina2.ttf");
 		Typeface tron = Typeface.createFromAsset(getAssets(), "fonts/Tr2n.ttf");
 
+		txt_chrono.setTypeface(geminacad);
 		chrono.setTypeface(geminacad);
+		txt_chaines.setTypeface(geminacad);
 		chaines.setTypeface(geminacad);
 		restant.setTypeface(gemina);
 		nbrRestant.setTypeface(gemina);
@@ -87,10 +98,21 @@ public class GameActivity extends Activity {
 		points.setTypeface(tron);
 		bonus.setTypeface(tron);
 
-		points.setTextSize((float) (score.getTextSize() / 1.2));
-		bonus.setTextSize((float) (points.getTextSize() / 1.2));
+		points.setTextSize((float) ((float) score.getTextSize() / 1.3));
+		bonus.setTextSize((float) ((float) score.getTextSize() / 1.8));
+		points.setText(" ");
+		bonus.setText(" ");
+		score.setText("0");
+		chaines.setText("0");
+		nbrRestant.setText("40");
 
-		gameService = getGameService();
+		gameService.setLimitMove(40);
+
+		gameService.setChrono(chrono);
+		gameService.initializeChrono(10);
+		gameService.getChrono().setOnChronometerTickListener(chronoListener);
+		gameService.startChrono();
+
 		items = gameService.initGrid();
 
 		GridView gridView = (GridView) findViewById(R.id.gridViewItems);
@@ -119,6 +141,27 @@ public class GameActivity extends Activity {
 		return true;
 	}
 
+	private final OnChronometerTickListener chronoListener = new OnChronometerTickListener() {
+
+		@Override
+		public void onChronometerTick(Chronometer chronometer) {
+			// TODO Auto-generated method stub
+			gameService
+					.setTimeChrono((SystemClock.elapsedRealtime() - chronometer
+							.getBase()) / 1000);
+			int timer = (int) (gameService.getLimitChrono() - gameService
+					.getTimeChrono());
+			gameService.getChrono().setText(String.valueOf(timer));
+
+			if (gameService.getTimeChrono() >= gameService.getLimitChrono()) {
+				gameService.stopChrono();
+				endOfGame();
+			}
+
+		}
+
+	};
+
 	private final OnTouchListener onTouchListener = new OnTouchListener() {
 
 		@Override
@@ -135,7 +178,7 @@ public class GameActivity extends Activity {
 			} else if (event.getAction() == MotionEvent.ACTION_UP) {
 				if (gridView == null || pressedDownX == -1
 						|| pressedDownY == -1) {
-					return false;
+					return true;
 				}
 				float pressedUpX = event.getX();
 				float pressedUpY = event.getY();
@@ -145,7 +188,7 @@ public class GameActivity extends Activity {
 						(int) pressedUpY);
 
 				if (endPosition < 0) {
-					return false;
+					return true;
 				}
 
 				gameService = getGameService();
@@ -188,9 +231,28 @@ public class GameActivity extends Activity {
 
 				items = gameService.moveItem(items, items.get(startPosition),
 						direction);
+
+				if (gameService.hasChain()) {
+					points.setText("+" + gameService.getPoints());
+					if (gameService.getBonus() > 0)
+						bonus.setText("+" + gameService.getBonus());
+					score.setText(String.valueOf(gameService.getScore()));
+					gameService.moveUpdate();
+					nbrRestant.setText(String.valueOf(gameService
+							.getLimitMove()));
+					chaines.setText(String.valueOf(gameService.getChain()));
+					if (gameService.getChain() == gameService.getLimitMove()) {
+						endOfGame();
+					}
+				}
 				gridAdapter.notifyDataSetChanged();
 			}
-			return false;
+			return true;
 		}
 	};
+
+	// Routine où coder la situation de fin de partie
+	private void endOfGame() {
+
+	}
 }

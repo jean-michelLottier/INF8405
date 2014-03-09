@@ -111,11 +111,22 @@
 				        android:text="Chronometer" />
 				    
 				    <TextView 
-				        android:id="@+id/Game_nbrChaines"
+				        android:id="@+id/Game_chaines"
 				 		android:layout_below="@+id/Game_txtchrono"
 				        android:layout_width="wrap_content"
 				 		android:layout_height="wrap_content"
 				 		android:layout_alignParentLeft="true"
+				 		android:layout_marginTop="20dp"
+				        android:text="Chaines: "
+				        style="@style/textSizeJeu"
+				        android:textColor="@color/txt_chaines" />
+				    
+				    <TextView 
+				        android:id="@+id/Game_nbrChaines"
+				 		android:layout_below="@+id/Game_txtchrono"
+				        android:layout_width="wrap_content"
+				 		android:layout_height="wrap_content"
+				 		android:layout_toRightOf="@+id/Game_chaines"
 				 		android:layout_marginTop="20dp"
 				        android:text="Chaines:XXX"
 				        style="@style/textSizeJeu"
@@ -134,8 +145,7 @@
 				        android:id="@+id/Game_nbrCoupsRestants"
 				        android:layout_width="wrap_content"
 				 		android:layout_height="wrap_content"
-				 		android:layout_toRightOf="@+id/Game_coupsRestants"
-				 		android:layout_below="@+id/Game_nbrChaines"
+				 		android:layout_below="@+id/Game_coupsRestants"
 				        android:text="XXX"
 				        style="@style/textSizeJeu"
 				        android:textColor="@color/txt_nbrRestant" />

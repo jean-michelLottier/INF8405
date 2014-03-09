@@ -3,7 +3,9 @@ package com.inf8402.tps.tp1.bejeweled.service;
 import java.util.ArrayList;
 import java.util.Random;
 
+import android.os.SystemClock;
 import android.support.v4.util.ArrayMap;
+import android.widget.Chronometer;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.dao.Item;
@@ -11,6 +13,63 @@ import com.inf8402.tps.tp1.bejeweled.dao.Item;
 public class GameService implements IGameService {
 
 	private static final int GRID_LENGTH = 64;
+	private static final int V_POINTS = 100;
+	private static final int V_BONUS = 50;
+	private int coupsRestants = 10;
+	private int chaines = 0;
+	private Chronometer timer;
+	private boolean hasChain = false;
+	private int points = 0;
+	private int bonus = 0;
+	private int score = 0;
+	private long stopTime = 60;
+	private long elapsedTime = 0;
+
+	/****** Timer Functions *******/
+	public void setChrono(Chronometer m) {
+		timer = m;
+	}
+
+	public Chronometer getChrono() {
+		return timer;
+	}
+
+	public void initializeChrono(long time) {
+		timer.setBase(SystemClock.elapsedRealtime());
+		stopTime = time;
+		elapsedTime = 0;
+	}
+
+	public void pauseChrono() {
+		timer.stop();
+	}
+
+	public void stopChrono() {
+		timer.stop();
+		elapsedTime = 0;
+	}
+
+	public void startChrono() {
+		timer.start();
+	}
+
+	public long getTimeChrono() {
+		return elapsedTime;
+	}
+
+	public void setTimeChrono(long time) {
+		elapsedTime = time;
+	}
+
+	public long getLimitChrono() {
+		return stopTime;
+	}
+
+	public void setLimitChrono(long time) {
+		stopTime = time;
+	}
+
+	/*** ----------------------------------- ***/
 
 	private static final ArrayList<Integer> itemsID;
 	static {
@@ -107,6 +166,16 @@ public class GameService implements IGameService {
 		combination = findCombination(items, item2, combination);
 		ArrayList<Item> result = combination.getCombination();
 
+		int nombre_bonus = 0;
+		this.hasChain = false;
+		this.points = 0;
+		this.bonus = 0;
+		if (!result.isEmpty()) {
+			nombre_bonus += result.size();
+			this.points = V_POINTS;
+			this.hasChain = true;
+		}
+
 		boolean isCombinationFound = false;
 		if (!result.isEmpty()) {
 			System.out.println("***********Combination found***********");
@@ -130,6 +199,13 @@ public class GameService implements IGameService {
 		combination = findCombination(items, item1, combination);
 		result = combination.getCombination();
 
+		if (!result.isEmpty()) {
+			nombre_bonus += result.size();
+			this.points = V_POINTS;
+			this.bonus = (nombre_bonus - 3) * V_BONUS;
+			this.hasChain = true;
+		}
+
 		if (result.isEmpty() && !isCombinationFound) {
 			System.out.println("***********No combination***********");
 			item2.setCoordinate(item1.getCoordinate());
@@ -151,8 +227,59 @@ public class GameService implements IGameService {
 			}
 		}
 
+		this.score += this.points + this.bonus;
+
 		return items;
 	}
+
+	/*** Score Functions ***/
+	public boolean hasNewScore() {
+		if (this.bonus + this.points == 0)
+			return false;
+		else
+			return true;
+	}
+
+	public boolean hasChain() {
+		return this.hasChain;
+	}
+
+	public void incrementChain() {
+		this.chaines += 1;
+	}
+
+	public int getChain() {
+		return this.chaines;
+	}
+
+	public int getPoints() {
+		return this.points;
+	}
+
+	public int getBonus() {
+		return this.bonus;
+	}
+
+	public int getScore() {
+		return this.score;
+	}
+
+	public int getLimitMove() {
+		return coupsRestants;
+	}
+
+	public void setLimitMove(int limit) {
+		coupsRestants = limit;
+	}
+
+	public void moveUpdate() {
+		if (hasChain) {
+			chaines += 1;
+			coupsRestants -= 1;
+		}
+	}
+
+	/** ------------------------ **/
 
 	/**
 	 * <p>

@@ -18,7 +18,8 @@
     <color name="txt_nbrRestant">#ff5d04</color>
     <color name="txt_points">#84dd24</color>
     <color name="txt_score">#efe8c0</color>
-    <color name="txt_chrono">#ffff</color>
+    <color name="chrono">#ff5d04</color>
     <color name="txt_bonus">#ff8400</color>
+    <color name="red">#ff0000</color>
     
 </resources>

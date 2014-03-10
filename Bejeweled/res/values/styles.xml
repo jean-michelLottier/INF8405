@@ -19,8 +19,7 @@
     <style name="boutonMenu">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-         <item name="android:layout_weight">2.5</item> 
-        <!--  <item name="android:clickable">true</item>-->
+         <item name="android:layout_weight">2.5</item>
         <item name="android:focusable">true</item>
         <item name="android:selectable">true</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -43,7 +42,10 @@
         <item name="android:background">@color/black</item>
     </style>
     <style name="textSizeJeu">
-        <item name="android:textSize">35sp</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+    <style name="numberSizeJeu">
+        <item name="android:textSize">50sp</item>
     </style>
     
 </resources>

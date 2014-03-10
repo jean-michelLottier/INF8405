@@ -1,29 +1,47 @@
 package com.inf8402.tps.tp1.bejeweled.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
+import android.content.Context;
 import android.os.SystemClock;
 import android.support.v4.util.ArrayMap;
 import android.widget.Chronometer;
 
 import com.inf8402.tps.tp1.bejeweled.R;
+import com.inf8402.tps.tp1.bejeweled.activity.GameActivity;
 import com.inf8402.tps.tp1.bejeweled.dao.Item;
 
 public class GameService implements IGameService {
 
 	private static final int GRID_LENGTH = 64;
-	private static final int V_POINTS = 100;
-	private static final int V_BONUS = 50;
-	private int coupsRestants = 10;
+	private ArrayList<Item> itemsGrid;
+	private int coupsRestants = GameActivity.LIMIT_MOVE;
 	private int chaines = 0;
 	private Chronometer timer;
 	private boolean hasChain = false;
+	private boolean isCombinationFound;
 	private int points = 0;
 	private int bonus = 0;
 	private int score = 0;
-	private long stopTime = 60;
+	private long stopTime = GameActivity.LIMIT_TIME;
 	private long elapsedTime = 0;
+	private Context context;
+
+	public GameService(Context c) {
+		this.setContext(c);
+	}
+
+	@Override
+	public boolean isCombinationFound() {
+		return isCombinationFound;
+	}
+
+	public void setCombinationFound(boolean isCombinationFound) {
+		this.isCombinationFound = isCombinationFound;
+	}
 
 	/****** Timer Functions *******/
 	public void setChrono(Chronometer m) {
@@ -34,9 +52,7 @@ public class GameService implements IGameService {
 		return timer;
 	}
 
-	public void initializeChrono(long time) {
-		timer.setBase(SystemClock.elapsedRealtime());
-		stopTime = time;
+	public void initializeChrono() {
 		elapsedTime = 0;
 	}
 
@@ -50,6 +66,7 @@ public class GameService implements IGameService {
 	}
 
 	public void startChrono() {
+		timer.setBase(SystemClock.elapsedRealtime() - elapsedTime * 1000);
 		timer.start();
 	}
 
@@ -70,6 +87,14 @@ public class GameService implements IGameService {
 	}
 
 	/*** ----------------------------------- ***/
+
+	public ArrayList<Item> getGridItems() {
+		return itemsGrid;
+	}
+
+	public void setGridItems(ArrayList<Item> i) {
+		itemsGrid = i;
+	}
 
 	private static final ArrayList<Integer> itemsID;
 	static {
@@ -105,9 +130,8 @@ public class GameService implements IGameService {
 			int counter = 0;
 			while (!result.isEmpty()) {
 				value = (value + 1) % 5;
-				items.remove(item);
-				item.setItemID(itemsID.get(value));
-				items.add(item);
+				items.get(items.size() - 1).setItemID(itemsID.get(value));
+				item = items.get(items.size() - 1);
 				combination = new Combination();
 				combination.addHorizontalAxisMovement(item);
 				combination.addVerticalAxisMovement(item);
@@ -160,9 +184,9 @@ public class GameService implements IGameService {
 		combination.addHorizontalAxisMovement(item2);
 		combination.addVerticalAxisMovement(item2);
 		combination.addItemVisited(item2);
-		System.out.println("Originitem : " + item2.getItemID() + " - ("
-				+ item2.getCoordinate().get(0) + ","
-				+ item2.getCoordinate().get(1) + ")");
+		// System.out.println("Originitem : " + item2.getItemID() + " - ("
+		// + item2.getCoordinate().get(0) + ","
+		// + item2.getCoordinate().get(1) + ")");
 		combination = findCombination(items, item2, combination);
 		ArrayList<Item> result = combination.getCombination();
 
@@ -172,20 +196,21 @@ public class GameService implements IGameService {
 		this.bonus = 0;
 		if (!result.isEmpty()) {
 			nombre_bonus += result.size();
-			this.points = V_POINTS;
+			this.points = GameActivity.V_POINTS;
 			this.hasChain = true;
 		}
 
 		boolean isCombinationFound = false;
 		if (!result.isEmpty()) {
-			System.out.println("***********Combination found***********");
+			// System.out.println("***********Combination found***********");
 			for (Item current : result) {
 				int position = translateCoordByPosition(current.getCoordinate());
-				System.out.println("itemID : " + current.getItemID()
-						+ " - position : " + position + " - ("
-						+ current.getCoordinate().get(0) + ","
-						+ current.getCoordinate().get(1) + ")");
+				// System.out.println("itemID : " + current.getItemID()
+				// + " - position : " + position + " - ("
+				// + current.getCoordinate().get(0) + ","
+				// + current.getCoordinate().get(1) + ")");
 				current.setItemID(R.drawable.item_test);
+				current.setDeleted(true);
 				items.remove(position);
 				items.add(position, current);
 			}
@@ -201,13 +226,14 @@ public class GameService implements IGameService {
 
 		if (!result.isEmpty()) {
 			nombre_bonus += result.size();
-			this.points = V_POINTS;
-			this.bonus = (nombre_bonus - 3) * V_BONUS;
+			this.points = GameActivity.V_POINTS;
+			;
+			this.bonus = (nombre_bonus - 3) * GameActivity.V_BONUS;
 			this.hasChain = true;
 		}
 
 		if (result.isEmpty() && !isCombinationFound) {
-			System.out.println("***********No combination***********");
+			// System.out.println("***********No combination***********");
 			item2.setCoordinate(item1.getCoordinate());
 			item2 = fillNeighborsMap(item2);
 			item1.setCoordinate(item.getCoordinate());
@@ -217,10 +243,10 @@ public class GameService implements IGameService {
 		} else {
 			for (Item current : result) {
 				int position = translateCoordByPosition(current.getCoordinate());
-				System.out.println("itemID : " + current.getItemID()
-						+ " - position : " + position + " - ("
-						+ current.getCoordinate().get(0) + ","
-						+ current.getCoordinate().get(1) + ")");
+				// System.out.println("itemID : " + current.getItemID()
+				// + " - position : " + position + " - ("
+				// + current.getCoordinate().get(0) + ","
+				// + current.getCoordinate().get(1) + ")");
 				current.setItemID(R.drawable.item_test);
 				items.remove(position);
 				items.add(position, current);
@@ -228,6 +254,114 @@ public class GameService implements IGameService {
 		}
 
 		this.score += this.points + this.bonus;
+
+		return items;
+	}
+
+	@Override
+	public ArrayList<Item> replaceItemsDeleted(ArrayList<Item> items) {
+		ArrayMap<Integer, ArrayList<Item>> itemsDeleted = new ArrayMap<Integer, ArrayList<Item>>();
+		for (Item item : items) {
+			if (item.isDeleted()) {
+				ArrayList<Integer> coordinate = item.getCoordinate();
+				ArrayList<Item> temp = new ArrayList<Item>();
+				if (itemsDeleted.containsKey(coordinate.get(X))) {
+					temp = itemsDeleted.get(coordinate.get(X));
+				}
+				temp.add(item);
+				Collections.sort(temp, new Comparator<Item>() {
+
+					@Override
+					public int compare(Item item1, Item item2) {
+						ArrayList<Integer> coordinate1 = item1.getCoordinate();
+						ArrayList<Integer> coordinate2 = item2.getCoordinate();
+
+						return coordinate2.get(Y).compareTo(coordinate1.get(Y));
+					}
+				});
+
+				itemsDeleted.put(coordinate.get(X), temp);
+			}
+		}
+
+		if (itemsDeleted.isEmpty()) {
+			return items;
+		}
+
+		boolean isProcessed = true;
+		while (isProcessed) {
+			int cpt = 0;
+			for (int axisX : itemsDeleted.keySet()) {
+				ArrayList<Item> itemsToDelete = itemsDeleted.get(axisX);
+				if (itemsToDelete.isEmpty()) {
+					cpt++;
+					continue;
+				}
+				ArrayList<Item> newItemToDelete = new ArrayList<Item>();
+
+				for (Item item1 : itemsToDelete) {
+					ArrayList<Integer> coordinate = (ArrayList<Integer>) item1
+							.getCoordinate().clone();
+					int position1 = translateCoordByPosition(coordinate);
+					int axisY = coordinate.get(Y);
+					axisY -= itemsToDelete.size();
+					if (axisY >= 0) {
+						coordinate.set(Y, axisY);
+						int position2 = translateCoordByPosition(coordinate);
+						Item item2 = items.get(position2);
+						Item temp = new Item(item1);
+
+						item1.setCoordinate(item2.getCoordinate());
+						item1 = fillNeighborsMap(item1);
+						item2.setCoordinate(temp.getCoordinate());
+						item2 = fillNeighborsMap(item2);
+
+						items.set(position1, item2);
+						items.set(position2, item1);
+
+						newItemToDelete.add(item1);
+					} else {
+						item1.setDeleted(false);
+						Random random = new Random();
+						int value = random.nextInt(5);
+						item1.setItemID(itemsID.get(value));
+						items.set(position1, item1);
+					}
+				}
+
+				itemsDeleted.put(axisX, newItemToDelete);
+			}
+
+			if (cpt == itemsDeleted.size()) {
+				isProcessed = false;
+			}
+		}
+
+		return items;
+	}
+
+	@Override
+	public ArrayList<Item> researchCombinationIntoGrid(ArrayList<Item> items) {
+		this.isCombinationFound = false;
+		for (Item item : items) {
+			Combination combination = new Combination();
+			combination.addHorizontalAxisMovement(item);
+			combination.addVerticalAxisMovement(item);
+			combination.addItemVisited(item);
+			combination = findCombination(items, item, combination);
+			ArrayList<Item> result = combination.getCombination();
+			if (!result.isEmpty()) {
+				this.isCombinationFound = true;
+				for (Item current : result) {
+					int position = translateCoordByPosition(current
+							.getCoordinate());
+					current.setItemID(R.drawable.item_test);
+					current.setDeleted(true);
+					items.set(position, current);
+				}
+				break;
+			}
+		}
 
 		return items;
 	}
@@ -264,18 +398,15 @@ public class GameService implements IGameService {
 		return this.score;
 	}
 
-	public int getLimitMove() {
+	public int getNbrMoveLeft() {
 		return coupsRestants;
-	}
-
-	public void setLimitMove(int limit) {
-		coupsRestants = limit;
 	}
 
 	public void moveUpdate() {
 		if (hasChain) {
 			chaines += 1;
-			coupsRestants -= 1;
+			if (coupsRestants > 0)
+				coupsRestants -= 1;
 		}
 	}
 
@@ -396,6 +527,14 @@ public class GameService implements IGameService {
 		}
 
 		return false;
+	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
 	}
 
 	private class Combination {

@@ -2,6 +2,7 @@ package com.inf8402.tps.tp1.bejeweled.service;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.os.SystemClock;
 import android.widget.Chronometer;
 
@@ -45,6 +46,17 @@ public interface IGameService {
 	 */
 	public ArrayList<Item> moveItem(ArrayList<Item> items, Item item,
 			String direction);
+
+	/**
+	 * <p>
+	 * Research all items to delete and permute these one by neighbor above
+	 * their. This permutation is made until items to delete have no neighbor.
+	 * The last items to delete replaced by new items.
+	 * </p>
+	 * 
+	 * @param items
+	 */
+	public ArrayList<Item> replaceItemsDeleted(ArrayList<Item> items);
 
 	/**
 	 * <p>
@@ -132,7 +144,7 @@ public interface IGameService {
 	 * @param duration
 	 *            in milliseconds
 	 */
-	public void initializeChrono(long time);
+	public void initializeChrono();
 
 	/**
 	 * <p>
@@ -179,40 +191,12 @@ public interface IGameService {
 
 	/**
 	 * <p>
-	 * Get the duration of the Chronometer
+	 * Get the number of moves available
 	 * </p>
 	 * 
-	 * @return The duration
+	 * @return the number of moves available
 	 */
-	public long getLimitChrono();
-
-	/**
-	 * <p>
-	 * Set the duration of the Chronometer
-	 * </p>
-	 * 
-	 * @param Theduration
-	 * 
-	 */
-	public void setLimitChrono(long time);
-
-	/**
-	 * <p>
-	 * Get the maximum of moves available
-	 * </p>
-	 * 
-	 * @return the maximum number of moves
-	 */
-	public int getLimitMove();
-
-	/**
-	 * <p>
-	 * Set the maximum of moves available
-	 * </p>
-	 * 
-	 * @param the maximum number of moves
-	 */
-	public void setLimitMove(int limit);
+	public int getNbrMoveLeft();
 
 	/**
 	 * <p>
@@ -221,4 +205,53 @@ public interface IGameService {
 	 * 
 	 */
 	public void moveUpdate();
+
+	/**
+	 * <p>
+	 * Get the items of the grid
+	 * </p>
+	 * 
+	 */
+	public ArrayList<Item> getGridItems();
+
+	/**
+	 * <p>
+	 * Set the items of the grid
+	 * </p>
+	 * 
+	 * @params The items of the grid
+	 */
+	public void setGridItems(ArrayList<Item> i);
+
+	/**
+	 * <p>
+	 * Get the context of the activityGame
+	 * </p>
+	 * 
+	 * @return The context
+	 * 
+	 */
+	public Context getContext();
+
+	/**
+	 * <p>
+	 * Set the context of the activity
+	 * </p>
+	 * 
+	 * @params The context
+	 * 
+	 */
+	public void setContext(Context context);
+
+	public boolean isCombinationFound();
+
+	/**
+	 * <p>
+	 * Research valid combination into grid and mark items as deleted
+	 * </p>
+	 * 
+	 * @param items
+	 * @return
+	 */
+	public ArrayList<Item> researchCombinationIntoGrid(ArrayList<Item> items);
 }

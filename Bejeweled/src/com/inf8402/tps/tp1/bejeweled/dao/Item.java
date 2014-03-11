@@ -2,10 +2,21 @@ package com.inf8402.tps.tp1.bejeweled.dao;
 
 import java.util.ArrayList;
 
+import com.inf8402.tps.tp1.bejeweled.R;
+import com.inf8402.tps.tp1.bejeweled.activity.GameActivity;
+
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.util.ArrayMap;
+import android.widget.ImageView;
 
 public class Item {
+	public static final int NORMAL = 0;
+	public static final int SELECTED = 1;
+	public static final int MOVED = 2;
+	public static final int DELETED = 3;
+	public static final int CREATED = 4;
 	private int itemID;
+	private int state;
 	private ArrayList<Integer> coordinate;
 	private ArrayMap<String, ArrayList<Integer>> neighbors;
 	private boolean isDeleted;
@@ -56,11 +67,43 @@ public class Item {
 		this.neighbors = neighbors;
 	}
 
-	public boolean isDeleted() {
-		return isDeleted;
+	public void setState(int s) {
+		state = s;
 	}
 
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public int getState() {
+		return state;
+	}
+
+	public boolean isAnimated() {
+		if (state != NORMAL)
+			return true;
+
+		return false;
+	}
+
+	public int getResourceImage() {
+		int r = itemID;
+		if (state == SELECTED) {
+			switch (itemID) {
+			case R.drawable.item_eau:
+				r = R.drawable.selection_eau;
+				break;
+			case R.drawable.item_feu:
+				r = R.drawable.selection_feu;
+				break;
+			case R.drawable.item_terre:
+				r = R.drawable.selection_terre;
+				break;
+			case R.drawable.item_jewel:
+				r = R.drawable.selection_jewel;
+				break;
+			case R.drawable.item_vent:
+				r = R.drawable.selection_vent;
+				break;
+			}
+		}
+
+		return r;
 	}
 }

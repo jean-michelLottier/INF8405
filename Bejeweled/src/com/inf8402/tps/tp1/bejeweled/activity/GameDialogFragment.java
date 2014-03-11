@@ -1,5 +1,6 @@
 package com.inf8402.tps.tp1.bejeweled.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -36,6 +37,15 @@ public class GameDialogFragment extends DialogFragment {
 	// Box dialog value
 	public static final int BOX_DIALOG_QUIT = 0;
 	public static final int BOX_DIALOG_REGISTER = 1;
+	public static final int BOX_DIALOG_ENDGAME = 2;
+	public static final int BOX_DIALOG_QUITGAME = 3;
+	public static final int BOX_DIALOG_RESTARTGAME = 4;
+
+	// Box dialog parameters
+	public static final String BOX_DIALOG_CURRENTSCORE = "newSore";
+	public static final String BOX_DIALOG_BESTSCORE = "oldScore";
+	public static final String BOX_DIALOG_PSEUDO = "pseudo";
+	public static final String BOX_DIALOG_RANK = "rank";
 
 	// Box dialog contents
 	private static final String BOX_DIALOG_QUIT_TITLE = "Bejeweled - Quitter";
@@ -43,8 +53,18 @@ public class GameDialogFragment extends DialogFragment {
 	private static final String BOX_DIALOG_BUTTON_YES = "OUI";
 	private static final String BOX_DIALOG_BUTTON_NO = "NON";
 
+	private static final String BOX_DIALOG_QUITGAME_MESSAGE = "Etes-vous sur de vouloir quitter l'application ou souhaitez vous changer de mode?";
+	private static final String BOX_DIALOG_BUTTON_QUIT = "Quitter";
+
 	private static final String BOX_DIALOG_REGISTER_TITLE = "Bejeweled - Pseudo";
 	private static final String BOX_DIALOG_REGISTER_ALERT = "Veuillez saisir un pseudo valide!";
+
+	private static final String BOX_DIALOG_RESTARTGAME_TITLE = "Bejeweled - Recommencer";
+
+	private static final String BOX_DIALOG_ENDGAME_TITLE = "Bejeweled - Fin de partie";
+	private static final String BOX_DIALOG_ENDGAME_MESSAGE = "Voulez-vous recommencer la partie?";
+	private static final String BOX_DIALOG_BUTTON_RESTART = "Recommencer";
+	private static final String BOX_DIALOG_BUTTON_MENU = "Menu";
 
 	// Player informations
 	private static final String PLAYER_INF_SCORE_TITLE = "Vos scores :";
@@ -86,16 +106,127 @@ public class GameDialogFragment extends DialogFragment {
 				.create();
 
 		int boxID = getArguments().getInt(BOX_DIALOG_KEY);
-
 		switch (boxID) {
 		case BOX_DIALOG_QUIT:
 			alertDialog = initQuitBoxDialog(alertDialog);
 			break;
 		case BOX_DIALOG_REGISTER:
 			alertDialog = initRegisterBoxDialog(alertDialog);
+			break;
+		case BOX_DIALOG_ENDGAME:
+			int currentScore = getArguments().getInt(BOX_DIALOG_CURRENTSCORE);
+			int bestScore = getArguments().getInt(BOX_DIALOG_BESTSCORE);
+			String pseudo = getArguments().getString(BOX_DIALOG_PSEUDO);
+			int rank = getArguments().getInt(BOX_DIALOG_RANK);
+			alertDialog = initEndGameBoxDialog(alertDialog, pseudo,
+					currentScore, bestScore, rank);
+			break;
+		case BOX_DIALOG_QUITGAME:
+			alertDialog = initQuitGameBoxDialog(alertDialog);
+			break;
+		case BOX_DIALOG_RESTARTGAME:
+			alertDialog = initRestartGameBoxDialog(alertDialog);
+			break;
 		default:
 			break;
 		}
+		return alertDialog;
+	}
+
+	private AlertDialog initRestartGameBoxDialog(AlertDialog alertDialog) {
+		alertDialog.setCanceledOnTouchOutside(false);
+		alertDialog.setTitle(BOX_DIALOG_RESTARTGAME_TITLE);
+
+		alertDialog.setMessage(BOX_DIALOG_ENDGAME_MESSAGE);
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
+				BOX_DIALOG_BUTTON_YES, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
+								.getOwnerActivity();
+						activity.recreate();
+						dismiss();
+					}
+				});
+		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
+				BOX_DIALOG_BUTTON_NO, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dismiss();
+					}
+				});
+
+		return alertDialog;
+	}
+
+	private AlertDialog initQuitGameBoxDialog(AlertDialog alertDialog) {
+		alertDialog.setCanceledOnTouchOutside(false);
+		alertDialog.setTitle(BOX_DIALOG_QUIT_TITLE);
+
+		alertDialog.setMessage(BOX_DIALOG_QUITGAME_MESSAGE);
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
+				BOX_DIALOG_BUTTON_QUIT, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
+								.getOwnerActivity();
+						activity.finish();
+						Intent intent = new Intent(Intent.ACTION_MAIN);
+						intent.addCategory(Intent.CATEGORY_HOME);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+						dismiss();
+					}
+				});
+		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
+				BOX_DIALOG_BUTTON_MENU, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						((AlertDialog) dialog).getOwnerActivity().finish();
+					}
+				});
+
+		return alertDialog;
+	}
+
+	private AlertDialog initEndGameBoxDialog(AlertDialog alertDialog,
+			String pseudo, int currentScore, int bestScore, int rank) {
+		alertDialog.setCanceledOnTouchOutside(false);
+		alertDialog.setTitle(BOX_DIALOG_ENDGAME_TITLE);
+		StringBuilder sb = new StringBuilder();
+		sb.append("Score : ").append(currentScore).append(" pts,").append("\t")
+				.append("Best score : ").append(bestScore).append(" pts,")
+				.append("\t").append("Rang : ").append(rank);
+		// sb.append("\n\n").append(BOX_DIALOG_ENDGAME_MESSAGE);
+		alertDialog.setMessage(sb.toString());
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
+				BOX_DIALOG_BUTTON_RESTART,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						// GameActivity.gameService.reinitialize();
+						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
+								.getOwnerActivity();
+						// activity.getGridAdapter().notifyDataSetChanged();
+						activity.recreate();
+						dismiss();
+					}
+				});
+		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
+				BOX_DIALOG_BUTTON_MENU, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						((AlertDialog) dialog).getOwnerActivity().finish();
+					}
+				});
+
 		return alertDialog;
 	}
 

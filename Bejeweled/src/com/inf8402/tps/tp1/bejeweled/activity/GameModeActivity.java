@@ -14,7 +14,7 @@ public class GameModeActivity extends IActivity {
 	private ImageView button_return;
 
 	private LinearLayout buttons;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,9 +49,11 @@ public class GameModeActivity extends IActivity {
 		switch (id) {
 		case R.id.boutonMode_vitesse:
 			menuService.goSpeedMode();
+			GameActivity.gameService = null;
 			break;
 		case R.id.boutonMode_tactique:
 			menuService.goTacticMode();
+			GameActivity.gameService = null;
 			break;
 		case R.id.boutonMode_retour:
 			menuService.initSession();

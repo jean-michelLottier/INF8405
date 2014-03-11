@@ -1,5 +1,6 @@
 package com.inf8402.tps.tp1.bejeweled.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -25,7 +26,7 @@ public class MenuService implements IMenuService {
 	private Intent intent = null;
 	public static SessionManager session;
 	public FragmentActivity activity;
-	
+
 	public MenuService(Context context) {
 		this.context = context;
 		activity = (FragmentActivity) context;
@@ -45,14 +46,13 @@ public class MenuService implements IMenuService {
 	@Override
 	public List<Player> getTopTenPlayers(int mode)
 			throws BadInputParameterException {
-		switch (mode)
-		{
-			case SPEED_MODE:
-				return getTopTenPlayersSpeedMode();
-			case TACTIC_MODE:
-				return getTopTenPlayersTacticMode();
-			default:
-				throw new BadInputParameterException();
+		switch (mode) {
+		case SPEED_MODE:
+			return getTopTenPlayersSpeedMode();
+		case TACTIC_MODE:
+			return getTopTenPlayersTacticMode();
+		default:
+			throw new BadInputParameterException();
 		}
 	}
 
@@ -60,7 +60,7 @@ public class MenuService implements IMenuService {
 		playerDAO = getPlayerDAO();
 		return playerDAO.getTopXPlayersTacticMode(TOP_TEN);
 	}
-	
+
 	private List<Player> getTopTenPlayersSpeedMode() {
 		playerDAO = getPlayerDAO();
 		return playerDAO.getTopXPlayersSpeedMode(TOP_TEN);
@@ -83,17 +83,17 @@ public class MenuService implements IMenuService {
 
 		return player;
 	}
-	
-	public void initSession()
-	{
-		 session = new SessionManager(context);
+
+	@Override
+	public void initSession() {
+		session = new SessionManager(context);
 	}
-	
-	public void quitSession()
-	{
+
+	@Override
+	public void quitSession() {
 		session.clearSession();
 	}
-	
+
 	@Override
 	public void goQuit(Intent intent) {
 		GameDialogFragment dialog = new GameDialogFragment();
@@ -104,27 +104,26 @@ public class MenuService implements IMenuService {
 		dialog.setIntentMediaService(intent);
 		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
 	}
-	
-	public void goListScores()
-	{
-		intent = new Intent(context,
-				GameScoreActivity.class);
+
+	@Override
+	public void goListScores() {
+		intent = new Intent(context, GameScoreActivity.class);
 		context.startActivity(intent);
 	}
-	public void goPlayGame()
-	{
-		intent = new Intent(context,
-				GameModeActivity.class);
+
+	@Override
+	public void goPlayGame() {
+		intent = new Intent(context, GameModeActivity.class);
 		context.startActivity(intent);
 	}
-	
-	public void goBackFromMode()
-	{
+
+	@Override
+	public void goBackFromMode() {
 		activity.finish();
 	}
-	
-	public void goBackFromScore()
-	{
+
+	@Override
+	public void goBackFromScore() {
 		activity.finish();
 	}
 
@@ -134,7 +133,7 @@ public class MenuService implements IMenuService {
 		intent = new Intent(context, GameActivity.class);
 		intent.putExtra(GameActivity.KEY_SPEED_MODE, true);
 		context.startActivity(intent);
-		
+
 	}
 
 	@Override
@@ -143,5 +142,121 @@ public class MenuService implements IMenuService {
 		intent = new Intent(context, GameActivity.class);
 		intent.putExtra(GameActivity.KEY_TACTIC_MODE, true);
 		context.startActivity(intent);
+	}
+
+	@Override
+	public void initEndOfGameProcedure(boolean isSpeedMode,
+			boolean isTacticMode, int score) {
+		initSession();
+		Player player = session.getPlayerDetails();
+
+		if (player != null) {
+			System.out.println("player : " + player.getPseudo() + ", ID : "
+					+ player.getPlayerID() + ", speedScore : "
+					+ player.getScoreSpeedMode() + ", tacticScore : "
+					+ player.getScoreTacticalMode());
+		} else {
+			System.out.println("!!!!!!!!!! player null !!!!!!!!!!");
+		}
+
+		int actualBestScore = 0;
+		if (isSpeedMode) {
+			actualBestScore = player.getScoreSpeedMode();
+			if (score > actualBestScore) {
+				session.setPlayerScoreSpeedMode(score);
+				player.setScoreSpeedMode(score);
+			}
+		} else if (isTacticMode) {
+			actualBestScore = player.getScoreTacticalMode();
+			if (score > actualBestScore) {
+				session.setPlayerScoreTacticMode(score);
+				player.setScoreTacticalMode(score);
+			}
+		}
+
+		playerDAO = getPlayerDAO();
+		playerDAO.updatePlayer(player);
+
+		GameDialogFragment dialog = new GameDialogFragment();
+		Bundle args = new Bundle();
+		args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
+				GameDialogFragment.BOX_DIALOG_ENDGAME);
+		args.putString(GameDialogFragment.BOX_DIALOG_PSEUDO, player.getPseudo());
+		args.putInt(GameDialogFragment.BOX_DIALOG_CURRENTSCORE, score);
+		if (isSpeedMode) {
+			args.putInt(GameDialogFragment.BOX_DIALOG_BESTSCORE,
+					player.getScoreSpeedMode());
+			args.putInt(GameDialogFragment.BOX_DIALOG_RANK,
+					getPlayerRank(player.getPlayerID(), SPEED_MODE));
+		} else {
+			args.putInt(GameDialogFragment.BOX_DIALOG_BESTSCORE,
+					player.getScoreTacticalMode());
+			args.putInt(GameDialogFragment.BOX_DIALOG_RANK,
+					getPlayerRank(player.getPlayerID(), TACTIC_MODE));
+		}
+
+		dialog.setArguments(args);
+		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
+	}
+
+	@Override
+	public int getPlayerRank(int playerID, int typeMode) {
+		if (playerID < 0) {
+			return 0;
+		}
+
+		playerDAO = getPlayerDAO();
+		List<Player> players = new ArrayList<Player>();
+		if (typeMode == SPEED_MODE) {
+			players = playerDAO.getAllPlayersOrderByScoreSpeedMode();
+		} else if (typeMode == TACTIC_MODE) {
+			players = playerDAO.getAllPlayersOrderByScoreTacticMode();
+		} else {
+			return 0;
+		}
+
+		for (Player player : players) {
+			System.out.println("player : " + player.getPseudo());
+		}
+
+		if (players.isEmpty()) {
+			return 0;
+		}
+
+		int rank = 0;
+		for (Player player : players) {
+			rank++;
+			if (player.getPlayerID() == playerID) {
+				break;
+			}
+		}
+
+		return rank;
+	}
+
+	@Override
+	public void goQuitGame() {
+		// TODO Auto-generated method stub
+		GameDialogFragment dialog = new GameDialogFragment();
+		Bundle args = new Bundle();
+		args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
+				GameDialogFragment.BOX_DIALOG_QUITGAME);
+
+		dialog.setArguments(args);
+		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
+
+	}
+
+	@Override
+	public void goRestartGame() {
+		// TODO Auto-generated method stub
+		GameDialogFragment dialog = new GameDialogFragment();
+		Bundle args = new Bundle();
+		args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
+				GameDialogFragment.BOX_DIALOG_RESTARTGAME);
+
+		dialog.setArguments(args);
+		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
+
 	}
 }

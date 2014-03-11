@@ -24,6 +24,15 @@ public interface IPlayerDAO {
 
 	/**
 	 * <p>
+	 * Update a player into databases.
+	 * </p>
+	 * 
+	 * @param player
+	 */
+	public void updatePlayer(Player player);
+
+	/**
+	 * <p>
 	 * Find a player by his id.
 	 * </p>
 	 * 
@@ -52,7 +61,10 @@ public interface IPlayerDAO {
 	public List<Player> getAllPlayersOrderByScoreSpeedMode();
 
 	/**
-	 * <p>Get all player registered into databases order by tactic score.</p>
+	 * <p>
+	 * Get all player registered into databases order by tactic score.
+	 * </p>
+	 * 
 	 * @return
 	 */
 	public List<Player> getAllPlayersOrderByScoreTacticMode();

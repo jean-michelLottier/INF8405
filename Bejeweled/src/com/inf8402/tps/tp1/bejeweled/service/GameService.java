@@ -5,10 +5,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.SystemClock;
 import android.support.v4.util.ArrayMap;
 import android.widget.Chronometer;
+import android.widget.TextView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.activity.GameActivity;
@@ -21,7 +23,8 @@ public class GameService implements IGameService {
 	private int coupsRestants = GameActivity.LIMIT_MOVE;
 	private int chaines = 0;
 	private Chronometer timer;
-	private boolean hasChain = false;
+	private boolean hasChain;
+	private boolean gamePaused;
 	private boolean isCombinationFound;
 	private int points = 0;
 	private int bonus = 0;
@@ -166,9 +169,13 @@ public class GameService implements IGameService {
 		}
 
 		int positionItem1 = translateCoordByPosition(item.getCoordinate());
+		if (item.getNeighbors().get(direction).get(X) == -1
+				|| item.getNeighbors().get(direction).get(Y) == -1) {
+			return items;
+		}
 		int positionItem2 = translateCoordByPosition(item.getNeighbors().get(
 				direction));
-
+		System.out.println();
 		Item item1 = new Item(items.get(positionItem1));
 		Item item2 = new Item(items.get(positionItem2));
 
@@ -209,8 +216,7 @@ public class GameService implements IGameService {
 				// + " - position : " + position + " - ("
 				// + current.getCoordinate().get(0) + ","
 				// + current.getCoordinate().get(1) + ")");
-				current.setItemID(R.drawable.item_test);
-				current.setDeleted(true);
+				current.setState(Item.DELETED);
 				items.remove(position);
 				items.add(position, current);
 			}
@@ -227,7 +233,6 @@ public class GameService implements IGameService {
 		if (!result.isEmpty()) {
 			nombre_bonus += result.size();
 			this.points = GameActivity.V_POINTS;
-			;
 			this.bonus = (nombre_bonus - 3) * GameActivity.V_BONUS;
 			this.hasChain = true;
 		}
@@ -247,7 +252,7 @@ public class GameService implements IGameService {
 				// + " - position : " + position + " - ("
 				// + current.getCoordinate().get(0) + ","
 				// + current.getCoordinate().get(1) + ")");
-				current.setItemID(R.drawable.item_test);
+				current.setState(Item.DELETED);
 				items.remove(position);
 				items.add(position, current);
 			}
@@ -262,7 +267,7 @@ public class GameService implements IGameService {
 	public ArrayList<Item> replaceItemsDeleted(ArrayList<Item> items) {
 		ArrayMap<Integer, ArrayList<Item>> itemsDeleted = new ArrayMap<Integer, ArrayList<Item>>();
 		for (Item item : items) {
-			if (item.isDeleted()) {
+			if (item.getState() == Item.DELETED) {
 				ArrayList<Integer> coordinate = item.getCoordinate();
 				ArrayList<Item> temp = new ArrayList<Item>();
 				if (itemsDeleted.containsKey(coordinate.get(X))) {
@@ -321,7 +326,7 @@ public class GameService implements IGameService {
 
 						newItemToDelete.add(item1);
 					} else {
-						item1.setDeleted(false);
+						item1.setState(Item.NORMAL);
 						Random random = new Random();
 						int value = random.nextInt(5);
 						item1.setItemID(itemsID.get(value));
@@ -355,8 +360,8 @@ public class GameService implements IGameService {
 				for (Item current : result) {
 					int position = translateCoordByPosition(current
 							.getCoordinate());
-					current.setItemID(R.drawable.item_test);
-					current.setDeleted(true);
+					current.setState(Item.DELETED);
+					;
 					items.set(position, current);
 				}
 				break;
@@ -537,6 +542,14 @@ public class GameService implements IGameService {
 		this.context = context;
 	}
 
+	public boolean isGamePaused() {
+		return gamePaused;
+	}
+
+	public void setGamePaused(boolean gamePaused) {
+		this.gamePaused = gamePaused;
+	}
+
 	private class Combination {
 		private ArrayMap<Integer, ArrayList<Item>> horizontalAxisMovement;
 		private ArrayMap<Integer, ArrayList<Item>> verticalAxisMovement;
@@ -670,5 +683,34 @@ public class GameService implements IGameService {
 
 			return combination;
 		}
+	}
+
+	@Override
+	public void reinitialize() {
+		chaines = 0;
+		hasChain = false;
+		gamePaused = false;
+		isCombinationFound = false;
+		points = 0;
+		bonus = 0;
+		score = 0;
+		elapsedTime = 0;
+		Activity activity = (Activity) context;
+		// Chronometer chronometer = (Chronometer)
+		// activity.findViewById(R.id.Game_chrono);
+		TextView nbrRestant = (TextView) activity
+				.findViewById(R.id.Game_coupsRestants);
+		TextView chaines = (TextView) activity.findViewById(R.id.Game_chaines);
+		TextView score = (TextView) activity.findViewById(R.id.Game_score);
+		TextView points = (TextView) activity.findViewById(R.id.Game_points);
+		TextView bonus = (TextView) activity.findViewById(R.id.Game_bonus);
+		nbrRestant.setText(String.valueOf(GameActivity.LIMIT_MOVE));
+		chaines.setText("0");
+		score.setText("0");
+		points.setText(" ");
+		bonus.setText(" ");
+		startChrono();
+		itemsGrid = initGrid();
+
 	}
 }

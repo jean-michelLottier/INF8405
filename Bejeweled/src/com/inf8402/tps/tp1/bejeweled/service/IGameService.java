@@ -245,6 +245,10 @@ public interface IGameService {
 
 	public boolean isCombinationFound();
 
+	public boolean isGamePaused();
+
+	public void setGamePaused(boolean gamePaused);
+
 	/**
 	 * <p>
 	 * Research valid combination into grid and mark items as deleted
@@ -254,4 +258,6 @@ public interface IGameService {
 	 * @return
 	 */
 	public ArrayList<Item> researchCombinationIntoGrid(ArrayList<Item> items);
+
+	public void reinitialize();
 }

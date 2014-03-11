@@ -37,24 +37,31 @@ public interface IMenuService {
 	 */
 	public Player startPlayerSession(String pseudo)
 			throws BadInputParameterException;
-	
+
 	public void goQuit(Intent intent);
-	
+
 	public void goPlayGame();
-	
+
 	public void goSpeedMode();
-	
+
 	public void goTacticMode();
-	
+
 	public void goListScores();
-	
+
 	public void goBackFromMode();
-	
+
 	public void goBackFromScore();
-	
+
 	public void initSession();
-	
+
 	public void quitSession();
-	
-	
+
+	public void goQuitGame();
+
+	public void goRestartGame();
+
+	public void initEndOfGameProcedure(boolean isSpeedMode,
+			boolean isTacticMode, int score);
+
+	public int getPlayerRank(int playerID, int typeMode);
 }

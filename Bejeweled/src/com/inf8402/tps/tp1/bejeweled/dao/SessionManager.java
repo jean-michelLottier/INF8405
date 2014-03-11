@@ -45,8 +45,18 @@ public class SessionManager {
 		return sharedPreferences.getInt(KEY_SCORE_SPEED_MODE, 0);
 	}
 
+	public void setPlayerScoreSpeedMode(int score) {
+		editor.putInt(KEY_SCORE_SPEED_MODE, score);
+		editor.commit();
+	}
+
 	public int getPlayerScoreTacticMode() {
 		return sharedPreferences.getInt(KEY_SCORE_TACTIC_MODE, 0);
+	}
+
+	public void setPlayerScoreTacticMode(int score) {
+		editor.putInt(KEY_SCORE_TACTIC_MODE, score);
+		editor.commit();
 	}
 
 	public Player getPlayerDetails() {

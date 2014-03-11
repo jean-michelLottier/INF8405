@@ -52,9 +52,6 @@ public class ListScoreTactic extends Fragment {
 			
 		}
 
-		topTenPlayers = new ArrayList<Player>();
-		topTenPlayers.add(new Player("Bob",216,331));
-		topTenPlayers.add(new Player("Brian",157,310));
 		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers, IMenuService.TACTIC_MODE);
 
 		listView.setAdapter(playerAdapter);

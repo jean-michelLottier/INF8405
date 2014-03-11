@@ -27,6 +27,6 @@
     <string name="title_activity_i">IActivity</string>
     <string name="txt_timer">Timer:</string>
     <string name="txt_chaines">Chaines:</string>
-    <string name="txt_coupsRestants"/>
+    <string name="txt_coupsRestants">Coups Restants:</string>
 
 </resources>

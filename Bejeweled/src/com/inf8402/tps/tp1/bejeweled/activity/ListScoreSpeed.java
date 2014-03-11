@@ -50,8 +50,7 @@ public class ListScoreSpeed extends Fragment {
 			topTenPlayers = new ArrayList<Player>();
 			
 		}
-		/*topTenPlayers = new ArrayList<Player>();
-		topTenPlayers.add(new Player("Bob",216,331));*/
+
 		playerAdapter = new PlayerAdapter(container.getContext(), topTenPlayers,IMenuService.SPEED_MODE);
 		
 		listView.setAdapter(playerAdapter);

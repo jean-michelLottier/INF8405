@@ -33,8 +33,8 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(PLAYER_PSEUDO, player.getPseudo());
 		contentValues.put(PLAYER_SCORE_SPEED_MODE, player.getScoreSpeedMode());
-		contentValues
-				.put(PLAYER_SCORE_TACTIC_MODE, player.getScoreTacticalMode());
+		contentValues.put(PLAYER_SCORE_TACTIC_MODE,
+				player.getScoreTacticalMode());
 		sqLiteDatabase.insert(PLAYER_TABLE_NAME, null, contentValues);
 	}
 
@@ -42,6 +42,22 @@ public class PlayerDao extends DAOBase implements IPlayerDAO {
 	public int deletePlayer(int playerID) {
 		return sqLiteDatabase.delete(PLAYER_TABLE_NAME, PLAYER_KEY + " = ?",
 				new String[] { String.valueOf(playerID) });
+	}
+
+	@Override
+	public void updatePlayer(Player player) {
+		if (player == null) {
+			return;
+		}
+
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(PLAYER_PSEUDO, player.getPseudo());
+		contentValues.put(PLAYER_SCORE_SPEED_MODE, player.getScoreSpeedMode());
+		contentValues.put(PLAYER_SCORE_TACTIC_MODE,
+				player.getScoreTacticalMode());
+
+		sqLiteDatabase.update(PLAYER_TABLE_NAME, contentValues, PLAYER_KEY
+				+ "=" + player.getPlayerID(), null);
 	}
 
 	@Override

@@ -7,13 +7,19 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.SystemClock;
 import android.support.v4.util.ArrayMap;
+import android.view.View;
 import android.widget.Chronometer;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.activity.GameActivity;
+import com.inf8402.tps.tp1.bejeweled.activity.IActivity;
 import com.inf8402.tps.tp1.bejeweled.dao.Item;
 
 public class GameService implements IGameService {
@@ -26,15 +32,27 @@ public class GameService implements IGameService {
 	private boolean hasChain;
 	private boolean gamePaused;
 	private boolean isCombinationFound;
+	private boolean chronoIsRunning;
+	private boolean gameStart;
 	private int points = 0;
 	private int bonus = 0;
 	private int score = 0;
 	private long stopTime = GameActivity.LIMIT_TIME;
 	private long elapsedTime = 0;
 	private Context context;
+	private boolean isSpeedMode;
 
-	public GameService(Context c) {
+	public boolean isGameStart() {
+		return gameStart;
+	}
+
+	public void setGameStart(boolean gameStart) {
+		this.gameStart = gameStart;
+	}
+
+	public GameService(Context c, boolean b) {
 		this.setContext(c);
+		this.isSpeedMode = b;
 	}
 
 	@Override
@@ -60,7 +78,10 @@ public class GameService implements IGameService {
 	}
 
 	public void pauseChrono() {
-		timer.stop();
+		if (isSpeedMode) {
+			timer.stop();
+			chronoIsRunning = false;
+		}
 	}
 
 	public void stopChrono() {
@@ -69,8 +90,11 @@ public class GameService implements IGameService {
 	}
 
 	public void startChrono() {
-		timer.setBase(SystemClock.elapsedRealtime() - elapsedTime * 1000);
-		timer.start();
+		if (isSpeedMode) {
+			timer.setBase(SystemClock.elapsedRealtime() - elapsedTime * 1000);
+			timer.start();
+			chronoIsRunning = true;
+		}
 	}
 
 	public long getTimeChrono() {
@@ -355,13 +379,17 @@ public class GameService implements IGameService {
 			combination.addItemVisited(item);
 			combination = findCombination(items, item, combination);
 			ArrayList<Item> result = combination.getCombination();
+
+			if (!result.isEmpty()) {
+				this.bonus += result.size() * GameActivity.V_BONUS;
+			}
+
 			if (!result.isEmpty()) {
 				this.isCombinationFound = true;
 				for (Item current : result) {
 					int position = translateCoordByPosition(current
 							.getCoordinate());
 					current.setState(Item.DELETED);
-					;
 					items.set(position, current);
 				}
 				break;
@@ -656,37 +684,50 @@ public class GameService implements IGameService {
 				}
 			}
 
-			if ((movementX.size() == 5 && movementY.size() == 3)
-					|| (movementX.size() == 3 && movementY.size() == 5)
-					|| (movementX.size() == 4 && movementY.size() == 3)
-					|| (movementX.size() == 3 && movementY.size() == 4)
-					|| (movementX.size() == 3 && movementY.size() == 3)) {
+			// if ((movementX.size() == 5 && movementY.size() == 3)
+			// || (movementX.size() == 3 && movementY.size() == 5)
+			// || (movementX.size() == 4 && movementY.size() == 3)
+			// || (movementX.size() == 3 && movementY.size() == 4)
+			// || (movementX.size() == 3 && movementY.size() == 3)) {
+			// combination.addAll(movementX);
+			// for (Item current : movementY) {
+			// if (!combination.contains(current)) {
+			// combination.add(current);
+			// }
+			// }
+			// } else if (movementX.size() == 5 && movementY.size() < 3) {
+			// combination.addAll(movementX);
+			// } else if (movementX.size() < 3 && movementY.size() == 5) {
+			// combination.addAll(movementY);
+			// } else if (movementX.size() == 4 && movementY.size() < 3) {
+			// combination.addAll(movementX);
+			// } else if (movementX.size() < 3 && movementY.size() == 4) {
+			// combination.addAll(movementY);
+			// } else if (movementX.size() == 3 && movementY.size() < 3) {
+			// combination.addAll(movementX);
+			// } else if (movementX.size() < 3 && movementY.size() == 3) {
+			// combination.addAll(movementY);
+			// }
+
+			if ((movementX.size() >= 3 && movementY.size() >= 3)) {
 				combination.addAll(movementX);
 				for (Item current : movementY) {
 					if (!combination.contains(current)) {
 						combination.add(current);
 					}
 				}
-			} else if (movementX.size() == 5 && movementY.size() < 3) {
+			} else if ((movementX.size() >= 3 && movementY.size() < 3)) {
 				combination.addAll(movementX);
-			} else if (movementX.size() < 3 && movementY.size() == 5) {
-				combination.addAll(movementY);
-			} else if (movementX.size() == 4 && movementY.size() < 3) {
-				combination.addAll(movementX);
-			} else if (movementX.size() < 3 && movementY.size() == 4) {
-				combination.addAll(movementY);
-			} else if (movementX.size() == 3 && movementY.size() < 3) {
-				combination.addAll(movementX);
-			} else if (movementX.size() < 3 && movementY.size() == 3) {
+			} else if ((movementX.size() < 3 && movementY.size() >= 3)) {
 				combination.addAll(movementY);
 			}
-
 			return combination;
 		}
 	}
 
 	@Override
 	public void reinitialize() {
+		gameStart = true;
 		chaines = 0;
 		hasChain = false;
 		gamePaused = false;
@@ -695,10 +736,10 @@ public class GameService implements IGameService {
 		bonus = 0;
 		score = 0;
 		elapsedTime = 0;
-		Activity activity = (Activity) context;
+		//Activity activity = (Activity) context;
 		// Chronometer chronometer = (Chronometer)
 		// activity.findViewById(R.id.Game_chrono);
-		TextView nbrRestant = (TextView) activity
+		/*TextView nbrRestant = (TextView) activity
 				.findViewById(R.id.Game_coupsRestants);
 		TextView chaines = (TextView) activity.findViewById(R.id.Game_chaines);
 		TextView score = (TextView) activity.findViewById(R.id.Game_score);
@@ -709,8 +750,69 @@ public class GameService implements IGameService {
 		score.setText("0");
 		points.setText(" ");
 		bonus.setText(" ");
-		startChrono();
+		startChrono();*/
 		itemsGrid = initGrid();
 
+	}
+
+	@Override
+	public void resumePause() {
+		// TODO Auto-generated method stub
+		this.startChrono();
+		Activity activity = (Activity) context;
+		ImageView pause = (ImageView) activity.findViewById(R.id.pauselayout);
+		GridView grid = (GridView) activity.findViewById(R.id.gridViewItems);
+		pause.setVisibility(View.GONE);
+		grid.setVisibility(View.VISIBLE);
+
+	}
+	private void setPauseBackground(ImageView v)
+	{
+		if(gameStart)
+		{
+			if(isSpeedMode)
+				v.setImageResource(PAUSE_SPEED_LAYOUT);
+			else
+				v.setImageResource(PAUSE_TACTIC_LAYOUT);
+		}
+		else
+			v.setImageResource(PAUSE_NORMAL_LAYOUT);
+	}
+	@Override
+	public void onPause() {
+
+		this.pauseChrono();
+		Activity activity = (Activity) context;
+		ImageView pause = (ImageView) activity.findViewById(R.id.pauselayout);
+		setPauseBackground(pause);
+		GridView grid = (GridView) activity.findViewById(R.id.gridViewItems);
+		pause.setVisibility(View.VISIBLE);
+		grid.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		gameStart = true;
+		chaines = 0;
+		hasChain = false;
+		gamePaused = false;
+		isCombinationFound = false;
+		points = 0;
+		bonus = 0;
+		score = 0;
+		elapsedTime = 0;
+		itemsGrid = initGrid();
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		gameStart = false;
+		Activity activity = (Activity) context;
+		ImageView button_recommencer = (ImageView) activity.findViewById(R.id.Game_recommencer);
+		ImageView button_quitter = (ImageView) activity.findViewById(R.id.Game_quitter);
+		button_recommencer.setImageResource(R.color.transparent);
+		button_quitter.setImageResource(R.color.transparent);
 	}
 }

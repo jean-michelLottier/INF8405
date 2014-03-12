@@ -15,6 +15,8 @@ import com.inf8402.tps.tp1.bejeweled.service.IMenuService;
 
 public abstract class IActivity extends FragmentActivity {
 
+	public static final int REQUEST_EXIT = 1;
+	public static final int RESULT_QUIT = 1;
 	protected IMenuService menuService;
 
 	protected long pressStartTime = 0;
@@ -82,7 +84,6 @@ public abstract class IActivity extends FragmentActivity {
 			return true;
 		}
 	};
-
 	abstract void buttonManager(int id);
 
 	protected int distance(float x1, float y1, float x2, float y2) {

@@ -102,9 +102,9 @@ public class PlayerAdapter extends BaseAdapter{
 				tabPlayer.setTypeface(tf2);
 				tabScore.setTypeface(tf2);
 				tabPlayer.setTextColor(context.getResources().getColor(R.color.gold));
-				tabPlayer.setTextSize(tabPlayer.getTextSize() + 5);
+				//tabPlayer.setTextSize(tabPlayer.getTextSize() + 5);
 				tabScore.setTextColor(context.getResources().getColor(R.color.gold));
-				tabScore.setTextSize(tabScore.getTextSize() + 5);
+				//tabScore.setTextSize(tabScore.getTextSize() + 5);
 			}
 		}
 		else

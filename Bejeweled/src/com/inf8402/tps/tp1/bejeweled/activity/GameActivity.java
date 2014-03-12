@@ -3,10 +3,14 @@ package com.inf8402.tps.tp1.bejeweled.activity;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -40,12 +44,12 @@ import com.inf8402.tps.tp1.bejeweled.service.MenuService;
  * @author Kevin
  * 
  */
-public class GameActivity extends IActivity {
+public class GameActivity extends IActivity implements KeyListener{
 
 	public static final String KEY_SPEED_MODE = "speed_mode";
 	public static final String KEY_TACTIC_MODE = "tactic_mode";
 	public static final int LIMIT_MOVE = 10;
-	public static final long LIMIT_TIME = 10;
+	public static final long LIMIT_TIME = 60;
 	public static final int V_POINTS = 100;
 	public static final int V_BONUS = 50;
 
@@ -63,6 +67,8 @@ public class GameActivity extends IActivity {
 	private LinearLayout grpCoupsRestants;
 	private LinearLayout buttons;
 	private GridView gridView;
+	private ImageView button_recommencer;
+	private ImageView button_quitter;
 
 	public static IGameService gameService = null;
 	private GridAdapter gridAdapter;
@@ -75,6 +81,7 @@ public class GameActivity extends IActivity {
 
 	// Animations
 	private Animation fadeoutPoints;
+	private Animation fadeoutBonus;
 
 	private AnimationListener fadeoutListener = new AnimationListener() {
 
@@ -82,7 +89,10 @@ public class GameActivity extends IActivity {
 		public void onAnimationEnd(Animation animation) {
 			// TODO Auto-generated method stub
 			if (fadeoutPoints.hasStarted()) {
-				points.setText(" ");
+				points.setVisibility(View.INVISIBLE);
+			}
+			if (fadeoutBonus.hasStarted()) {
+				bonus.setVisibility(View.INVISIBLE);
 			}
 			animation.reset();
 
@@ -106,7 +116,7 @@ public class GameActivity extends IActivity {
 
 	public IGameService getGameService() {
 		if (gameService == null) {
-			gameService = new GameService(this);
+			gameService = new GameService(this,isSpeedMode);
 		}
 		return gameService;
 	}
@@ -130,17 +140,25 @@ public class GameActivity extends IActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+		Bundle bundle = getIntent().getExtras();
+		isSpeedMode = bundle.getBoolean(KEY_SPEED_MODE, false);
+		isTacticMode = bundle.getBoolean(KEY_TACTIC_MODE, false);
+		
+		gameService = getGameService();
+		gameService.setContext(this);
+		
 		// Animations
 		fadeoutPoints = AnimationUtils.loadAnimation(getApplicationContext(),
 				R.anim.fade_out);
 		fadeoutPoints.setAnimationListener(fadeoutListener);
+		fadeoutBonus = AnimationUtils.loadAnimation(getApplicationContext(),
+				R.anim.fade_out);
+		fadeoutBonus.setAnimationListener(fadeoutListener);
 
 		// --------
 
-		Bundle bundle = getIntent().getExtras();
-		isSpeedMode = bundle.getBoolean(KEY_SPEED_MODE, false);
-		isTacticMode = bundle.getBoolean(KEY_TACTIC_MODE, false);
-
+		button_recommencer = (ImageView) findViewById(R.id.Game_recommencer);
+		button_quitter = (ImageView) findViewById(R.id.Game_quitter);
 		pause_button = (ImageView) findViewById(R.id.Game_pause);
 		chaines = (TextView) findViewById(R.id.Game_nbrChaines);
 		txt_chaines = (TextView) findViewById(R.id.Game_chaines);
@@ -171,13 +189,10 @@ public class GameActivity extends IActivity {
 		nbrRestant.setTypeface(gemina);
 		restant.setTypeface(gemina);
 		txt_chrono.setTypeface(gemina);
+			
+		points.setVisibility(View.INVISIBLE);
+		bonus.setVisibility(View.INVISIBLE);
 
-		points.setText(" ");
-		bonus.setText(" ");
-		chaines.setText("0");
-
-		points.setTextSize((float) ((float) score.getTextSize() / 1.3));
-		bonus.setTextSize((float) ((float) score.getTextSize() / 1.8));
 
 		chrono.setTextColor(getResources().getColor(R.color.chrono));
 		txt_chrono.setTextColor(getResources().getColor(R.color.white));
@@ -188,62 +203,67 @@ public class GameActivity extends IActivity {
 		grpChrono.setVisibility(View.GONE);
 		grpCoupsRestants.setVisibility(View.GONE);
 
-		restant.setTypeface(gemina);
+		
+		score.setText(String.valueOf(gameService.getScore()));
+		chaines.setText(String.valueOf(gameService.getChain()));
+		gameService.setChrono(chrono);
+		if (isSpeedMode) {
+			grpChrono.setVisibility(View.VISIBLE);
+			gameService.getChrono().setOnChronometerTickListener(
+					chronoListener);
+			gameService.startChrono();
+			chrono.setText(String.valueOf((int)(LIMIT_TIME - gameService.getTimeChrono())));
+			gameService.getChrono().setText(String.valueOf((int)(LIMIT_TIME - gameService.getTimeChrono())));
+		} else if (isTacticMode) {
+			grpCoupsRestants.setVisibility(View.VISIBLE);
 
-		if (GameActivity.gameService != null) {
-			gameService = getGameService();
-			score.setText(String.valueOf(gameService.getScore()));
-			chaines.setText(String.valueOf(gameService.getChain()));
-			if (isSpeedMode) {
-				grpChrono.setVisibility(View.VISIBLE);
-				gameService.setChrono(chrono);
-				gameService.getChrono().setOnChronometerTickListener(
-						chronoListener);
-				gameService.startChrono();
-			} else if (isTacticMode) {
-				grpCoupsRestants.setVisibility(View.VISIBLE);
-
-				nbrRestant
-						.setText(String.valueOf(gameService.getNbrMoveLeft()));
-			}
-
-		} else {
-			gameService = getGameService();
-			score.setText("0");
-			chaines.setText("0");
-			gameService.setGridItems(gameService.initGrid());
-			if (isSpeedMode) {
-
-				grpChrono.setVisibility(View.VISIBLE);
-				gameService.setChrono(chrono);
-				gameService.initializeChrono();
-				gameService.getChrono().setOnChronometerTickListener(
-						chronoListener);
-
-				gameService.startChrono();
-			} else if (isTacticMode) {
-				grpCoupsRestants.setVisibility(View.VISIBLE);
-
-				nbrRestant.setText(String.valueOf(LIMIT_MOVE));
-			}
+			nbrRestant
+					.setText(String.valueOf(gameService.getNbrMoveLeft()));
 		}
 
 		gridView = (GridView) findViewById(R.id.gridViewItems);
+
+		
+		//Mettre le jeu en Pause
+		gameService.pauseChrono();
+		gameService.setGamePaused(true);
+		ImageView pause = (ImageView) findViewById(R.id.pauselayout);
+		if(gameService.isGameStart()){
+
+			if(isSpeedMode)
+				pause.setImageResource(IGameService.PAUSE_SPEED_LAYOUT);
+			else
+				pause.setImageResource(IGameService.PAUSE_TACTIC_LAYOUT);
+				
+			pause_button.setBackgroundResource(R.drawable.game_start);
+		}
+		else{
+			pause.setImageResource(IGameService.PAUSE_NORMAL_LAYOUT);
+			pause_button.setBackgroundResource(R.drawable.game_play);
+		}
+		gridView.setVisibility(View.GONE);
+		pause.setVisibility(View.VISIBLE);
+		button_recommencer.setImageResource(R.color.transparent);
+		button_recommencer.getBackground().setColorFilter(R.color.black_shadow, PorterDuff.Mode.SRC_OVER);
+		button_quitter.setImageResource(R.color.transparent);
+		button_quitter.getBackground().setColorFilter(R.color.black_shadow, PorterDuff.Mode.SRC_OVER );
 
 		gridAdapter = new GridAdapter(this, gameService.getGridItems());
 		gridView.setAdapter(gridAdapter);
 
 		buttons = (LinearLayout) findViewById(R.id.Game_buttons);
 		buttons.setOnTouchListener(multipleButtonsListener);
-
+		
 		gridView.setOnTouchListener(onTouchListener);
-
+		if(gameService.isGameStart()){
+			gameService.setGameStart(false);
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.game, menu);
+		//getMenuInflater().inflate(R.menu.game, menu);
 		return true;
 	}
 
@@ -355,21 +375,10 @@ public class GameActivity extends IActivity {
 						gameService.getGridItems().get(startPosition),
 						direction);
 				gameService.setGridItems(items);
-
 				if (gameService.hasChain()) {
 					points.setText("+" + gameService.getPoints());
-					points.setAnimation(fadeoutPoints);
-					if (gameService.getBonus() > 0)
-						bonus.setText("+" + gameService.getBonus());
-					score.setText(String.valueOf(gameService.getScore()));
-					gameService.moveUpdate();
-					if (isTacticMode)
-						nbrRestant.setText(String.valueOf(gameService
-								.getNbrMoveLeft()));
-					chaines.setText(String.valueOf(gameService.getChain()));
-					if (gameService.getChain() == LIMIT_MOVE) {
-						endOfGame();
-					}
+					points.setVisibility(View.VISIBLE);
+					points.startAnimation(fadeoutPoints);
 				}
 
 				items = gameService.replaceItemsDeleted(items);
@@ -379,12 +388,30 @@ public class GameActivity extends IActivity {
 				while (isNewCombinationCreated) {
 					items = gameService.researchCombinationIntoGrid(items);
 					gridAdapter.notifyDataSetChanged();
-
 					if (!gameService.isCombinationFound()) {
 						isNewCombinationCreated = false;
 					} else {
 						items = gameService.replaceItemsDeleted(items);
 						gridAdapter.notifyDataSetChanged();
+					}
+				}
+				if (gameService.hasChain()) 
+				{
+					if (gameService.getBonus() > 0)
+					{
+						bonus.setText("+" + gameService.getBonus());
+						bonus.setVisibility(View.VISIBLE);
+						bonus.startAnimation(fadeoutBonus);
+					}
+					score.setText(String.valueOf(gameService.getScore()));
+
+					gameService.moveUpdate();
+					if (isTacticMode)
+						nbrRestant.setText(String.valueOf(gameService
+								.getNbrMoveLeft()));
+					chaines.setText(String.valueOf(gameService.getChain()));
+					if (gameService.getChain() == LIMIT_MOVE) {
+						endOfGame();
 					}
 				}
 			}
@@ -401,28 +428,50 @@ public class GameActivity extends IActivity {
 				gameService.getScore());
 	}
 
+	private void pause(){
+		gameService.setGamePaused(true);
+		gameService.onPause();
+		button_recommencer.setImageResource(R.color.transparent);
+		button_recommencer.getBackground().setColorFilter(R.color.black_shadow, PorterDuff.Mode.SRC_OVER );
+		button_quitter.setImageResource(R.color.transparent);
+		button_quitter.getBackground().setColorFilter(R.color.black_shadow, PorterDuff.Mode.SRC_OVER );
+		pause_button.setBackgroundResource(R.drawable.game_play);
+	}
+	private void resumePause(){
+
+	    gameService.setGamePaused(false);
+		gameService.resumePause();
+		button_recommencer.setImageResource(R.drawable.button_menu);
+		button_recommencer.getBackground().clearColorFilter();
+		button_quitter.setImageResource(R.drawable.button_menu);
+		button_quitter.getBackground().clearColorFilter();
+		pause_button.setBackgroundResource(R.drawable.game_pause);
+	}
 	@Override
 	void buttonManager(int id) {
 		// TODO Auto-generated method stub
 
 		switch (id) {
 		case R.id.Game_pause:
-			gameService.setGamePaused(!gameService.isGamePaused());
-			if (gameService.isGamePaused()) {
-				gameService.pauseChrono();
-				pause_button.setBackgroundResource(R.drawable.game_play);
+			if (!gameService.isGamePaused()) {
+				pause();
 			} else {
-				gameService.startChrono();
-				pause_button.setBackgroundResource(R.drawable.game_play);
+				resumePause();
 			}
 			break;
 		case R.id.Game_quitter:
-			menuService = getMenuService();
-			menuService.goQuitGame();
+			if (!gameService.isGamePaused()) {
+				gameService.onPause();
+				menuService = getMenuService();
+				menuService.goQuitGame();
+			}
 			break;
 		case R.id.Game_recommencer:
-			menuService = getMenuService();
-			menuService.goRestartGame();
+			if (!gameService.isGamePaused()) {
+				gameService.onPause();
+				menuService = getMenuService();
+				menuService.goRestartGame();
+			}
 			break;
 		default:
 			break;
@@ -435,5 +484,53 @@ public class GameActivity extends IActivity {
 
 	public void setGridAdapter(GridAdapter gridAdapter) {
 		this.gridAdapter = gridAdapter;
+	}
+	@Override
+	public void onPause() {
+	    super.onPause(); 
+	    pause();
+	}
+	
+	@Override
+	public void clearMetaKeyState(View view, Editable content, int states) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getInputType() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean onKeyDown(View view, Editable text, int keyCode,
+			KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_APP_SWITCH) {
+			pause();
+			return true;
+		}
+		// TODO Auto-generated method stub
+	    return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onKeyOther(View view, Editable text, KeyEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onKeyUp(View view, Editable text, int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		gameService.onPause();
+		menuService = getMenuService();
+		menuService.goQuitGame();
+	return;
 	}
 }

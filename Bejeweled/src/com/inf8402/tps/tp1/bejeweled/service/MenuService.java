@@ -3,6 +3,8 @@ package com.inf8402.tps.tp1.bejeweled.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import com.inf8402.tps.tp1.bejeweled.activity.GameActivity;
 import com.inf8402.tps.tp1.bejeweled.activity.GameDialogFragment;
 import com.inf8402.tps.tp1.bejeweled.activity.GameModeActivity;
 import com.inf8402.tps.tp1.bejeweled.activity.GameScoreActivity;
+import com.inf8402.tps.tp1.bejeweled.activity.IActivity;
 import com.inf8402.tps.tp1.bejeweled.dao.IPlayerDAO;
 import com.inf8402.tps.tp1.bejeweled.dao.Player;
 import com.inf8402.tps.tp1.bejeweled.dao.PlayerDao;
@@ -78,19 +81,21 @@ public class MenuService implements IMenuService {
 		Player player = playerDAO.findPlayerByPseudo(pseudo);
 		if (player == null) {
 			player = new Player(pseudo, 0, 0);
-			playerDAO.addPlayer(player);
+			//playerDAO.addPlayer(player);
 		}
 
 		return player;
 	}
 
 	@Override
-	public void initSession() {
+	public SessionManager initSession() {
 		session = new SessionManager(context);
+		return session;
 	}
 
 	@Override
 	public void quitSession() {
+		session.setHasStarted(false);
 		session.clearSession();
 	}
 
@@ -113,12 +118,15 @@ public class MenuService implements IMenuService {
 
 	@Override
 	public void goPlayGame() {
+		initSession();
+		session.setHasStarted(false);
 		intent = new Intent(context, GameModeActivity.class);
-		context.startActivity(intent);
+		((Activity)context).startActivityForResult(intent, IActivity.REQUEST_EXIT);
 	}
 
 	@Override
 	public void goBackFromMode() {
+		this.quitSession();
 		activity.finish();
 	}
 
@@ -132,7 +140,7 @@ public class MenuService implements IMenuService {
 		// TODO Auto-generated method stub
 		intent = new Intent(context, GameActivity.class);
 		intent.putExtra(GameActivity.KEY_SPEED_MODE, true);
-		context.startActivity(intent);
+		((Activity)context).startActivityForResult(intent, IActivity.REQUEST_EXIT);
 
 	}
 
@@ -141,7 +149,7 @@ public class MenuService implements IMenuService {
 		// TODO Auto-generated method stub
 		intent = new Intent(context, GameActivity.class);
 		intent.putExtra(GameActivity.KEY_TACTIC_MODE, true);
-		context.startActivity(intent);
+		((Activity)context).startActivityForResult(intent, IActivity.REQUEST_EXIT);
 	}
 
 	@Override
@@ -174,8 +182,16 @@ public class MenuService implements IMenuService {
 			}
 		}
 
-		playerDAO = getPlayerDAO();
-		playerDAO.updatePlayer(player);
+		
+		if(score !=0 || actualBestScore !=0 )
+		{
+			playerDAO = getPlayerDAO();
+			if (playerDAO.findPlayerByPseudo(player.getPseudo()) == null) {
+				playerDAO.addPlayer(player);
+			}
+			else
+				playerDAO.updatePlayer(player);
+		}
 
 		GameDialogFragment dialog = new GameDialogFragment();
 		Bundle args = new Bundle();
@@ -183,7 +199,7 @@ public class MenuService implements IMenuService {
 				GameDialogFragment.BOX_DIALOG_ENDGAME);
 		args.putString(GameDialogFragment.BOX_DIALOG_PSEUDO, player.getPseudo());
 		args.putInt(GameDialogFragment.BOX_DIALOG_CURRENTSCORE, score);
-		if (isSpeedMode) {
+		/*if (isSpeedMode) {
 			args.putInt(GameDialogFragment.BOX_DIALOG_BESTSCORE,
 					player.getScoreSpeedMode());
 			args.putInt(GameDialogFragment.BOX_DIALOG_RANK,
@@ -193,8 +209,18 @@ public class MenuService implements IMenuService {
 					player.getScoreTacticalMode());
 			args.putInt(GameDialogFragment.BOX_DIALOG_RANK,
 					getPlayerRank(player.getPlayerID(), TACTIC_MODE));
+		}*/
+		if (isSpeedMode) {
+			args.putInt(GameDialogFragment.BOX_DIALOG_BESTSCORE,
+					actualBestScore);
+			args.putInt(GameDialogFragment.BOX_DIALOG_RANK,
+					getPlayerRank(player.getPlayerID(), SPEED_MODE));
+		} else {
+			args.putInt(GameDialogFragment.BOX_DIALOG_BESTSCORE,
+					actualBestScore);
+			args.putInt(GameDialogFragment.BOX_DIALOG_RANK,
+					getPlayerRank(player.getPlayerID(), TACTIC_MODE));
 		}
-
 		dialog.setArguments(args);
 		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
 	}
@@ -258,5 +284,16 @@ public class MenuService implements IMenuService {
 		dialog.setArguments(args);
 		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
 
+	}
+
+	@Override
+	public void goRegisterInit() {
+		// TODO Auto-generated method stub
+		DialogFragment dialog = new GameDialogFragment();
+		Bundle args = new Bundle();
+		args.putInt(GameDialogFragment.BOX_DIALOG_KEY,
+				GameDialogFragment.BOX_DIALOG_REGISTER);
+		dialog.setArguments(args);
+		dialog.show(activity.getFragmentManager(), "GameDialogFragment");
 	}
 }

@@ -4,5 +4,14 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="image_menu_margin">5dp</dimen>
+    
+    <dimen name="info_joueur">20sp</dimen>
+    <dimen name="info_pseudo">35sp</dimen>
+    
+    <dimen name="info_jeu">30sp</dimen>
+    <dimen name="limiteur">33sp</dimen>
+    <dimen name="points">30sp</dimen>
+    <dimen name="bonus">25sp</dimen>
+    <dimen name="score">35sp</dimen>
 
 </resources>

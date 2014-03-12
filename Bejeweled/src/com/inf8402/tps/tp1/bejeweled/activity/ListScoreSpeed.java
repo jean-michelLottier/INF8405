@@ -22,16 +22,6 @@ public class ListScoreSpeed extends Fragment {
 	private ListView listView;
 	private PlayerAdapter playerAdapter;
 	private IMenuService menuService;
-	/*public IMenuService getMenuService() {
-		if (menuService == null) {
-			menuService = new MenuService(getActivity());
-		}
-		return menuService;
-	}
-
-	public void setMenuService(IMenuService menuService) {
-		this.menuService = menuService;
-	}*/
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

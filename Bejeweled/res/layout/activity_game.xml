@@ -6,13 +6,12 @@
     android:orientation="vertical"
     android:gravity="center"
     tools:context=".GameActivity" >
-	
     <LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-	        android:background="@drawable/background_border"
-	        android:orientation="vertical"
-	        android:layout_weight="8" >
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+        android:background="@drawable/background_border"
+        android:orientation="vertical"
+        android:layout_weight="8" >
 	    <LinearLayout 
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
@@ -32,19 +31,22 @@
 	
 	            <TextView
 	                android:id="@+id/Game_points"
-	                android:layout_width="wrap_content"
+	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
 	                android:text="+100"
-	            	android:textSize="15sp"
-	                android:textColor="@color/txt_points" />
+				    android:textSize="@dimen/points"
+					android:gravity="right"
+	                android:textColor="@color/txt_points"
+	        		android:layout_weight="8" />
 	
 	            <TextView
 	                android:id="@+id/Game_bonus"
-	                android:layout_width="wrap_content"
+	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
 	                android:text="+50"
-	           		android:textSize="11sp"
-	                android:textColor="@color/txt_bonus" />
+				    android:textSize="@dimen/bonus"
+	                android:textColor="@color/txt_bonus"
+	       			android:layout_weight="8" />
 	        </LinearLayout>
 	
 	        <TextView 
@@ -52,19 +54,21 @@
 	            android:layout_below="@+id/Game_grpPoints"
 	            android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
+		    	android:text="5000"
 	            android:layout_weight="2"
-			    style="@style/numberSizeJeu"
+				android:textSize="@dimen/score"
 	            android:textColor="@color/txt_score" />
 	        
 	    </LinearLayout>
 		<TextView style="@style/divider" />
 		<TextView style="@style/divider" />
 		<TextView style="@style/divider" />
-	    <RelativeLayout 
+	    <LinearLayout 
 	        
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
-		    android:gravity="center_horizontal"
+		    android:orientation="horizontal"
+		    android:gravity="center_vertical"
 	        android:layout_weight="8.5"
 	        android:background="@drawable/background_interface"
 	        >
@@ -72,13 +76,13 @@
 		        android:id="@+id/Game_grpModeInfo"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginTop="10dp"
-		 		android:layout_alignParentTop="true"
-		 		android:layout_centerHorizontal="true" >
+				android:layout_weight="1"
+		 		android:gravity="center_horizontal"  >
 	            <LinearLayout
 		            android:id="@+id/Game_grpChrono"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			        android:visibility="gone"
 				 	android:orientation="vertical"
 				 	android:gravity="center_horizontal" >
 				    <TextView 
@@ -86,12 +90,12 @@
 				        android:layout_width="wrap_content"
 				 		android:layout_height="wrap_content"
 			        	android:text="@string/txt_timer"
-			        	style="@style/textSizeJeu" />
+				        android:textSize="@dimen/info_jeu" />
 				    <Chronometer
 				        android:id="@+id/Game_chrono"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
-				        style="@style/numberSizeJeu"/>   
+				        android:textSize="@dimen/limiteur"/>   
 			    </LinearLayout>  
 			 		
 		        <LinearLayout
@@ -105,42 +109,42 @@
 				        android:layout_width="wrap_content"
 				 		android:layout_height="wrap_content"
 			        	android:text="@string/txt_coupsRestants"
-			        	style="@style/textSizeJeu" />
+				        android:textSize="@dimen/info_jeu" />
 				    
 				    <TextView 
 				        android:id="@+id/Game_nbrCoupsRestants"
 				        android:layout_width="wrap_content"
 				 		android:layout_height="wrap_content"
-			        	style="@style/numberSizeJeu" />
+				 		android:text="00"
+				        android:textSize="@dimen/limiteur" />
 			    </LinearLayout>  
 			</LinearLayout>  
 		    <LinearLayout
 	            android:id="@+id/Game_grpChaines"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-			 	android:layout_alignParentBottom="true"
-			 	android:layout_marginBottom="10dp"
 			 	android:orientation="horizontal"
-			 	android:layout_centerHorizontal="true" >
+				android:layout_weight="1"
+			 	android:gravity="center" >
 		        <TextView 
 			        android:id="@+id/Game_chaines"
 			        android:layout_width="wrap_content"
 			 		android:layout_height="wrap_content"
 			        android:text="@string/txt_chaines"
-			        style="@style/textSizeJeu"
+				    android:textSize="@dimen/info_jeu"
 			        android:textColor="@color/txt_chaines" />
 			    <TextView 
 			        android:id="@+id/Game_nbrChaines"
 			        android:layout_width="wrap_content"
 			 		android:layout_height="wrap_content"
 			        android:text="XXX"
-			        style="@style/textSizeJeu"
+				    android:textSize="@dimen/info_jeu"
 			        android:textColor="@color/txt_chaines" />
 		    </LinearLayout>   
 		    
 	
 	        
-	    </RelativeLayout>
+	    </LinearLayout>
     
     </LinearLayout>
 	<TextView style="@style/divider" />
@@ -150,7 +154,17 @@
         android:layout_height="match_parent"
         android:numColumns="8"
         android:stretchMode="columnWidth"
+    	android:listSelector="@android:color/transparent"
         android:background="@drawable/background_grid"
+        android:layout_weight="4" />
+    <ImageView
+        android:id="@+id/pauselayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		android:visibility="gone"
+		android:scaleType="fitXY"
+        android:background="@color/black_shadow"
+        android:src="@drawable/background_liste_score"
         android:layout_weight="4" />
     
 	<TextView style="@style/divider" />

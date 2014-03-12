@@ -7,7 +7,7 @@ import android.content.SharedPreferences.Editor;
 public class SessionManager {
 	SharedPreferences sharedPreferences;
 	Editor editor;
-	Context context;
+	private Context context;
 	int PRIVATE_MODE = 0;
 
 	private static final String PREF_NAME = "PlayerSession";
@@ -16,9 +16,26 @@ public class SessionManager {
 	private static final String KEY_SCORE_SPEED_MODE = "scoreSpeedMode";
 	private static final String KEY_SCORE_TACTIC_MODE = "scoreTacticMode";
 	private static final String KEY_RANK = "rank";
+	private static final String KEY_START = "start";
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
+	}
+
+	public boolean hasStarted() {
+		return sharedPreferences.getBoolean(KEY_START, false);
+	}
+
+	public void setHasStarted(boolean start) {
+		editor.putBoolean(KEY_START, start);
+	}
 
 	public SessionManager(Context context) {
-		this.context = context;
+		this.setContext(context);
 		sharedPreferences = context.getSharedPreferences(PREF_NAME,
 				PRIVATE_MODE);
 		editor = sharedPreferences.edit();
@@ -29,7 +46,7 @@ public class SessionManager {
 		editor.putString(KEY_PSEUDO, player.getPseudo());
 		editor.putInt(KEY_SCORE_SPEED_MODE, player.getScoreSpeedMode());
 		editor.putInt(KEY_SCORE_TACTIC_MODE, player.getScoreTacticalMode());
-
+		editor.putBoolean(KEY_START, true);
 		editor.commit();
 	}
 

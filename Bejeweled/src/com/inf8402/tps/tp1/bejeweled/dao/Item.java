@@ -19,7 +19,6 @@ public class Item {
 	private int state;
 	private ArrayList<Integer> coordinate;
 	private ArrayMap<String, ArrayList<Integer>> neighbors;
-	private boolean isDeleted;
 
 	public Item() {
 
@@ -29,18 +28,18 @@ public class Item {
 		this.itemID = item.getItemID();
 		this.coordinate = item.getCoordinate();
 		this.neighbors = item.getNeighbors();
-		this.isDeleted = false;
+		this.state = NORMAL;
 	}
 
 	public Item(int itemID) {
 		this.itemID = itemID;
-		this.isDeleted = false;
+		this.state = NORMAL;
 	}
 
 	public Item(int itemID, ArrayList<Integer> coordinate) {
 		this.itemID = itemID;
 		this.coordinate = coordinate;
-		this.isDeleted = false;
+		this.state = NORMAL;
 	}
 
 	public int getItemID() {

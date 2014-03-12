@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Intent;
 
 import com.inf8402.tps.tp1.bejeweled.dao.Player;
+import com.inf8402.tps.tp1.bejeweled.dao.SessionManager;
 import com.inf8402.tps.tp1.bejeweled.exception.BadInputParameterException;
 
 public interface IMenuService {
@@ -51,8 +52,10 @@ public interface IMenuService {
 	public void goBackFromMode();
 
 	public void goBackFromScore();
+	
+	public void goRegisterInit();
 
-	public void initSession();
+	public SessionManager initSession();
 
 	public void quitSession();
 

@@ -5,9 +5,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnKeyListener;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +56,9 @@ public class GameDialogFragment extends DialogFragment {
 	private static final String BOX_DIALOG_QUIT_MESSAGE = "Etes-vous sur de vouloir quitter l'application?";
 	private static final String BOX_DIALOG_BUTTON_YES = "OUI";
 	private static final String BOX_DIALOG_BUTTON_NO = "NON";
+	private static final String BOX_DIALOG_BUTTON_OK = "Ok";
+	private static final String BOX_DIALOG_BUTTON_BACK = "Retour";
+	private static final String BOX_DIALOG_BUTTON_CANCEL = "Annuler";
 
 	private static final String BOX_DIALOG_QUITGAME_MESSAGE = "Etes-vous sur de vouloir quitter l'application ou souhaitez vous changer de mode?";
 	private static final String BOX_DIALOG_BUTTON_QUIT = "Quitter";
@@ -76,6 +83,8 @@ public class GameDialogFragment extends DialogFragment {
 	private Intent intentMediaService;
 	private SessionManager session;
 
+	private View customView;
+	
 	public IMenuService getMenuService() {
 		if (menuService == null) {
 			menuService = new MenuService(getActivity());
@@ -94,6 +103,24 @@ public class GameDialogFragment extends DialogFragment {
 	public void setIntentMediaService(Intent intentMediaService) {
 		this.intentMediaService = intentMediaService;
 	}
+	
+	private OnKeyListener backListener = new OnKeyListener(){
+
+		@Override
+		public boolean onKey(DialogInterface dialog, int keycode, KeyEvent event) {
+			// TODO Auto-generated method stub
+			if(keycode == KeyEvent.KEYCODE_BACK)
+			{
+				GameModeActivity activity = (GameModeActivity) ((AlertDialog) dialog)
+						.getOwnerActivity();
+				activity.finish();
+				dismiss();
+				return true;
+			}
+			return false;
+		}
+		
+	};
 
 	/**
 	 * <p>
@@ -112,6 +139,8 @@ public class GameDialogFragment extends DialogFragment {
 			break;
 		case BOX_DIALOG_REGISTER:
 			alertDialog = initRegisterBoxDialog(alertDialog);
+			alertDialog.setOnKeyListener(backListener);
+			alertDialog.setOnShowListener(onShowListener);
 			break;
 		case BOX_DIALOG_ENDGAME:
 			int currentScore = getArguments().getInt(BOX_DIALOG_CURRENTSCORE);
@@ -145,6 +174,9 @@ public class GameDialogFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int which) {
 						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
 								.getOwnerActivity();
+
+
+						GameActivity.gameService.reinitialize();
 						activity.recreate();
 						dismiss();
 					}
@@ -154,7 +186,7 @@ public class GameDialogFragment extends DialogFragment {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						dismiss();
+						GameActivity.gameService.resumePause();
 					}
 				});
 
@@ -173,20 +205,25 @@ public class GameDialogFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int which) {
 						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
 								.getOwnerActivity();
+						activity.setResult(IActivity.RESULT_QUIT,null);
 						activity.finish();
-						Intent intent = new Intent(Intent.ACTION_MAIN);
-						intent.addCategory(Intent.CATEGORY_HOME);
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-						dismiss();
 					}
 				});
-		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
+		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,
 				BOX_DIALOG_BUTTON_MENU, new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						GameActivity.gameService.clear();
 						((AlertDialog) dialog).getOwnerActivity().finish();
+					}
+				});
+		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
+				BOX_DIALOG_BUTTON_CANCEL, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						GameActivity.gameService.resumePause();
 					}
 				});
 
@@ -198,9 +235,38 @@ public class GameDialogFragment extends DialogFragment {
 		alertDialog.setCanceledOnTouchOutside(false);
 		alertDialog.setTitle(BOX_DIALOG_ENDGAME_TITLE);
 		StringBuilder sb = new StringBuilder();
-		sb.append("Score : ").append(currentScore).append(" pts,").append("\t")
-				.append("Best score : ").append(bestScore).append(" pts,")
-				.append("\t").append("Rang : ").append(rank);
+		
+		int oldScore = bestScore;
+		String txt="";
+		boolean fail = false;
+		if(currentScore <= oldScore)
+			fail = true;
+		if (fail)
+		txt += "ID: "+pseudo+".\n\n";
+		txt += "Score: "+currentScore+" points.\n";
+		if (oldScore > 0)
+		{
+			if(currentScore > oldScore)
+			{
+				txt += "\nBravo!! Vous avez battu votre meilleur score de: "+oldScore+" points.\n";
+				txt += "\nNOUVEAU MEILLEUR SCORE ="+currentScore+" points.\n";
+				txt += "RANK: "+rank;
+					
+			}
+			else
+			{
+				txt += "Votre meilleur score: "+oldScore+" points.\n";
+				txt += "RANK: "+rank;
+			}
+		}
+		else
+		{
+			if(currentScore > 0)
+				txt += "RANK: "+rank;
+			else
+				txt += "RANK: --";
+		}
+		sb.append(txt);
 		// sb.append("\n\n").append(BOX_DIALOG_ENDGAME_MESSAGE);
 		alertDialog.setMessage(sb.toString());
 		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
@@ -213,9 +279,8 @@ public class GameDialogFragment extends DialogFragment {
 						// GameActivity.gameService.reinitialize();
 						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
 								.getOwnerActivity();
-						// activity.getGridAdapter().notifyDataSetChanged();
+						GameActivity.gameService.reinitialize();
 						activity.recreate();
-						dismiss();
 					}
 				});
 		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
@@ -223,6 +288,7 @@ public class GameDialogFragment extends DialogFragment {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						GameActivity.gameService.clear();
 						((AlertDialog) dialog).getOwnerActivity().finish();
 					}
 				});
@@ -233,16 +299,35 @@ public class GameDialogFragment extends DialogFragment {
 	private AlertDialog initRegisterBoxDialog(AlertDialog alertDialog) {
 		// TODO Auto-generated method stub
 		LayoutInflater inflater = getActivity().getLayoutInflater();
+		customView = inflater.inflate(R.layout.register_dialog, null);
+		alertDialog.setView(customView);
 
-		alertDialog.setView(inflater.inflate(R.layout.register_dialog, null));
 		alertDialog.setTitle(BOX_DIALOG_REGISTER_TITLE);
+
 		alertDialog.setCanceledOnTouchOutside(false);
-		alertDialog.show();
+		
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
+				BOX_DIALOG_BUTTON_OK, new DialogInterface.OnClickListener() {
 
-		Button button_ok = (Button) alertDialog
-				.findViewById(R.id.register_dialog_butt);
-		button_ok.setOnClickListener(onClickListener);
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,
+				BOX_DIALOG_BUTTON_BACK, new DialogInterface.OnClickListener() {
 
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						Activity activity = ((AlertDialog) dialog).getOwnerActivity();
+						session = new SessionManager(activity
+								.getApplicationContext());
+						session.setHasStarted(false);
+						activity.finish();
+					}
+
+		});
+		
 		return alertDialog;
 	}
 
@@ -282,69 +367,67 @@ public class GameDialogFragment extends DialogFragment {
 		return alertDialog;
 	}
 
-	private final OnClickListener onClickListener = new View.OnClickListener() {
-
+	
+	private OnShowListener onShowListener = new OnShowListener() {
+		
 		@Override
-		public void onClick(View v) {
+		public void onShow(DialogInterface dialog) {
 			// TODO Auto-generated method stub
-			switch (v.getId()) {
-			case R.id.register_dialog_butt:
-				View vParent = (View) v.getParent();
-				boolean isRegister = false;
-				EditText editText_pseudo = (EditText) vParent
-						.findViewById(R.id.register_dialog_pseudo);
+                Button button = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                	View vParent = customView;
+    				EditText editText_pseudo = (EditText) vParent
+    						.findViewById(R.id.register_dialog_pseudo);
+    				boolean isRegister = false;
+    				Editable pseudo = editText_pseudo.getText();
+    				if (pseudo == null || pseudo.toString().isEmpty()
+    						|| pseudo.toString().length() < 4) {
+    					Toast.makeText(v.getContext(), BOX_DIALOG_REGISTER_ALERT,
+    							Toast.LENGTH_SHORT).show();
+    				} else {
+    					menuService = getMenuService();
+    					Player player = new Player();
+    					try {
+    						player = menuService.startPlayerSession(pseudo
+    								.toString());
+    						session = new SessionManager(getActivity()
+    								.getApplicationContext());
+    						session.initPlayerSession(player);
+    						isRegister = true;
 
-				Editable pseudo = editText_pseudo.getText();
-				if (pseudo == null || pseudo.toString().isEmpty()
-						|| pseudo.toString().length() < 4) {
-					Toast.makeText(v.getContext(), BOX_DIALOG_REGISTER_ALERT,
-							Toast.LENGTH_SHORT).show();
-				} else {
-					menuService = getMenuService();
-					Player player = new Player();
-					try {
-						player = menuService.startPlayerSession(pseudo
-								.toString());
-						session = new SessionManager(getActivity()
-								.getApplicationContext());
-						session.initPlayerSession(player);
-						isRegister = true;
+    					} catch (BadInputParameterException e) {
+    						// TODO: handle exception
+    						Toast.makeText(v.getContext(),
+    								BOX_DIALOG_REGISTER_ALERT, Toast.LENGTH_SHORT)
+    								.show();
+    					}
+    				}
 
-					} catch (BadInputParameterException e) {
-						// TODO: handle exception
-						Toast.makeText(v.getContext(),
-								BOX_DIALOG_REGISTER_ALERT, Toast.LENGTH_SHORT)
-								.show();
-					}
-				}
+    				if (isRegister) {
+    					TextView textView = (TextView) getActivity().findViewById(
+    							R.id.textViewPseudo);
+    					textView.setText("ID: "+session.getPlayerPseudo());
+    					textView = (TextView) getActivity().findViewById(
+    							R.id.textViewScoreTitle);
+    					textView.setText(PLAYER_INF_SCORE_TITLE);
+    					textView = (TextView) getActivity().findViewById(
+    							R.id.textViewSpeedScore);
+    					textView.setText(PLAYER_INF_SPEED_SCORE
+    							+ session.getPlayerScoreSpeedMode());
+    					textView = (TextView) getActivity().findViewById(
+    							R.id.textViewTacticScore);
+    					textView.setText(PLAYER_INF_TACTIC_SCORE
+    							+ session.getPlayerScoreTacticMode());
+    					/*textView = (TextView) getActivity().findViewById(
+    							R.id.textViewSelectGameMode);
+    					textView.setText(PLAYER_INF_SELECT_MODE);*/
 
-				if (isRegister) {
-					TextView textView = (TextView) getActivity().findViewById(
-							R.id.textViewPseudo);
-					textView.setText(session.getPlayerPseudo());
-					textView = (TextView) getActivity().findViewById(
-							R.id.textViewScoreTitle);
-					textView.setText(PLAYER_INF_SCORE_TITLE);
-					textView = (TextView) getActivity().findViewById(
-							R.id.textViewSpeedScore);
-					textView.setText(PLAYER_INF_SPEED_SCORE
-							+ session.getPlayerScoreSpeedMode());
-					textView = (TextView) getActivity().findViewById(
-							R.id.textViewTacticScore);
-					textView.setText(PLAYER_INF_TACTIC_SCORE
-							+ session.getPlayerScoreTacticMode());
-					textView = (TextView) getActivity().findViewById(
-							R.id.textViewSelectGameMode);
-					textView.setText(PLAYER_INF_SELECT_MODE);
-
-					dismiss();
-				}
-
-				break;
-
-			default:
-				break;
-			}
-		}
+    					dismiss();
+    				}
+                }
+            });
+        }
 	};
 }

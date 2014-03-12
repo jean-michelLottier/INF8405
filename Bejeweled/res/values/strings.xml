@@ -28,5 +28,11 @@
     <string name="txt_timer">Timer:</string>
     <string name="txt_chaines">Chaines:</string>
     <string name="txt_coupsRestants">Coups Restants:</string>
+    <string name="mode_id">ID:</string>
+    <string name="mode_list_score">- Meilleurs Scores -</string>
+    <string name="mode_score_speed">Mode Vitesse:</string>
+    <string name="mode_score_tactic">Mode Tactique:</string>
+    <string name="mode_select">Veuillez selectionner un mode de jeu_</string>
+    
 
 </resources>

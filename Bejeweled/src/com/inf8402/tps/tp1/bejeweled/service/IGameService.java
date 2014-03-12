@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.SystemClock;
 import android.widget.Chronometer;
 
+import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.dao.Item;
 
 public interface IGameService {
@@ -15,7 +16,10 @@ public interface IGameService {
 	public static final String SOUTH = "south";
 	public static final String EAST = "east";
 	public static final String WEST = "west";
-
+	public static final int PAUSE_NORMAL_LAYOUT = R.drawable.pause_normal;
+	public static final int PAUSE_SPEED_LAYOUT = R.drawable.pause_speed;
+	public static final int PAUSE_TACTIC_LAYOUT = R.drawable.pause_tactic;
+	
 	public ArrayList<Item> initGrid();
 
 	/**
@@ -260,4 +264,15 @@ public interface IGameService {
 	public ArrayList<Item> researchCombinationIntoGrid(ArrayList<Item> items);
 
 	public void reinitialize();
+
+	public void onPause();
+	
+	public void resumePause();
+
+	public void init();
+	
+	public void clear();
+	public boolean isGameStart();
+
+	public void setGameStart(boolean gameStart);
 }

@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="-10dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/background_interface"
+            android:background="@drawable/background_selection_mode"
             android:paddingTop="10dp" />
 
         <TextView

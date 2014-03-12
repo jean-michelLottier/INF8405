@@ -2,14 +2,18 @@ package com.inf8402.tps.tp1.bejeweled.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.inf8402.tps.tp1.bejeweled.R;
 import com.inf8402.tps.tp1.bejeweled.service.MenuService;
 import com.inf8402.tps.tp1.bejeweled.service.MediaService;
 
-public class GameMenuActivity extends IActivity {
+public class GameMenuActivity extends IActivity{
 	
 	private LinearLayout buttons = null;
 	private Intent intentMediaService;
@@ -31,8 +35,19 @@ public class GameMenuActivity extends IActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.game_menu, menu);
+		//getMenuInflater().inflate(R.menu.game_menu, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+	    if (requestCode == REQUEST_EXIT) {
+	         if (resultCode == RESULT_QUIT) {
+	            this.finish();
+
+	         }
+	     }
 	}
 
 	@Override
@@ -53,6 +68,12 @@ public class GameMenuActivity extends IActivity {
 		}
 		
 	}
-
+	
+	@Override
+	public void onBackPressed() {
+		menuService.goQuit(intentMediaService);
+	return;
+	
+	}
 
 }

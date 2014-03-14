@@ -48,7 +48,7 @@ public interface IGameService {
 	 * @param direction
 	 * @return The list of items modified
 	 */
-	public ArrayList<Item> moveItem(ArrayList<Item> items, Item item,
+	public void moveItem(Item item,
 			String direction);
 
 	/**
@@ -60,7 +60,7 @@ public interface IGameService {
 	 * 
 	 * @param items
 	 */
-	public ArrayList<Item> replaceItemsDeleted(ArrayList<Item> items);
+	public void replaceItemsDeleted();
 
 	/**
 	 * <p>
@@ -261,7 +261,7 @@ public interface IGameService {
 	 * @param items
 	 * @return
 	 */
-	public ArrayList<Item> researchCombinationIntoGrid(ArrayList<Item> items);
+	public void researchCombinationIntoGrid();
 
 	public void reinitialize();
 

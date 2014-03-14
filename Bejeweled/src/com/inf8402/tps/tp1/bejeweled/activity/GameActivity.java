@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.method.KeyListener;
@@ -78,6 +79,7 @@ public class GameActivity extends IActivity implements KeyListener{
 
 	private boolean isSpeedMode;
 	private boolean isTacticMode;
+	private boolean isNewCombinationCreated;
 
 	// Animations
 	private Animation fadeoutPoints;
@@ -370,55 +372,86 @@ public class GameActivity extends IActivity implements KeyListener{
 					direction = GameService.WEST;
 				}
 
-				ArrayList<Item> items = gameService.moveItem(gameService
-						.getGridItems(),
-						gameService.getGridItems().get(startPosition),
+				gameService.moveItem(gameService.getGridItems().get(startPosition),
 						direction);
-				gameService.setGridItems(items);
-				if (gameService.hasChain()) {
-					points.setText("+" + gameService.getPoints());
-					points.setVisibility(View.VISIBLE);
-					points.startAnimation(fadeoutPoints);
-				}
-
-				items = gameService.replaceItemsDeleted(items);
 				gridAdapter.notifyDataSetChanged();
+				
+				Handler h = new Handler();
+				h.postDelayed(new Runnable(){
 
-				boolean isNewCombinationCreated = true;
-				while (isNewCombinationCreated) {
-					items = gameService.researchCombinationIntoGrid(items);
-					gridAdapter.notifyDataSetChanged();
-					if (!gameService.isCombinationFound()) {
-						isNewCombinationCreated = false;
-					} else {
-						items = gameService.replaceItemsDeleted(items);
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						if (gameService.hasChain()) {
+							points.setText("+" + gameService.getPoints());
+							points.setVisibility(View.VISIBLE);
+							points.startAnimation(fadeoutPoints);
+						}
+
+						gameService.replaceItemsDeleted();
 						gridAdapter.notifyDataSetChanged();
-					}
-				}
-				if (gameService.hasChain()) 
-				{
-					if (gameService.getBonus() > 0)
-					{
-						bonus.setText("+" + gameService.getBonus());
-						bonus.setVisibility(View.VISIBLE);
-						bonus.startAnimation(fadeoutBonus);
-					}
-					score.setText(String.valueOf(gameService.getScore()));
 
-					gameService.moveUpdate();
-					if (isTacticMode)
-						nbrRestant.setText(String.valueOf(gameService
-								.getNbrMoveLeft()));
-					chaines.setText(String.valueOf(gameService.getChain()));
-					if (gameService.getChain() == LIMIT_MOVE) {
-						endOfGame();
+						isNewCombinationCreated = true;
+						
+						verification();
+						
+						if (gameService.hasChain()) 
+						{
+							if (gameService.getBonus() > 0)
+							{
+								bonus.setText("+" + gameService.getBonus());
+								bonus.setVisibility(View.VISIBLE);
+								bonus.startAnimation(fadeoutBonus);
+							}
+							score.setText(String.valueOf(gameService.getScore()));
+
+							gameService.moveUpdate();
+							if (isTacticMode)
+								nbrRestant.setText(String.valueOf(gameService
+										.getNbrMoveLeft()));
+							chaines.setText(String.valueOf(gameService.getChain()));
+							if (gameService.getChain() == LIMIT_MOVE) {
+								endOfGame();
+							}
+						}
 					}
-				}
+					
+				}, 500);
+				
+				
 			}
 			return true;
 		}
 	};
 
+	private void verification()
+	{
+		if(isNewCombinationCreated) {
+
+			gameService.researchCombinationIntoGrid();
+			gridAdapter.notifyDataSetChanged();
+			
+			if (!gameService.isCombinationFound()) {
+				isNewCombinationCreated = false;
+			} else {
+
+				Handler h = new Handler();
+				h.postDelayed(new Runnable(){
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						gameService.replaceItemsDeleted();
+						gridAdapter.notifyDataSetChanged();
+						verification();
+					}
+					
+				},500);
+			}
+		}
+		
+		
+	}
 	// Routine où coder la situation de fin de partie
 	private void endOfGame() {
 		menuService = getMenuService();

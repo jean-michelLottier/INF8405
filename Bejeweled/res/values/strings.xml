@@ -30,8 +30,8 @@
     <string name="txt_coupsRestants">Coups Restants:</string>
     <string name="mode_id">ID:</string>
     <string name="mode_list_score">- Meilleurs Scores -</string>
-    <string name="mode_score_speed">Mode Vitesse:</string>
-    <string name="mode_score_tactic">Mode Tactique:</string>
+    <string name="mode_score_speed">Mode Vitesse: </string>
+    <string name="mode_score_tactic">Mode Tactique: </string>
     <string name="mode_select">Veuillez selectionner un mode de jeu_</string>
     
 

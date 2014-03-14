@@ -6,68 +6,84 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:adjustViewBounds="true"
+        android:background="@drawable/background_selection_mode"
+        android:gravity="center_horizontal"
         android:layout_weight="1" >
 
-        <ImageView
-            android:id="@+id/imageSelection"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="-10dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/background_selection_mode"
-            android:paddingTop="10dp" />
-
-        <TextView
-            android:id="@+id/textViewSpeedScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="80dp"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textViewScoreTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="50dp"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textViewPseudo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/textViewTacticScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="110dp"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textViewSelectGameMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="40dp"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-    </FrameLayout>
-
+        <LinearLayout
+            android:id="@+id/Mode_infos"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:orientation="vertical"
+	        android:gravity="center_horizontal"
+	        android:layout_marginTop="50dp" >
+	        <LinearLayout  
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	        	android:gravity="center_horizontal"
+	            android:orientation="horizontal">
+		        <TextView
+		            android:id="@+id/Mode_txtPseudo"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/mode_id"
+		            android:textSize="@dimen/info_pseudo" />
+		        <TextView
+		            android:id="@+id/Mode_pseudo"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text=""
+		            android:textSize="@dimen/info_pseudo"  />
+			</LinearLayout>
+			<TextView
+		            android:id="@+id/Mode_titleScore"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/mode_list_score"
+		            android:layout_marginTop="60dp"
+		            android:layout_marginBottom="20dp"
+		            android:textSize="@dimen/info_joueur"  />
+			<LinearLayout  
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal">
+		        <TextView
+		            android:id="@+id/Mode_txtScoreSpeed"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/mode_score_speed"
+		            android:textSize="@dimen/info_joueur" />
+		        <TextView
+		            android:id="@+id/Mode_scoreSpeed"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text=""
+		            android:textSize="@dimen/info_joueur"  />
+			</LinearLayout>	
+			<LinearLayout  
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal">
+		        <TextView
+		            android:id="@+id/Mode_txtScoreTactic"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/mode_score_tactic"
+		            android:textSize="@dimen/info_joueur" />
+		        <TextView
+		            android:id="@+id/Mode_scoreTactic"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text=""
+		            android:textSize="@dimen/info_joueur"  />
+			</LinearLayout>	
+	    </LinearLayout>
+	</LinearLayout>
     <LinearLayout
         android:id="@+id/modeButtonsLayout"
         android:layout_width="match_parent"
@@ -75,7 +91,7 @@
 	    android:layout_weight="2"
         android:gravity="center"
         android:orientation="vertical" >
-			"
+        
 	    <TextView style="@style/divider" />
 	
 	    <TextView style="@style/divider" />

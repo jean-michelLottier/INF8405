@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.inf8402.tps.tp1.bejeweled.R;
+import com.inf8402.tps.tp1.bejeweled.dao.Player;
 import com.inf8402.tps.tp1.bejeweled.dao.SessionManager;
+import com.inf8402.tps.tp1.bejeweled.exception.BadInputParameterException;
 import com.inf8402.tps.tp1.bejeweled.service.GameService;
 import com.inf8402.tps.tp1.bejeweled.service.MenuService;
 
@@ -26,22 +29,48 @@ public class GameModeActivity extends IActivity {
 		
 		menuService = new MenuService(this);
 		setContentView(R.layout.activity_game_mode);
-		/*TextView pseudo = (TextView) findViewById(R.id.Mode_pseudo);
+		TextView pseudo = (TextView) findViewById(R.id.Mode_pseudo);
 		TextView scoreSpeed = (TextView) findViewById(R.id.Mode_scoreSpeed);
 		TextView scoreTactic = (TextView) findViewById(R.id.Mode_scoreTactic);
+		TextView txtPseudo = (TextView) findViewById(R.id.Mode_txtPseudo);
+		TextView txtScoreSpeed = (TextView) findViewById(R.id.Mode_txtScoreSpeed);
+		TextView txtScoreTactic = (TextView) findViewById(R.id.Mode_txtScoreTactic);
+		TextView titleScore = (TextView) findViewById(R.id.Mode_titleScore);
+		LinearLayout layout = (LinearLayout) findViewById(
+				R.id.Mode_infos);
+		layout.setVisibility(View.INVISIBLE);
 		Typeface gemina = Typeface.createFromAsset(getAssets(),
-				"fonts/gemina2.ttf");*/
+				"fonts/gemina2.ttf");
+
+		pseudo.setTypeface(gemina);
+		scoreSpeed.setTypeface(gemina);
+		scoreTactic.setTypeface(gemina);
+		txtPseudo.setTypeface(gemina);
+		txtScoreSpeed.setTypeface(gemina);
+		txtScoreTactic.setTypeface(gemina);
+		titleScore.setTypeface(gemina);
 		if(!menuService.initSession().hasStarted())
 		{
 			menuService.goRegisterInit();
+			
 		}
-		/*SessionManager session = menuService.initSession();
-		if(session.getPlayerPseudo() != null)
+		else
 		{
-			pseudo.setText(session.getPlayerPseudo());
-			scoreSpeed.setText(session.getPlayerScoreSpeedMode());
-			scoreTactic.setText(session.getPlayerPseudo());
-		}*/
+			SessionManager session = menuService.initSession();
+			Player player = session.getPlayerDetails();
+			if(player.getPseudo() != null)
+			{
+				pseudo.setText(" "+player.getPseudo());
+				scoreSpeed.setText(" "+player.getScoreSpeedMode());
+				scoreTactic.setText(" "+player.getScoreTacticalMode());
+				layout.setVisibility(View.VISIBLE);
+			}
+			
+			
+			
+		}
+			
+			
 		buttons = (LinearLayout) findViewById(R.id.modeButtonsLayout);
 		buttons.setOnTouchListener(multipleButtonsListener);
 
@@ -56,7 +85,7 @@ public class GameModeActivity extends IActivity {
 		// getMenuInflater().inflate(R.menu.game_mode, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

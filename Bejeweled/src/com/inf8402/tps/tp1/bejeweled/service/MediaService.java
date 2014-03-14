@@ -33,7 +33,7 @@ public class MediaService extends Service {
 		System.out
 				.println("*************onStartCommand method START*************");
 		super.onStartCommand(intent, flags, startId);
-		play(R.raw.the_glitch_mob_we_can_make_the_world_stop);
+		//play(R.raw.the_glitch_mob_we_can_make_the_world_stop);
 
 		return Service.START_STICKY;
 	}

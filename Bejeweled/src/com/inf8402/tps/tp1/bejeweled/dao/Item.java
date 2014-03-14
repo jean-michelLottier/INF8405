@@ -75,32 +75,49 @@ public class Item {
 	}
 
 	public boolean isAnimated() {
-		if (state != NORMAL)
-			return true;
-
-		return false;
+		switch(state)
+		{
+			case NORMAL:
+			case DELETED:
+				return false;
+			default:
+				return true;
+		}
 	}
 
 	public int getResourceImage() {
 		int r = itemID;
-		if (state == SELECTED) {
-			switch (itemID) {
-			case R.drawable.item_eau:
-				r = R.drawable.selection_eau;
+		switch(state)
+		{
+			case SELECTED:
+					switch (itemID) {
+					case R.drawable.item_eau:
+						r = R.drawable.selection_eau;
+						break;
+					case R.drawable.item_feu:
+						r = R.drawable.selection_feu;
+						break;
+					case R.drawable.item_terre:
+						r = R.drawable.selection_terre;
+						break;
+					case R.drawable.item_jewel:
+						r = R.drawable.selection_jewel;
+						break;
+					case R.drawable.item_vent:
+						r = R.drawable.selection_vent;
+						break;
+					}
+					break;
+					
+			case DELETED:
+				r = 0;
 				break;
-			case R.drawable.item_feu:
-				r = R.drawable.selection_feu;
+			
+			case MOVED:
 				break;
-			case R.drawable.item_terre:
-				r = R.drawable.selection_terre;
+				
+			default:
 				break;
-			case R.drawable.item_jewel:
-				r = R.drawable.selection_jewel;
-				break;
-			case R.drawable.item_vent:
-				r = R.drawable.selection_vent;
-				break;
-			}
 		}
 
 		return r;

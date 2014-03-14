@@ -186,30 +186,29 @@ public class GameService implements IGameService {
 	}
 
 	@Override
-	public ArrayList<Item> moveItem(ArrayList<Item> items, Item item,
-			String direction) {
+	public void moveItem( Item item, String direction) {
 		if (item == null || direction == null || direction.isEmpty()) {
-			return items;
+			return;
 		}
 
 		int positionItem1 = translateCoordByPosition(item.getCoordinate());
 		if (item.getNeighbors().get(direction).get(X) == -1
 				|| item.getNeighbors().get(direction).get(Y) == -1) {
-			return items;
+			return;
 		}
 		int positionItem2 = translateCoordByPosition(item.getNeighbors().get(
 				direction));
 		System.out.println();
-		Item item1 = new Item(items.get(positionItem1));
-		Item item2 = new Item(items.get(positionItem2));
+		Item item1 = new Item(itemsGrid.get(positionItem1));
+		Item item2 = new Item(itemsGrid.get(positionItem2));
 
 		item1.setCoordinate(item2.getCoordinate());
 		item1 = fillNeighborsMap(item1);
 		item2.setCoordinate(item.getCoordinate());
 		item2 = fillNeighborsMap(item2);
 
-		items.set(positionItem1, item2);
-		items.set(positionItem2, item1);
+		itemsGrid.set(positionItem1, item2);
+		itemsGrid.set(positionItem2, item1);
 
 		Combination combination = new Combination();
 		combination.addHorizontalAxisMovement(item2);
@@ -218,7 +217,7 @@ public class GameService implements IGameService {
 		// System.out.println("Originitem : " + item2.getItemID() + " - ("
 		// + item2.getCoordinate().get(0) + ","
 		// + item2.getCoordinate().get(1) + ")");
-		combination = findCombination(items, item2, combination);
+		combination = findCombination(itemsGrid, item2, combination);
 		ArrayList<Item> result = combination.getCombination();
 
 		int nombre_bonus = 0;
@@ -241,8 +240,8 @@ public class GameService implements IGameService {
 				// + current.getCoordinate().get(0) + ","
 				// + current.getCoordinate().get(1) + ")");
 				current.setState(Item.DELETED);
-				items.remove(position);
-				items.add(position, current);
+				itemsGrid.remove(position);
+				itemsGrid.add(position, current);
 			}
 			isCombinationFound = true;
 		}
@@ -251,7 +250,7 @@ public class GameService implements IGameService {
 		combination.addHorizontalAxisMovement(item1);
 		combination.addVerticalAxisMovement(item1);
 		combination.addItemVisited(item1);
-		combination = findCombination(items, item1, combination);
+		combination = findCombination(itemsGrid, item1, combination);
 		result = combination.getCombination();
 
 		if (!result.isEmpty()) {
@@ -267,8 +266,8 @@ public class GameService implements IGameService {
 			item2 = fillNeighborsMap(item2);
 			item1.setCoordinate(item.getCoordinate());
 			item1 = fillNeighborsMap(item1);
-			items.set(positionItem1, item1);
-			items.set(positionItem2, item2);
+			itemsGrid.set(positionItem1, item1);
+			itemsGrid.set(positionItem2, item2);
 		} else {
 			for (Item current : result) {
 				int position = translateCoordByPosition(current.getCoordinate());
@@ -277,20 +276,18 @@ public class GameService implements IGameService {
 				// + current.getCoordinate().get(0) + ","
 				// + current.getCoordinate().get(1) + ")");
 				current.setState(Item.DELETED);
-				items.remove(position);
-				items.add(position, current);
+				itemsGrid.remove(position);
+				itemsGrid.add(position, current);
 			}
 		}
 
 		this.score += this.points + this.bonus;
-
-		return items;
 	}
 
 	@Override
-	public ArrayList<Item> replaceItemsDeleted(ArrayList<Item> items) {
+	public void replaceItemsDeleted() {
 		ArrayMap<Integer, ArrayList<Item>> itemsDeleted = new ArrayMap<Integer, ArrayList<Item>>();
-		for (Item item : items) {
+		for (Item item : itemsGrid) {
 			if (item.getState() == Item.DELETED) {
 				ArrayList<Integer> coordinate = item.getCoordinate();
 				ArrayList<Item> temp = new ArrayList<Item>();
@@ -314,7 +311,7 @@ public class GameService implements IGameService {
 		}
 
 		if (itemsDeleted.isEmpty()) {
-			return items;
+			return;
 		}
 
 		boolean isProcessed = true;
@@ -337,7 +334,7 @@ public class GameService implements IGameService {
 					if (axisY >= 0) {
 						coordinate.set(Y, axisY);
 						int position2 = translateCoordByPosition(coordinate);
-						Item item2 = items.get(position2);
+						Item item2 = itemsGrid.get(position2);
 						Item temp = new Item(item1);
 
 						item1.setCoordinate(item2.getCoordinate());
@@ -345,8 +342,8 @@ public class GameService implements IGameService {
 						item2.setCoordinate(temp.getCoordinate());
 						item2 = fillNeighborsMap(item2);
 
-						items.set(position1, item2);
-						items.set(position2, item1);
+						itemsGrid.set(position1, item2);
+						itemsGrid.set(position2, item1);
 
 						newItemToDelete.add(item1);
 					} else {
@@ -354,7 +351,7 @@ public class GameService implements IGameService {
 						Random random = new Random();
 						int value = random.nextInt(5);
 						item1.setItemID(itemsID.get(value));
-						items.set(position1, item1);
+						itemsGrid.set(position1, item1);
 					}
 				}
 
@@ -365,19 +362,17 @@ public class GameService implements IGameService {
 				isProcessed = false;
 			}
 		}
-
-		return items;
 	}
 
 	@Override
-	public ArrayList<Item> researchCombinationIntoGrid(ArrayList<Item> items) {
+	public void researchCombinationIntoGrid() {
 		this.isCombinationFound = false;
-		for (Item item : items) {
+		for (Item item : itemsGrid) {
 			Combination combination = new Combination();
 			combination.addHorizontalAxisMovement(item);
 			combination.addVerticalAxisMovement(item);
 			combination.addItemVisited(item);
-			combination = findCombination(items, item, combination);
+			combination = findCombination(itemsGrid, item, combination);
 			ArrayList<Item> result = combination.getCombination();
 
 			if (!result.isEmpty()) {
@@ -390,13 +385,11 @@ public class GameService implements IGameService {
 					int position = translateCoordByPosition(current
 							.getCoordinate());
 					current.setState(Item.DELETED);
-					items.set(position, current);
+					itemsGrid.set(position, current);
 				}
 				break;
 			}
 		}
-
-		return items;
 	}
 
 	/*** Score Functions ***/
@@ -736,6 +729,7 @@ public class GameService implements IGameService {
 		bonus = 0;
 		score = 0;
 		elapsedTime = 0;
+		coupsRestants=GameActivity.LIMIT_MOVE;
 		//Activity activity = (Activity) context;
 		// Chronometer chronometer = (Chronometer)
 		// activity.findViewById(R.id.Game_chrono);

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -281,6 +282,7 @@ public class GameDialogFragment extends DialogFragment {
 								.getOwnerActivity();
 						GameActivity.gameService.reinitialize();
 						activity.recreate();
+						dismiss();
 					}
 				});
 		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
@@ -407,23 +409,24 @@ public class GameDialogFragment extends DialogFragment {
 
     				if (isRegister) {
     					TextView textView = (TextView) getActivity().findViewById(
-    							R.id.textViewPseudo);
-    					textView.setText("ID: "+session.getPlayerPseudo());
+    							R.id.Mode_pseudo);
+    					textView.setText(" "+session.getPlayerPseudo());
+//    					textView = (TextView) getActivity().findViewById(
+//    							R.id.textViewScoreTitle);
+//    					textView.setText(PLAYER_INF_SCORE_TITLE);
     					textView = (TextView) getActivity().findViewById(
-    							R.id.textViewScoreTitle);
-    					textView.setText(PLAYER_INF_SCORE_TITLE);
+    							R.id.Mode_scoreSpeed);
+    					textView.setText(" "+session.getPlayerScoreSpeedMode());
     					textView = (TextView) getActivity().findViewById(
-    							R.id.textViewSpeedScore);
-    					textView.setText(PLAYER_INF_SPEED_SCORE
-    							+ session.getPlayerScoreSpeedMode());
-    					textView = (TextView) getActivity().findViewById(
-    							R.id.textViewTacticScore);
-    					textView.setText(PLAYER_INF_TACTIC_SCORE
-    							+ session.getPlayerScoreTacticMode());
-    					/*textView = (TextView) getActivity().findViewById(
-    							R.id.textViewSelectGameMode);
-    					textView.setText(PLAYER_INF_SELECT_MODE);*/
+    							R.id.Mode_scoreTactic);
+    					textView.setText(" "+session.getPlayerScoreTacticMode());
+//    					textView = (TextView) getActivity().findViewById(
+//    							R.id.textViewSelectGameMode);
+//    					textView.setText(PLAYER_INF_SELECT_MODE);
 
+    					LinearLayout layout = (LinearLayout) getActivity().findViewById(
+    							R.id.Mode_infos);
+    					layout.setVisibility(View.VISIBLE);
     					dismiss();
     				}
                 }

@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.os.SystemClock;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Chronometer;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -24,7 +25,7 @@ import com.inf8402.tps.tp1.bejeweled.dao.Item;
 
 public class GameService implements IGameService {
 
-	private static final int GRID_LENGTH = 64;
+	
 	private ArrayList<Item> itemsGrid;
 	private int coupsRestants = GameActivity.LIMIT_MOVE;
 	private int chaines = 0;
@@ -33,14 +34,22 @@ public class GameService implements IGameService {
 	private boolean gamePaused;
 	private boolean isCombinationFound;
 	private boolean chronoIsRunning;
+	private boolean isReinitialized;
 	private boolean gameStart;
-	private int points = 0;
-	private int bonus = 0;
+	private boolean gameQuit;
 	private int score = 0;
 	private long stopTime = GameActivity.LIMIT_TIME;
 	private long elapsedTime = 0;
 	private Context context;
 	private boolean isSpeedMode;
+	// New attr
+	private ArrayList<Item> itemsToDelete = new ArrayList<Item>();
+	private Random random = new Random();
+	private ArrayList<Item> movedItems = new ArrayList<Item>();
+	private ArrayList<ArrayList<Item>> chains = new ArrayList<ArrayList<Item>>();
+	private ArrayList<Item> horizontalChain = new ArrayList<Item>();
+	private ArrayList<Item> verticalChain = new ArrayList<Item>();
+	private ArrayList<Item> generatedItems = new ArrayList<Item>();
 
 	public boolean isGameStart() {
 		return gameStart;
@@ -49,16 +58,18 @@ public class GameService implements IGameService {
 	public void setGameStart(boolean gameStart) {
 		this.gameStart = gameStart;
 	}
+	public boolean isGameQuit() {
+		return gameQuit;
+	}
 
+	public void setGameQuit(boolean gameQuit) {
+		this.gameQuit = gameQuit;
+	}
 	public GameService(Context c, boolean b) {
 		this.setContext(c);
 		this.isSpeedMode = b;
 	}
 
-	@Override
-	public boolean isCombinationFound() {
-		return isCombinationFound;
-	}
 
 	public void setCombinationFound(boolean isCombinationFound) {
 		this.isCombinationFound = isCombinationFound;
@@ -134,45 +145,35 @@ public class GameService implements IGameService {
 	}
 
 	@Override
-	public ArrayList<Item> initGrid() {
-		ArrayList<Item> items = new ArrayList<Item>();
-		Random random = new Random();
-		for (int i = 0; i < GRID_LENGTH; i++) {
-			int value = random.nextInt(5);
-			ArrayList<Integer> coordinate = new ArrayList<Integer>();
-
-			coordinate.add((i % 8));
-			coordinate.add(Math.round(i / 8));
-
-			Item item = new Item(itemsID.get(value), coordinate);
-			item = fillNeighborsMap(item);
-			items.add(item);
-
-			Combination combination = new Combination();
-			combination.addHorizontalAxisMovement(item);
-			combination.addVerticalAxisMovement(item);
-			combination.addItemVisited(item);
-			combination = findCombination(items, item, combination);
-			ArrayList<Item> result = combination.getCombination();
-			int counter = 0;
-			while (!result.isEmpty()) {
-				value = (value + 1) % 5;
-				items.get(items.size() - 1).setItemID(itemsID.get(value));
-				item = items.get(items.size() - 1);
-				combination = new Combination();
-				combination.addHorizontalAxisMovement(item);
-				combination.addVerticalAxisMovement(item);
-				combination.addItemVisited(item);
-				result = combination.getCombination();
-				counter++;
-				if (counter == 5)
-					break;
+	public void initGrid() {
+		itemsGrid = new ArrayList<Item>();
+		for (int j = 0; j < GRID_SIZE; j++) {
+			for (int i = 0; i < GRID_SIZE; i++) {
+				itemsGrid.add(new Item());
 			}
 		}
-
-		return items;
+		for (int j = 0; j < GRID_SIZE; j++) {
+			for (int i = 0; i < GRID_SIZE; i++) {
+				setItem(i,j,generateItem(i,j));
+			}
+		}
 	}
 
+	private Item generateItem(int x, int y)
+	{
+		int value = random.nextInt(5);
+		Item item = new Item(itemsID.get(value), x, y);
+		int counter = 0;
+		boolean conflict = checkConflict(item);
+		while(conflict == true || counter < 5)
+		{
+			value = (value + 1) % 5;
+			item.setItemID(itemsID.get(value));
+			conflict = checkConflict(item);
+			counter++;
+		}
+		return item;
+	}
 	@Override
 	public ArrayList<Integer> generateAffineFunction(int xa, int ya, int xb,
 			int yb) {
@@ -184,250 +185,750 @@ public class GameService implements IGameService {
 
 		return coefficients;
 	}
-
-	@Override
-	public void moveItem( Item item, String direction) {
-		if (item == null || direction == null || direction.isEmpty()) {
-			return;
-		}
-
-		int positionItem1 = translateCoordByPosition(item.getCoordinate());
-		if (item.getNeighbors().get(direction).get(X) == -1
-				|| item.getNeighbors().get(direction).get(Y) == -1) {
-			return;
-		}
-		int positionItem2 = translateCoordByPosition(item.getNeighbors().get(
-				direction));
-		System.out.println();
-		Item item1 = new Item(itemsGrid.get(positionItem1));
-		Item item2 = new Item(itemsGrid.get(positionItem2));
-
-		item1.setCoordinate(item2.getCoordinate());
-		item1 = fillNeighborsMap(item1);
-		item2.setCoordinate(item.getCoordinate());
-		item2 = fillNeighborsMap(item2);
-
-		itemsGrid.set(positionItem1, item2);
-		itemsGrid.set(positionItem2, item1);
-
-		Combination combination = new Combination();
-		combination.addHorizontalAxisMovement(item2);
-		combination.addVerticalAxisMovement(item2);
-		combination.addItemVisited(item2);
-		// System.out.println("Originitem : " + item2.getItemID() + " - ("
-		// + item2.getCoordinate().get(0) + ","
-		// + item2.getCoordinate().get(1) + ")");
-		combination = findCombination(itemsGrid, item2, combination);
-		ArrayList<Item> result = combination.getCombination();
-
-		int nombre_bonus = 0;
-		this.hasChain = false;
-		this.points = 0;
-		this.bonus = 0;
-		if (!result.isEmpty()) {
-			nombre_bonus += result.size();
-			this.points = GameActivity.V_POINTS;
-			this.hasChain = true;
-		}
-
-		boolean isCombinationFound = false;
-		if (!result.isEmpty()) {
-			// System.out.println("***********Combination found***********");
-			for (Item current : result) {
-				int position = translateCoordByPosition(current.getCoordinate());
-				// System.out.println("itemID : " + current.getItemID()
-				// + " - position : " + position + " - ("
-				// + current.getCoordinate().get(0) + ","
-				// + current.getCoordinate().get(1) + ")");
-				current.setState(Item.DELETED);
-				itemsGrid.remove(position);
-				itemsGrid.add(position, current);
-			}
-			isCombinationFound = true;
-		}
-
-		combination = new Combination();
-		combination.addHorizontalAxisMovement(item1);
-		combination.addVerticalAxisMovement(item1);
-		combination.addItemVisited(item1);
-		combination = findCombination(itemsGrid, item1, combination);
-		result = combination.getCombination();
-
-		if (!result.isEmpty()) {
-			nombre_bonus += result.size();
-			this.points = GameActivity.V_POINTS;
-			this.bonus = (nombre_bonus - 3) * GameActivity.V_BONUS;
-			this.hasChain = true;
-		}
-
-		if (result.isEmpty() && !isCombinationFound) {
-			// System.out.println("***********No combination***********");
-			item2.setCoordinate(item1.getCoordinate());
-			item2 = fillNeighborsMap(item2);
-			item1.setCoordinate(item.getCoordinate());
-			item1 = fillNeighborsMap(item1);
-			itemsGrid.set(positionItem1, item1);
-			itemsGrid.set(positionItem2, item2);
-		} else {
-			for (Item current : result) {
-				int position = translateCoordByPosition(current.getCoordinate());
-				// System.out.println("itemID : " + current.getItemID()
-				// + " - position : " + position + " - ("
-				// + current.getCoordinate().get(0) + ","
-				// + current.getCoordinate().get(1) + ")");
-				current.setState(Item.DELETED);
-				itemsGrid.remove(position);
-				itemsGrid.add(position, current);
-			}
-		}
-
-		this.score += this.points + this.bonus;
-	}
-
-	@Override
-	public void replaceItemsDeleted() {
-		ArrayMap<Integer, ArrayList<Item>> itemsDeleted = new ArrayMap<Integer, ArrayList<Item>>();
-		for (Item item : itemsGrid) {
-			if (item.getState() == Item.DELETED) {
-				ArrayList<Integer> coordinate = item.getCoordinate();
-				ArrayList<Item> temp = new ArrayList<Item>();
-				if (itemsDeleted.containsKey(coordinate.get(X))) {
-					temp = itemsDeleted.get(coordinate.get(X));
-				}
-				temp.add(item);
-				Collections.sort(temp, new Comparator<Item>() {
-
-					@Override
-					public int compare(Item item1, Item item2) {
-						ArrayList<Integer> coordinate1 = item1.getCoordinate();
-						ArrayList<Integer> coordinate2 = item2.getCoordinate();
-
-						return coordinate2.get(Y).compareTo(coordinate1.get(Y));
-					}
-				});
-
-				itemsDeleted.put(coordinate.get(X), temp);
-			}
-		}
-
-		if (itemsDeleted.isEmpty()) {
-			return;
-		}
-
-		boolean isProcessed = true;
-		while (isProcessed) {
-			int cpt = 0;
-			for (int axisX : itemsDeleted.keySet()) {
-				ArrayList<Item> itemsToDelete = itemsDeleted.get(axisX);
-				if (itemsToDelete.isEmpty()) {
-					cpt++;
-					continue;
-				}
-				ArrayList<Item> newItemToDelete = new ArrayList<Item>();
-
-				for (Item item1 : itemsToDelete) {
-					ArrayList<Integer> coordinate = (ArrayList<Integer>) item1
-							.getCoordinate().clone();
-					int position1 = translateCoordByPosition(coordinate);
-					int axisY = coordinate.get(Y);
-					axisY -= itemsToDelete.size();
-					if (axisY >= 0) {
-						coordinate.set(Y, axisY);
-						int position2 = translateCoordByPosition(coordinate);
-						Item item2 = itemsGrid.get(position2);
-						Item temp = new Item(item1);
-
-						item1.setCoordinate(item2.getCoordinate());
-						item1 = fillNeighborsMap(item1);
-						item2.setCoordinate(temp.getCoordinate());
-						item2 = fillNeighborsMap(item2);
-
-						itemsGrid.set(position1, item2);
-						itemsGrid.set(position2, item1);
-
-						newItemToDelete.add(item1);
-					} else {
-						item1.setState(Item.NORMAL);
-						Random random = new Random();
-						int value = random.nextInt(5);
-						item1.setItemID(itemsID.get(value));
-						itemsGrid.set(position1, item1);
-					}
-				}
-
-				itemsDeleted.put(axisX, newItemToDelete);
-			}
-
-			if (cpt == itemsDeleted.size()) {
-				isProcessed = false;
-			}
-		}
-	}
-
-	@Override
-	public void researchCombinationIntoGrid() {
-		this.isCombinationFound = false;
-		for (Item item : itemsGrid) {
-			Combination combination = new Combination();
-			combination.addHorizontalAxisMovement(item);
-			combination.addVerticalAxisMovement(item);
-			combination.addItemVisited(item);
-			combination = findCombination(itemsGrid, item, combination);
-			ArrayList<Item> result = combination.getCombination();
-
-			if (!result.isEmpty()) {
-				this.bonus += result.size() * GameActivity.V_BONUS;
-			}
-
-			if (!result.isEmpty()) {
-				this.isCombinationFound = true;
-				for (Item current : result) {
-					int position = translateCoordByPosition(current
-							.getCoordinate());
-					current.setState(Item.DELETED);
-					itemsGrid.set(position, current);
+	public boolean switchMove(Item item, int direction)
+	{
+		itemsToDelete.clear();
+		boolean isValidMove= true;
+		boolean isCombination = false;
+		Item item2 = new Item();
+		switch(direction)
+		{
+			case Item.UP:
+				if (item.getY() == 0)
+					isValidMove = false;
+				else
+				{
+					item2 = switchItem(item, Item.UP);
 				}
 				break;
+			case Item.DOWN:
+				if (item.getY() == 7)
+					isValidMove = false;
+				else
+				{
+					item2 = switchItem(item, Item.DOWN);
+				}
+				break;
+			case Item.LEFT:
+				if (item.getX() == 0)
+					isValidMove = false;
+				else
+					{
+						item2 = switchItem(item, Item.LEFT);
+					}
+				break;
+			case Item.RIGHT:
+				if (item.getX() == 7)
+					isValidMove = false;
+				else
+				{
+					item2 = switchItem(item, Item.RIGHT);
+				}
+				break;
+			default:
+				break;
+		}
+		if (isValidMove)
+		{
+			isCombination = checkCombinationAfterMove(item,item2);
+			if (!isCombination)
+			{
+				switch(direction)
+				{
+					case Item.UP:
+						switchItem(item, Item.DOWN);
+						break;
+					case Item.DOWN:
+						switchItem(item, Item.UP);
+						break;
+					case Item.LEFT:
+						switchItem(item, Item.RIGHT);
+						break;
+					case Item.RIGHT:
+						switchItem(item, Item.LEFT);
+						break;
+					default:
+						break;
+				}
+				return false;
+			}
+			else
+			{
+				getItem(item2.getX(),item2.getY()).setState(Item.MOVED);
+				getItem(item.getX(),item.getY()).setState(Item.MOVED);
+
+				movedItems.add(getItem(item2.getX(),item2.getY()));
+				movedItems.add(getItem(item.getX(),item.getY()));
+			}
+		}
+		else
+		{
+			switch(direction)
+			{
+				case Item.UP:
+					switchItem(item, Item.DOWN);
+					break;
+				case Item.DOWN:
+					switchItem(item, Item.UP);
+					break;
+				case Item.LEFT:
+					switchItem(item, Item.RIGHT);
+					break;
+				case Item.RIGHT:
+					switchItem(item, Item.LEFT);
+					break;
+				default:
+					break;
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	private void fallItem(Item item, int offset)
+	{
+		setItem(item.getX(),item.getY()+offset,item);
+		setItem(item.getX(),item.getY(), new Item());
+		getItem(item.getX(),item.getY()).setState(Item.EMPTY);
+		item.setY(item.getY()+offset);
+	}
+	public void updateBeforeFill(){}
+	public void fillGrid()
+	{
+		int j;
+		for(int i=0; i<GRID_SIZE; i++)
+		{
+
+			j = GRID_SIZE - 1;
+			while(j>=0)
+			{
+				if(getItem(i,j).getState()==Item.EMPTY || getItem(i,j).getState()==Item.DELETED)
+				{
+					setItem(i,j,generateItem(i,j));
+					/*
+					getItem(i,j).setState(Item.CREATED);
+					generatedItems.add(getItem(i,j));*/
+				}
+				j--;
 			}
 		}
 	}
+	public void updateAfterFill(){/*
+		for(Item item: generatedItems)
+		{
+			item.setState(Item.NORMAL);
+		}
+		generatedItems.clear();*/
+	}
+	public void moveFallingItems()
+	{
+		int j;
+		int destY;
+		int posY;
+		int offset;
 
-	/*** Score Functions ***/
-	public boolean hasNewScore() {
-		if (this.bonus + this.points == 0)
-			return false;
+		for(int i=0; i<GRID_SIZE; i++)
+		{
+
+			j = GRID_SIZE - 1;
+			destY = -1;
+			while(j>=0)
+			{
+				if(getItem(i,j).getState()==Item.DELETED)
+				{
+					destY = j;
+					break;
+				}
+				j--;
+			}
+			if (destY == 0)
+			{
+				getItem(i,j).setState(Item.EMPTY);
+			}
+			else
+			{
+				if(destY!=-1)
+				{
+					j = 0;
+					posY = -1;
+					while(j<GRID_SIZE-1)
+					{
+						if(getItem(i,j).getState()==Item.NORMAL && getItem(i,j+1).getState()==Item.DELETED)
+						{
+							posY = j;
+							break;
+						}
+						j++;
+					}
+					if(posY!=-1)
+					{
+						offset = destY - posY;
+						j = posY;
+						while(j>=0 && getItem(i,j).getState()!=Item.EMPTY)
+						{
+							fallItem(getItem(i,j),offset);
+							j--;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean checkCombinationNeighbours(Item item)
+	{
+		
+		int counter = 0;
+		horizontalChain.clear();
+		verticalChain.clear();
+		ArrayList<Item> h = new ArrayList<Item>();
+		ArrayList<Item> v = new ArrayList<Item>();
+		//Check vertical combination
+		int i = item.getY()-1;
+		while(i>=0 && getItem(item.getX(),i).getState()!=Item.EMPTY)
+		{
+			if(getItem(item.getX(),i).getItemID() == item.getItemID() && getItem(item.getX(),i).getState()==Item.NORMAL)
+			{
+				counter++;
+				v.add(getItem(item.getX(),i));
+			}
+			else
+			{
+				break;
+			}
+
+			i--;
+		}
+		Collections.reverse(v);
+		v.add(item);
+		i = item.getY()+1;
+		while(i<GRID_SIZE && getItem(item.getX(),i).getState()!=Item.EMPTY)
+		{
+			
+			if(getItem(item.getX(),i).getItemID() == item.getItemID() && getItem(item.getX(),i).getState()==Item.NORMAL)
+			{
+				counter++;
+				v.add(getItem(item.getX(),i));
+			}
+			else
+			{
+				break;
+			}
+			i++;
+		}
+		// If vertical combination, check horizontal Combination
+		if (counter >= 2)
+		{
+			counter = 0;
+			//Vertical combination ==true + Check horizontal combination
+			i = item.getX()-1;
+			while(i>=0 && getItem(i,item.getY()).getState()!=Item.EMPTY)
+			{
+				if(getItem(i,item.getY()).getItemID() == item.getItemID() && getItem(i,item.getY()).getState()==Item.NORMAL)
+				{
+					counter++;
+					h.add(getItem(i,item.getY()));
+				}
+				else
+				{
+					break;
+				}
+
+				i--;
+			}
+			Collections.reverse(h);
+			h.add(item);
+			i = item.getX()+1;
+			while(i<GRID_SIZE && getItem(i,item.getY()).getState()!=Item.EMPTY)
+			{
+				if(getItem(i,item.getY()).getItemID() == item.getItemID() && getItem(i,item.getY()).getState()==Item.NORMAL)
+				{
+					counter++;
+					h.add(getItem(i,item.getY()));
+				}
+				else
+				{
+					break;
+				}
+
+				i++;
+			}
+			//if Vertical combination ==true + Horizontal combination== true
+			if (counter >= 2)
+			{
+				counter = 0;
+				itemsToDelete.addAll(v);
+				itemsToDelete.addAll(h);
+				verticalChain.addAll(v);
+				horizontalChain.addAll(h);
+				chains.add(new ArrayList<Item>(verticalChain));
+				chains.add(new ArrayList<Item>(horizontalChain));
+				return true;
+			}
+			else
+			{
+				itemsToDelete.addAll(v);
+				verticalChain.addAll(v);
+				chains.add(new ArrayList<Item>(verticalChain));
+				return true;
+			}
+		}
 		else
+		{
+			counter = 0;
+			//Check horizontal combination
+			i = item.getX()-1;
+			while(i>=0 && getItem(i,item.getY()).getState()!=Item.EMPTY)
+			{
+				if(getItem(i,item.getY()).getItemID() == item.getItemID() && getItem(i,item.getY()).getState()==Item.NORMAL)
+				{
+					counter++;
+					h.add(getItem(i,item.getY()));
+				}
+				else
+				{
+					break;
+				}
+
+				i--;
+			}
+			Collections.reverse(h);
+			h.add(item);
+			i = item.getX()+1;
+			while(i<GRID_SIZE && getItem(i,item.getY()).getState()!=Item.EMPTY)
+			{
+				if(getItem(i,item.getY()).getItemID() == item.getItemID() && getItem(i,item.getY()).getState()==Item.NORMAL)
+				{
+					counter++;
+					h.add(getItem(i,item.getY()));
+				}
+				else
+				{
+					break;
+				}
+
+				i++;
+			}
+			//if Horizontal combination== true
+			if (counter >= 2)
+			{
+				counter = 0;
+				itemsToDelete.addAll(h);
+				horizontalChain.addAll(h);
+				chains.add(new ArrayList<Item>(horizontalChain));
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkConflict(Item item)
+	{
+		int counter = 0;
+		//Check vertical combination
+		int i = item.getY()-1;
+		while(i>=0 && getItem(item.getX(),i).getState()!=Item.EMPTY)
+		{
+			if(getItem(item.getX(),i).getItemID() == item.getItemID() && getItem(item.getX(),i).getState()==Item.NORMAL)
+			{
+				counter++;
+			}
+			else
+			{
+				break;
+			}
+
+			i--;
+		}
+		i = item.getY()+1;
+		while(i<GRID_SIZE && getItem(item.getX(),i).getState()!=Item.EMPTY)
+		{
+			
+			if(getItem(item.getX(),i).getItemID() == item.getItemID() && getItem(item.getX(),i).getState()==Item.NORMAL)
+			{
+				counter++;
+			}
+			else
+			{
+				break;
+			}
+			i++;
+		}
+		// If vertical combination, check horizontal Combination
+		if (counter >= 2)
+		{
 			return true;
+		}
+		counter = 0;
+		//Check horizontal combination
+		i = item.getX()-1;
+		while(i>=0 && getItem(i,item.getY()).getState()!=Item.EMPTY)
+		{
+			if(getItem(i,item.getY()).getItemID() == item.getItemID() && getItem(i,item.getY()).getState()==Item.NORMAL)
+			{
+				counter++;
+			}
+			else
+			{
+				break;
+			}
+
+			i--;
+		}
+		i = item.getX()+1;
+		while(i<GRID_SIZE && getItem(i,item.getY()).getState()!=Item.EMPTY)
+		{
+			if(getItem(i,item.getY()).getItemID() == item.getItemID() && getItem(i,item.getY()).getState()==Item.NORMAL)
+			{
+				counter++;
+			}
+			else
+			{
+				break;
+			}
+
+			i++;
+		}
+		//if Horizontal combination== true
+		if (counter >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+	public void deleteCombinations()
+	{
+
+		if(!movedItems.isEmpty())
+		{
+			for(Item item: movedItems)
+			{
+				getItem(item.getX(),item.getY()).setState(Item.NORMAL);
+			}
+		}
+		movedItems.clear();
+		
+		for(Item item: itemsToDelete)
+		{
+			getItem(item.getX(),item.getY()).setState(Item.DELETED);
+		}
+		itemsToDelete.clear();
+	}
+	
+	private Item getItem(int positionX, int positionY)
+	{
+		int pos = positionX+positionY*GRID_SIZE;
+		return itemsGrid.get(pos);
+		
+	}
+	
+	private void setItem(int positionX, int positionY, Item item)
+	{
+		int pos = positionX+positionY*GRID_SIZE;
+		itemsGrid.set(pos,item);
 	}
 
-	public boolean hasChain() {
-		return this.hasChain;
+	private boolean checkCombinationAfterMove(Item item,Item item2)
+	{
+		boolean v1 = false;
+		boolean v2 = false;
+		v1 = checkCombinationNeighbours(item);
+		v2 = checkCombinationNeighbours(item2);
+		if(v1||v2)
+		{
+			return true;
+		}
+		return false;
+	}
+	public boolean fullSearchCombination()
+	{
+		int counter;
+		chains.clear();
+		verticalChain.clear();
+		horizontalChain.clear();
+		boolean isCombination = false;
+		boolean verifV = false;
+		boolean initV = false;
+		int itemID = 0;
+		int j = 0;
+		int i = 0;
+		ArrayList<Item> h = new ArrayList<Item>();
+		ArrayList<Item> v = new ArrayList<Item>();
+		
+		//COLUMS SEARCH
+		for(i=0; i<GRID_SIZE; i++)
+		{
+			counter = 0;
+			j=0;
+			v.clear();
+			verifV = false;
+			initV = false;
+			while(j<GRID_SIZE)
+			{
+				if(getItem(i,j).getState()!=Item.EMPTY && getItem(i,j).getState()!=Item.DELETED)
+				{
+					if (!initV)
+					{
+						itemID = getItem(i,j).getItemID();
+						v.add(getItem(i,j));
+						counter=1;
+						initV = true;
+					}
+					else
+					{
+						if (getItem(i,j).getItemID()==itemID)
+						{
+							counter++;
+							v.add(getItem(i,j));
+							if(counter==3)
+							{
+								verifV = true;
+								isCombination = true;
+							}
+						}
+						else
+						{
+							if(verifV)
+							{
+								itemsToDelete.addAll(v);
+								verticalChain.addAll(v);
+								chains.add(new ArrayList<Item>(verticalChain));
+								v.clear();
+								verifV = false;
+								counter = 0;
+								// End of search for the column
+							}
+							else
+							{
+								counter = 1;
+								v.clear();
+								itemID = getItem(i,j).getItemID();
+								v.add(getItem(i,j));
+							}
+						}
+					}
+				}
+				else
+				{
+					if (verifV)
+					{
+						itemsToDelete.addAll(v);
+						verticalChain.addAll(v);
+						chains.add(new ArrayList<Item>(verticalChain));
+						v.clear();
+						verifV = false;
+						counter = 0;
+						// End of search for the column
+					}
+					else
+					{
+						counter = 0;
+						initV=false;
+						v.clear();
+					}
+				}
+				j++;
+				if (j>=GRID_SIZE && verifV)
+				{
+					itemsToDelete.addAll(v);
+					verticalChain.addAll(v);
+					chains.add(new ArrayList<Item>(verticalChain));
+					v.clear();
+					verifV = false;
+					counter = 0;
+					// End of search for the column
+				}
+			}
+		}
+		
+		
+		//ROW SEARCH
+		for(j=0; j<GRID_SIZE; j++)
+		{
+			counter = 0;
+			i=0;
+			h.clear();
+			initV = false;
+			verifV = false;
+			while(i<GRID_SIZE)
+			{
+				if(getItem(i,j).getState()!=Item.EMPTY && getItem(i,j).getState()!=Item.DELETED)
+				{
+					if (!initV)
+					{
+						itemID = getItem(i,j).getItemID();
+						h.add(getItem(i,j));
+						counter=1;
+						initV = true;
+					}
+					else
+					{
+						if (getItem(i,j).getItemID()==itemID)
+						{
+							counter++;
+							h.add(getItem(i,j));
+							if(counter==3)
+							{
+								verifV = true;
+								isCombination = true;
+							}
+						}
+						else
+						{
+							if(verifV)
+							{
+								itemsToDelete.addAll(h);
+								horizontalChain.addAll(h);
+								chains.add(new ArrayList<Item>(horizontalChain));
+								h.clear();
+								verifV = false;
+								counter = 0;
+								// End of search for the column
+							}
+							else
+							{
+								counter = 1;
+								h.clear();
+								itemID = getItem(i,j).getItemID();
+								h.add(getItem(i,j));
+							}
+						}
+					}
+				}
+				else
+				{
+					if (verifV)
+					{
+						itemsToDelete.addAll(h);
+						horizontalChain.addAll(h);
+						chains.add(new ArrayList<Item>(horizontalChain));
+						h.clear();
+						verifV = false;
+						counter = 0;
+						// End of search for the column
+					}
+					else
+					{
+						counter = 0;
+						initV=false;
+						h.clear();
+					}
+				}
+				i++;
+				if (i>=GRID_SIZE && verifV)
+				{
+					itemsToDelete.addAll(h);
+					horizontalChain.addAll(h);
+					chains.add(new ArrayList<Item>(horizontalChain));
+					h.clear();
+					verifV = false;
+					counter = 0;
+					// End of search for the column
+				}
+			}
+		}
+		return isCombination;
+		
+	}
+	public Item switchItem(Item item, int direction){
+		Item item2 = new Item();
+		Item temp;
+		switch(direction)
+		{
+			case Item.UP:
+				temp = getItem(item.getX(),item.getY()-1);
+				item2 = temp;
+				setItem(item.getX(),item.getY()-1,item);
+				setItem(item.getX(),item.getY(),item2);
+				item.setY(item.getY()-1);
+				item2.setY(item2.getY()+1);
+				break;
+			case Item.DOWN:
+				temp = getItem(item.getX(),item.getY()+1);
+				item2 = temp;
+				setItem(item.getX(),item.getY()+1,item);
+				setItem(item.getX(),item.getY(),item2);
+				item.setY(item.getY()+1);
+				item2.setY(item2.getY()-1);
+				break;
+			case Item.LEFT:
+				temp = getItem(item.getX()-1,item.getY());
+				item2 = temp;
+				setItem(item.getX()-1,item.getY(),item);
+				setItem(item.getX(),item.getY(),item2);
+				item.setX(item.getX()-1);
+				item2.setX(item2.getX()+1);
+				break;
+			case Item.RIGHT:
+				temp = getItem(item.getX()+1,item.getY());
+				item2 = temp;
+				setItem(item.getX()+1,item.getY(),item);
+				setItem(item.getX(),item.getY(),item2);
+				item.setX(item.getX()+1);
+				item2.setX(item2.getX()-1);
+				break;
+			default:
+				break;
+		}
+		
+		return item2;
 	}
 
-	public void incrementChain() {
-		this.chaines += 1;
-	}
-
-	public int getChain() {
+	public int getChains() {
 		return this.chaines;
 	}
-
-	public int getPoints() {
-		return this.points;
-	}
-
-	public int getBonus() {
-		return this.bonus;
+	public void setChains(int chains) {
+		this.chaines = chains;
 	}
 
 	public int getScore() {
 		return this.score;
 	}
+	public void setScore(int score) {
+		this.score = score;
+	}
+	// [0] = position, [1] = bonusScore
+	public ArrayList<ArrayList<Integer>> getBonusPoints()
+	{
+		int itemsNumber = 0;
+		int bonusScore = 0;
+		int position;
+		ArrayList<Integer> v = new ArrayList<Integer>();
+		ArrayList<ArrayList<Integer>> h= new ArrayList<ArrayList<Integer>>();
+		for(int i=0;i<chains.size();i++)
+		{
+			itemsNumber = chains.get(i).size();
+			v.clear();
+			bonusScore = itemsNumber*GameActivity.V_BONUS;
+			Item item = chains.get(i).get(itemsNumber/2);
+			position = item.getX()+item.getY()*GameService.GRID_SIZE;
+			v.add(position);
+			v.add(bonusScore);
+			h.add(new ArrayList<Integer>(v));
+		}
+		return new ArrayList<ArrayList<Integer>>(h);
+	}
+	public ArrayList<Integer> getFirstChainPoints()
+	{
+		int itemsNumber = 0;
+		int points = 0;
+		int position;
+		ArrayList<Integer> v = new ArrayList<Integer>();
+		itemsNumber = chains.get(0).size();
+		points = GameActivity.V_POINTS+(itemsNumber-3)*GameActivity.V_BONUS;
+		Item item = chains.get(0).get(itemsNumber/2);
+		position = item.getX()+item.getY()*GameService.GRID_SIZE;
+		v.add(position);
+		v.add(points);
+		return new ArrayList<Integer>(v);
+	}
 
 	public int getNbrMoveLeft() {
 		return coupsRestants;
 	}
-
+	public void setNbrMoveLeft(int i){
+		this.coupsRestants = i;
+	}
 	public void moveUpdate() {
 		if (hasChain) {
 			chaines += 1;
@@ -436,124 +937,7 @@ public class GameService implements IGameService {
 		}
 	}
 
-	/** ------------------------ **/
-
-	/**
-	 * <p>
-	 * This method find and insert neighbors' item put in input parameter.
-	 * </p>
-	 * 
-	 * @param item
-	 * @return
-	 */
-	private Item fillNeighborsMap(Item item) {
-		ArrayList<Integer> coordinate = (ArrayList<Integer>) item
-				.getCoordinate().clone();
-		ArrayMap<String, ArrayList<Integer>> neighbors = new ArrayMap<String, ArrayList<Integer>>();
-		int x = coordinate.get(X);
-		int y = coordinate.get(Y);
-		// NORTH
-		coordinate = new ArrayList<Integer>();
-		coordinate.add(x);
-		if (y != 0) {
-			coordinate.add(y - 1);
-		} else {
-			coordinate.add(-1);
-		}
-		neighbors.put(NORTH, coordinate);
-		// SOUTH
-		coordinate = new ArrayList<Integer>();
-		coordinate.add(x);
-		if (y != 7) {
-			coordinate.add(y + 1);
-		} else {
-			coordinate.add(-1);
-		}
-		neighbors.put(SOUTH, coordinate);
-		// coordinate.add(Y, y);
-		// EAST
-		coordinate = new ArrayList<Integer>();
-		if (x != 7) {
-			coordinate.add(x + 1);
-		} else {
-			coordinate.add(-1);
-		}
-		coordinate.add(y);
-		neighbors.put(EAST, coordinate);
-		// WEST
-		coordinate = new ArrayList<Integer>();
-		if (x != 0) {
-			coordinate.add(x - 1);
-		} else {
-			coordinate.add(-1);
-		}
-		coordinate.add(y);
-		neighbors.put(WEST, coordinate);
-
-		item.setNeighbors(neighbors);
-
-		return item;
-	}
-
-	private int translateCoordByPosition(ArrayList<Integer> coordinate) {
-		return (coordinate.get(Y) * 8 + coordinate.get(X));
-	}
-
-	private Combination findCombination(ArrayList<Item> items, Item item,
-			Combination combination) {
-		for (String destination : item.getNeighbors().keySet()) {
-			ArrayList<Integer> coordinate = item.getNeighbors()
-					.get(destination);
-			if (coordinate.get(X) == -1 || coordinate.get(Y) == -1) {
-				continue;
-			}
-
-			int position = translateCoordByPosition(coordinate);
-			Item neighborItem = new Item();
-			try {
-				neighborItem = items.get(position);
-			} catch (NullPointerException e) {
-				continue;
-			} catch (IndexOutOfBoundsException e) {
-				continue;
-			}
-
-			if (combination.isItemHasAlreadyVisited(neighborItem)) {
-				continue;
-			}
-
-			if (neighborItem.getItemID() == item.getItemID()) {
-				combination.addHorizontalAxisMovement(neighborItem);
-				combination.addVerticalAxisMovement(neighborItem);
-				combination.addItemVisited(neighborItem);
-
-				combination = findCombination(items, neighborItem, combination);
-			}
-		}
-
-		return combination;
-	}
-
-	private boolean isOppositeDirections(String direction1, String direction2) {
-		if (!direction1.equals(NORTH) && !direction1.equals(SOUTH)
-				&& !direction1.equals(EAST) && !direction1.equals(WEST)) {
-			return false;
-		}
-		if (!direction2.equals(NORTH) && !direction2.equals(SOUTH)
-				&& !direction2.equals(EAST) && !direction2.equals(WEST)) {
-			return false;
-		}
-		if ((direction1.equals(NORTH) && direction2.equals(SOUTH))
-				|| (direction2.equals(NORTH) && direction1.equals(SOUTH))) {
-			return true;
-		}
-		if ((direction1.equals(EAST) && direction2.equals(WEST))
-				|| (direction2.equals(EAST) && direction1.equals(WEST))) {
-			return true;
-		}
-
-		return false;
-	}
+	
 
 	public Context getContext() {
 		return context;
@@ -571,181 +955,20 @@ public class GameService implements IGameService {
 		this.gamePaused = gamePaused;
 	}
 
-	private class Combination {
-		private ArrayMap<Integer, ArrayList<Item>> horizontalAxisMovement;
-		private ArrayMap<Integer, ArrayList<Item>> verticalAxisMovement;
-		private ArrayList<Item> itemsVisited;
-
-		public ArrayMap<Integer, ArrayList<Item>> getHorizontalAxisMovement() {
-			if (horizontalAxisMovement == null) {
-				horizontalAxisMovement = new ArrayMap<Integer, ArrayList<Item>>();
-			}
-			return horizontalAxisMovement;
-		}
-
-		public void setHorizontalAxisMovement(
-				ArrayMap<Integer, ArrayList<Item>> horizontalAxisMovement) {
-			this.horizontalAxisMovement = horizontalAxisMovement;
-		}
-
-		public ArrayMap<Integer, ArrayList<Item>> getVerticalAxisMovement() {
-			if (verticalAxisMovement == null) {
-				verticalAxisMovement = new ArrayMap<Integer, ArrayList<Item>>();
-			}
-			return verticalAxisMovement;
-		}
-
-		public void setVerticalAxisMovement(
-				ArrayMap<Integer, ArrayList<Item>> verticalAxisMovement) {
-			this.verticalAxisMovement = verticalAxisMovement;
-		}
-
-		public ArrayList<Item> getItemsVisited() {
-			return itemsVisited;
-		}
-
-		public void setItemsVisited(ArrayList<Item> itemsVisited) {
-			this.itemsVisited = itemsVisited;
-		}
-
-		public boolean isItemHasAlreadyVisited(Item item) {
-			if (itemsVisited == null || itemsVisited.isEmpty()) {
-				return false;
-			}
-
-			for (Item current : itemsVisited) {
-				if (current.equals(item)) {
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		public void addItemVisited(Item item) {
-			if (itemsVisited == null) {
-				itemsVisited = new ArrayList<Item>();
-			}
-			itemsVisited.add(item);
-		}
-
-		public void addHorizontalAxisMovement(Item item) {
-			ArrayMap<Integer, ArrayList<Item>> axisMovement = getHorizontalAxisMovement();
-			ArrayList<Item> itemsMovement = new ArrayList<Item>();
-			ArrayList<Integer> coordinate = item.getCoordinate();
-			if (axisMovement.containsKey(coordinate.get(X))) {
-				itemsMovement = axisMovement.get(coordinate.get(X));
-			}
-			itemsMovement.add(item);
-			axisMovement.put(coordinate.get(X), itemsMovement);
-
-			horizontalAxisMovement = axisMovement;
-		}
-
-		public void addVerticalAxisMovement(Item item) {
-			ArrayMap<Integer, ArrayList<Item>> axisMovement = getVerticalAxisMovement();
-			ArrayList<Item> itemsMovement = new ArrayList<Item>();
-			ArrayList<Integer> coordinate = item.getCoordinate();
-			if (axisMovement.containsKey(coordinate.get(Y))) {
-				itemsMovement = axisMovement.get(coordinate.get(Y));
-			}
-			itemsMovement.add(item);
-			axisMovement.put(coordinate.get(Y), itemsMovement);
-
-			verticalAxisMovement = axisMovement;
-		}
-
-		public ArrayList<Item> getCombination() {
-			ArrayList<Item> combination = new ArrayList<Item>();
-			ArrayList<Item> movementX = new ArrayList<Item>();
-			ArrayList<Item> movementY = new ArrayList<Item>();
-			for (int key : horizontalAxisMovement.keySet()) {
-				if (movementX.isEmpty()
-						|| movementX.size() < horizontalAxisMovement.get(key)
-								.size()) {
-					movementX.clear();
-					movementX.addAll(horizontalAxisMovement.get(key));
-				}
-			}
-
-			for (int key : verticalAxisMovement.keySet()) {
-				if (movementY.isEmpty()
-						|| movementY.size() < verticalAxisMovement.get(key)
-								.size()) {
-					movementY.clear();
-					movementY.addAll(verticalAxisMovement.get(key));
-				}
-			}
-
-			// if ((movementX.size() == 5 && movementY.size() == 3)
-			// || (movementX.size() == 3 && movementY.size() == 5)
-			// || (movementX.size() == 4 && movementY.size() == 3)
-			// || (movementX.size() == 3 && movementY.size() == 4)
-			// || (movementX.size() == 3 && movementY.size() == 3)) {
-			// combination.addAll(movementX);
-			// for (Item current : movementY) {
-			// if (!combination.contains(current)) {
-			// combination.add(current);
-			// }
-			// }
-			// } else if (movementX.size() == 5 && movementY.size() < 3) {
-			// combination.addAll(movementX);
-			// } else if (movementX.size() < 3 && movementY.size() == 5) {
-			// combination.addAll(movementY);
-			// } else if (movementX.size() == 4 && movementY.size() < 3) {
-			// combination.addAll(movementX);
-			// } else if (movementX.size() < 3 && movementY.size() == 4) {
-			// combination.addAll(movementY);
-			// } else if (movementX.size() == 3 && movementY.size() < 3) {
-			// combination.addAll(movementX);
-			// } else if (movementX.size() < 3 && movementY.size() == 3) {
-			// combination.addAll(movementY);
-			// }
-
-			if ((movementX.size() >= 3 && movementY.size() >= 3)) {
-				combination.addAll(movementX);
-				for (Item current : movementY) {
-					if (!combination.contains(current)) {
-						combination.add(current);
-					}
-				}
-			} else if ((movementX.size() >= 3 && movementY.size() < 3)) {
-				combination.addAll(movementX);
-			} else if ((movementX.size() < 3 && movementY.size() >= 3)) {
-				combination.addAll(movementY);
-			}
-			return combination;
-		}
+	@Override
+	public boolean isReinitialized()
+	{
+		return isReinitialized;
+		
 	}
-
+	@Override
+	public void setReinitialized(boolean v)
+	{
+		this.isReinitialized = v;
+	}
 	@Override
 	public void reinitialize() {
-		gameStart = true;
-		chaines = 0;
-		hasChain = false;
-		gamePaused = false;
-		isCombinationFound = false;
-		points = 0;
-		bonus = 0;
-		score = 0;
-		elapsedTime = 0;
-		coupsRestants=GameActivity.LIMIT_MOVE;
-		//Activity activity = (Activity) context;
-		// Chronometer chronometer = (Chronometer)
-		// activity.findViewById(R.id.Game_chrono);
-		/*TextView nbrRestant = (TextView) activity
-				.findViewById(R.id.Game_coupsRestants);
-		TextView chaines = (TextView) activity.findViewById(R.id.Game_chaines);
-		TextView score = (TextView) activity.findViewById(R.id.Game_score);
-		TextView points = (TextView) activity.findViewById(R.id.Game_points);
-		TextView bonus = (TextView) activity.findViewById(R.id.Game_bonus);
-		nbrRestant.setText(String.valueOf(GameActivity.LIMIT_MOVE));
-		chaines.setText("0");
-		score.setText("0");
-		points.setText(" ");
-		bonus.setText(" ");
-		startChrono();*/
-		itemsGrid = initGrid();
+		init();
 
 	}
 
@@ -756,6 +979,10 @@ public class GameService implements IGameService {
 		Activity activity = (Activity) context;
 		ImageView pause = (ImageView) activity.findViewById(R.id.pauselayout);
 		GridView grid = (GridView) activity.findViewById(R.id.gridViewItems);
+		ImageView pause_button = (ImageView) activity.findViewById(R.id.Game_pause);
+		pause_button.setBackgroundResource(R.drawable.game_pause);
+		pause_button.requestFocus();
+		this.gamePaused = false;
 		pause.setVisibility(View.GONE);
 		grid.setVisibility(View.VISIBLE);
 
@@ -780,6 +1007,10 @@ public class GameService implements IGameService {
 		ImageView pause = (ImageView) activity.findViewById(R.id.pauselayout);
 		setPauseBackground(pause);
 		GridView grid = (GridView) activity.findViewById(R.id.gridViewItems);
+		ImageView pause_button = (ImageView) activity.findViewById(R.id.Game_pause);
+		pause_button.setBackgroundResource(R.drawable.game_play);
+		pause_button.requestFocus();
+		this.gamePaused = true;
 		pause.setVisibility(View.VISIBLE);
 		grid.setVisibility(View.GONE);
 	}
@@ -787,16 +1018,14 @@ public class GameService implements IGameService {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
+		gameQuit = false;
 		gameStart = true;
 		chaines = 0;
-		hasChain = false;
 		gamePaused = false;
-		isCombinationFound = false;
-		points = 0;
-		bonus = 0;
 		score = 0;
 		elapsedTime = 0;
-		itemsGrid = initGrid();
+		coupsRestants=GameActivity.LIMIT_MOVE;
+		initGrid();
 	}
 
 	@Override

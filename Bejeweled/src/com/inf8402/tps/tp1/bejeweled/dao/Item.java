@@ -15,19 +15,31 @@ public class Item {
 	public static final int MOVED = 2;
 	public static final int DELETED = 3;
 	public static final int CREATED = 4;
+	public static final int EMPTY = 5;
+	
+	public static final int UP = 1;
+	public static final int DOWN = 2;
+	public static final int LEFT = 3;
+	public static final int RIGHT = 4;
+	public static final int VERTICAL = 5;
+	public static final int HORIZONTAL = 6;
+	public static final int BOTH = 7;
+	
 	private int itemID;
 	private int state;
-	private ArrayList<Integer> coordinate;
-	private ArrayMap<String, ArrayList<Integer>> neighbors;
-
+	private int posX;
+	private int posY;
+	
+	
 	public Item() {
-
+		this.itemID = 0;
+		this.state = EMPTY;
 	}
 
 	public Item(Item item) {
 		this.itemID = item.getItemID();
-		this.coordinate = item.getCoordinate();
-		this.neighbors = item.getNeighbors();
+		this.posX = item.getX();
+		this.posY = item.getY();
 		this.state = NORMAL;
 	}
 
@@ -36,10 +48,28 @@ public class Item {
 		this.state = NORMAL;
 	}
 
-	public Item(int itemID, ArrayList<Integer> coordinate) {
+	public Item(int itemID, int x, int y) {
 		this.itemID = itemID;
-		this.coordinate = coordinate;
+		this.posX = x;
+		this.posY = y;
 		this.state = NORMAL;
+	}
+	
+	
+	public int getX() {
+		return posX;
+	}
+
+	public void setX(int posX) {
+		this.posX = posX;
+	}
+
+	public int getY() {
+		return posY;
+	}
+
+	public void setY(int posY) {
+		this.posY = posY;
 	}
 
 	public int getItemID() {
@@ -48,22 +78,6 @@ public class Item {
 
 	public void setItemID(int itemID) {
 		this.itemID = itemID;
-	}
-
-	public ArrayList<Integer> getCoordinate() {
-		return coordinate;
-	}
-
-	public void setCoordinate(ArrayList<Integer> coordinate) {
-		this.coordinate = coordinate;
-	}
-
-	public ArrayMap<String, ArrayList<Integer>> getNeighbors() {
-		return neighbors;
-	}
-
-	public void setNeighbors(ArrayMap<String, ArrayList<Integer>> neighbors) {
-		this.neighbors = neighbors;
 	}
 
 	public void setState(int s) {
@@ -77,11 +91,15 @@ public class Item {
 	public boolean isAnimated() {
 		switch(state)
 		{
+			//case DELETED:
+			//case CREATED:
+			//case SELECTED:
+			//	return true;
 			case NORMAL:
-			case DELETED:
+			case EMPTY:
 				return false;
 			default:
-				return true;
+				return false;
 		}
 	}
 
@@ -108,14 +126,51 @@ public class Item {
 						break;
 					}
 					break;
-					
-			case DELETED:
+			case DELETED:/*
+				switch (itemID) {
+				case R.drawable.item_eau:
+					r = R.drawable.deleted_eau;
+					break;
+				case R.drawable.item_feu:
+					r = R.drawable.deleted_feu;
+					break;
+				case R.drawable.item_terre:
+					r = R.drawable.deleted_terre;
+					break;
+				case R.drawable.item_jewel:
+					r = R.drawable.deleted_jewel;
+					break;
+				case R.drawable.item_vent:
+					r = R.drawable.deleted_vent;
+					break;
+				}*/
 				r = 0;
 				break;
-			
 			case MOVED:
 				break;
 				
+			case CREATED:/*
+				switch (itemID) {
+				case R.drawable.item_eau:
+					r = R.drawable.generate_eau;
+					break;
+				case R.drawable.item_feu:
+					r = R.drawable.generate_feu;
+					break;
+				case R.drawable.item_terre:
+					r = R.drawable.generate_terre;
+					break;
+				case R.drawable.item_jewel:
+					r = R.drawable.generate_jewel;
+					break;
+				case R.drawable.item_vent:
+					r = R.drawable.generate_vent;
+					break;
+				}*/
+				break;
+			case EMPTY:
+				r = 0;
+				break;
 			default:
 				break;
 		}

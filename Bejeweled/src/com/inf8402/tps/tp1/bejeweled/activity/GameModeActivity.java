@@ -22,16 +22,20 @@ public class GameModeActivity extends IActivity {
 	private ImageView button_return;
 
 	private LinearLayout buttons;
-
+	private TextView pseudo;
+	private TextView scoreSpeed;
+	private TextView scoreTactic;
+	private LinearLayout layout;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		menuService = new MenuService(this);
 		setContentView(R.layout.activity_game_mode);
-		TextView pseudo = (TextView) findViewById(R.id.Mode_pseudo);
-		TextView scoreSpeed = (TextView) findViewById(R.id.Mode_scoreSpeed);
-		TextView scoreTactic = (TextView) findViewById(R.id.Mode_scoreTactic);
+		pseudo = (TextView) findViewById(R.id.Mode_pseudo);
+		scoreSpeed = (TextView) findViewById(R.id.Mode_scoreSpeed);
+		scoreTactic = (TextView) findViewById(R.id.Mode_scoreTactic);
 		TextView txtPseudo = (TextView) findViewById(R.id.Mode_txtPseudo);
 		TextView txtScoreSpeed = (TextView) findViewById(R.id.Mode_txtScoreSpeed);
 		TextView txtScoreTactic = (TextView) findViewById(R.id.Mode_txtScoreTactic);
@@ -100,6 +104,19 @@ public class GameModeActivity extends IActivity {
 	     }
 	}
 
+	@Override
+	protected void onResume()
+	{
+		SessionManager session = menuService.initSession();
+		Player player = session.getPlayerDetails();
+		if(player.getPseudo() != null)
+		{
+			scoreSpeed.setText(" "+player.getScoreSpeedMode());
+			scoreTactic.setText(" "+player.getScoreTacticalMode());
+		}
+		super.onResume();
+	}
+	
 	@Override
 	void buttonManager(int id) {
 		// TODO Auto-generated method stub

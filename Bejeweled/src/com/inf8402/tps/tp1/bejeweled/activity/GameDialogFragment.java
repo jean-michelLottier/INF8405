@@ -177,8 +177,7 @@ public class GameDialogFragment extends DialogFragment {
 								.getOwnerActivity();
 
 
-						GameActivity.gameService.reinitialize();
-						activity.recreate();
+						activity.reinitialize();
 						dismiss();
 					}
 				});
@@ -206,6 +205,7 @@ public class GameDialogFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int which) {
 						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
 								.getOwnerActivity();
+						GameActivity.gameService.setGameQuit(true);
 						activity.setResult(IActivity.RESULT_QUIT,null);
 						activity.finish();
 					}
@@ -216,6 +216,7 @@ public class GameDialogFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						GameActivity.gameService.clear();
+						GameActivity.gameService.setGameQuit(true);
 						((AlertDialog) dialog).getOwnerActivity().finish();
 					}
 				});
@@ -280,8 +281,7 @@ public class GameDialogFragment extends DialogFragment {
 						// GameActivity.gameService.reinitialize();
 						GameActivity activity = (GameActivity) ((AlertDialog) dialog)
 								.getOwnerActivity();
-						GameActivity.gameService.reinitialize();
-						activity.recreate();
+						activity.reinitialize();
 						dismiss();
 					}
 				});
@@ -291,6 +291,7 @@ public class GameDialogFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						GameActivity.gameService.clear();
+						GameActivity.gameService.setGameQuit(true);
 						((AlertDialog) dialog).getOwnerActivity().finish();
 					}
 				});

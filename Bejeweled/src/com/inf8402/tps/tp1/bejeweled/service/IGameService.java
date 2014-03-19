@@ -12,6 +12,8 @@ import com.inf8402.tps.tp1.bejeweled.dao.Item;
 public interface IGameService {
 	public static final int X = 0;
 	public static final int Y = 1;
+	public static final int GRID_LENGTH = 64;
+	public static final int GRID_SIZE = 8;
 	public static final String NORTH = "north";
 	public static final String SOUTH = "south";
 	public static final String EAST = "east";
@@ -20,7 +22,7 @@ public interface IGameService {
 	public static final int PAUSE_SPEED_LAYOUT = R.drawable.pause_speed;
 	public static final int PAUSE_TACTIC_LAYOUT = R.drawable.pause_tactic;
 	
-	public ArrayList<Item> initGrid();
+	public void initGrid();
 
 	/**
 	 * <p>
@@ -40,48 +42,6 @@ public interface IGameService {
 
 	/**
 	 * <p>
-	 * Exchange item selected with its neighbor (define by the direction).
-	 * </p>
-	 * 
-	 * @param items
-	 * @param item
-	 * @param direction
-	 * @return The list of items modified
-	 */
-	public void moveItem(Item item,
-			String direction);
-
-	/**
-	 * <p>
-	 * Research all items to delete and permute these one by neighbor above
-	 * their. This permutation is made until items to delete have no neighbor.
-	 * The last items to delete replaced by new items.
-	 * </p>
-	 * 
-	 * @param items
-	 */
-	public void replaceItemsDeleted();
-
-	/**
-	 * <p>
-	 * Get the score obtained with the current move
-	 * </p>
-	 * 
-	 * @return The score
-	 */
-	public int getPoints();
-
-	/**
-	 * <p>
-	 * Get the bonus score obtained of the current move
-	 * </p>
-	 * 
-	 * @return The bonus score
-	 */
-	public int getBonus();
-
-	/**
-	 * <p>
 	 * Get the total score
 	 * </p>
 	 * 
@@ -91,38 +51,12 @@ public interface IGameService {
 
 	/**
 	 * <p>
-	 * Method to know if a move has generated a chain
-	 * </p>
-	 * 
-	 * @return true if there was a chain else false
-	 */
-	public boolean hasChain();
-
-	/**
-	 * <p>
-	 * Increment the number of chains
-	 * </p>
-	 * 
-	 */
-	public void incrementChain();
-
-	/**
-	 * <p>
 	 * Get the total number of chains
 	 * </p>
 	 * 
 	 * @return The total number of chains
 	 */
-	public int getChain();
-
-	/**
-	 * <p>
-	 * Method to know if the score have changed due to a move
-	 * </p>
-	 * 
-	 * @return true if there was a change else false
-	 */
-	public boolean hasNewScore();
+	public int getChains();
 
 	/**
 	 * <p>
@@ -204,14 +138,6 @@ public interface IGameService {
 
 	/**
 	 * <p>
-	 * Update the score parameters after a move
-	 * </p>
-	 * 
-	 */
-	public void moveUpdate();
-
-	/**
-	 * <p>
 	 * Get the items of the grid
 	 * </p>
 	 * 
@@ -247,22 +173,11 @@ public interface IGameService {
 	 */
 	public void setContext(Context context);
 
-	public boolean isCombinationFound();
-
 	public boolean isGamePaused();
 
 	public void setGamePaused(boolean gamePaused);
 
-	/**
-	 * <p>
-	 * Research valid combination into grid and mark items as deleted
-	 * </p>
-	 * 
-	 * @param items
-	 * @return
-	 */
-	public void researchCombinationIntoGrid();
-
+	
 	public void reinitialize();
 
 	public void onPause();
@@ -275,4 +190,21 @@ public interface IGameService {
 	public boolean isGameStart();
 
 	public void setGameStart(boolean gameStart);
+	//New set of functions
+	public boolean switchMove(Item item, int direction);
+	public void deleteCombinations();
+	public void moveFallingItems();
+	public void fillGrid();
+	public boolean fullSearchCombination();
+	public ArrayList<Integer> getFirstChainPoints();
+	public ArrayList<ArrayList<Integer>> getBonusPoints();
+	public void setScore(int score);
+	public void setChains(int chains);
+	public void setNbrMoveLeft(int i);
+	public boolean isReinitialized();
+	public void setReinitialized(boolean v);
+	public boolean isGameQuit();
+	public void setGameQuit(boolean gameQuit);
+	public void updateBeforeFill();
+	public void updateAfterFill();
 }

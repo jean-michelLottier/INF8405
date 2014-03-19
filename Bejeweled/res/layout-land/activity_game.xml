@@ -1,205 +1,184 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical"
+	android:id="@+id/Game_screen"
     tools:context=".GameActivity" >
-	
-    <LinearLayout
+	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:orientation="horizontal"
-	    android:layout_weight="1" >
-	      
-	    <GridView
-	        android:id="@+id/gridViewItems"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:numColumns="8"
-    		android:listSelector="@android:color/transparent"
-	        android:stretchMode="columnWidth"
-	        android:background="@drawable/background_grid"
-	        android:layout_weight="1" />
-	    <ImageView
-        android:id="@+id/pauselayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-		android:visibility="gone"
-		android:scaleType="fitXY"
-        android:background="@color/black_shadow"
-        android:src="@drawable/background_liste_score"
-        android:layout_weight="1" />
-	    
+	    android:background="@drawable/background"
+	    android:orientation="vertical" >
+		
 	    <LinearLayout
-	        
-	        android:layout_width="match_parent"
-			android:layout_height="match_parent"
-		    android:orientation="vertical"
-		    android:background="@drawable/background_border"
-			android:layout_weight="2">
-		    <LinearLayout 
-		        android:id="@+id/Game_conteneurScore"
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-		        android:background="@drawable/background_score"
-		        android:orientation="vertical"
-		    	android:gravity="center_horizontal"
-		        android:layout_weight="6"
-		        >
-		
-		        <LinearLayout
-		            android:id="@+id/Game_grpPoints"
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="2.1"
-		            android:gravity="center"
-		            android:orientation="horizontal" >
-		
-		            <TextView
-		                android:id="@+id/Game_points"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:text="+100"
-				        android:textSize="@dimen/points"
-		                android:textColor="@color/txt_points" />
-		
-		            <TextView
-		                android:id="@+id/Game_bonus"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:text="+50"
-				        android:textSize="@dimen/bonus"
-		                android:textColor="@color/txt_bonus" />
-		        </LinearLayout>
-		
-		        <TextView 
-		            android:id="@+id/Game_score"
-		            android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-		            android:layout_weight="2"
-		            android:text="5000"
-				    android:textSize="@dimen/score"
-		            android:textColor="@color/txt_score" />
-		        
-		    </LinearLayout>
-		    <TextView style="@style/divider" />
-			<TextView style="@style/divider" />
-			<TextView style="@style/divider" />
-		    <RelativeLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-		        android:layout_weight="4"
-            	android:background="@drawable/background_interface"
-		        >
-		        
-		        <RelativeLayout
-		            
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:layout_marginLeft="5dp"
-		            >
-				    <LinearLayout
-				        android:id="@+id/Game_grpModeInfo"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				 		android:layout_alignParentTop="true"
-				 		android:layout_centerHorizontal="true"
-				        android:layout_marginTop="20dp" >
-					    <LinearLayout
-				            android:id="@+id/Game_grpChrono"
-					        android:layout_width="wrap_content"
-					        android:layout_height="wrap_content"
-					        android:visibility="gone"
-						 	android:orientation="vertical"
-						 	android:gravity="center_horizontal" >
-						    <TextView 
-						        android:id="@+id/Game_txtChrono"
-						        android:layout_width="wrap_content"
-						 		android:layout_height="wrap_content"
-					        	android:text="@string/txt_timer"
-				        		android:textSize="@dimen/info_jeu" />
-						    <Chronometer
-						        android:id="@+id/Game_chrono"
-						        android:layout_width="wrap_content"
-						        android:layout_height="wrap_content"
-				        		android:textSize="@dimen/limiteur"/>   
-					    </LinearLayout>    
-							 		
-				        <LinearLayout
-				            android:id="@+id/Game_grpCoupsRestants"
-					        android:layout_width="wrap_content"
-					        android:layout_height="wrap_content"
-						 	android:orientation="vertical"
-						 	android:gravity="center_horizontal" >
-						    <TextView 
-						        android:id="@+id/Game_coupsRestants"
-						        android:layout_width="wrap_content"
-						 		android:layout_height="wrap_content"
-			        			android:text="@string/txt_coupsRestants"
-				       			android:textSize="@dimen/info_jeu" />
-						    
-						    <TextView 
-						        android:id="@+id/Game_nbrCoupsRestants"
-						        android:layout_marginTop="20sp"
-						        android:layout_width="wrap_content"
-						 		android:layout_height="wrap_content"
-				        		android:textSize="@dimen/limiteur" />
-					    </LinearLayout>  
-					</LinearLayout>  
-				    <LinearLayout
-			            android:id="@+id/Game_grpChaines"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-					 	android:layout_alignParentBottom="true"
-					 	android:orientation="horizontal"
-					 	android:layout_centerHorizontal="true"
-					 	android:layout_marginBottom="20dp" >
-				        <TextView 
-					        android:id="@+id/Game_chaines"
-					        android:layout_width="wrap_content"
-					 		android:layout_height="wrap_content"
-				        	android:text="@string/txt_chaines"
-					        android:textSize="@dimen/info_jeu"
-					        android:textColor="@color/txt_chaines" />
-					    <TextView 
-					        android:id="@+id/Game_nbrChaines"
-					        android:layout_width="wrap_content"
-					 		android:layout_height="wrap_content"
-				        	android:textSize="@dimen/info_jeu"
-					        android:textColor="@color/txt_chaines" />
-				    </LinearLayout>   
-				    
-		        </RelativeLayout>
-		    </RelativeLayout>
-	    </LinearLayout>
-    </LinearLayout>
-	<TextView style="@style/divider" />
-	<LinearLayout  
-	        android:id="@+id/Game_buttons"
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
-	    	android:orientation="horizontal"
-	        android:layout_weight="4"
-	        >
-	    
-		    <ImageView 
-		        android:id="@+id/Game_recommencer"
-		        style="@style/boutonMenu"
-		 		android:background="@drawable/game_recommencer"
-		 		android:layout_weight="1"/>
-		    <TextView style="@style/v_divider" />
-		    <ImageView 
-		        android:id="@+id/Game_pause"
-		        style="@style/boutonMenu"
-		 		android:background="@drawable/game_pause"
-		 		android:layout_weight="1"/>
-		    <TextView style="@style/v_divider" />
-		    <ImageView 
-		        android:id="@+id/Game_quitter"
-		        style="@style/boutonMenu"
-		        android:background="@drawable/game_quitter"
-		 		android:layout_weight="1"/>
-        
-    </LinearLayout>
-</LinearLayout>
+		    android:orientation="horizontal"
+		    android:layout_weight="1" >
+		      
+		    <GridView
+		        android:id="@+id/gridViewItems"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:numColumns="8"
+	    		android:listSelector="@android:color/transparent"
+		        android:stretchMode="columnWidth"
+		        android:background="@drawable/background_grid"
+		        android:layout_weight="1" />
+		    <ImageView
+	        android:id="@+id/pauselayout"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+			android:visibility="gone"
+			android:scaleType="fitXY"
+	        android:background="@color/black_shadow"
+	        android:src="@drawable/background_liste_score"
+	        android:layout_weight="1" />
+		    
+		    <LinearLayout
+		        
+		        android:layout_width="match_parent"
+				android:layout_height="match_parent"
+			    android:orientation="vertical"
+			    android:background="@drawable/background_border"
+				android:layout_weight="2">
+			    <LinearLayout 
+			        android:id="@+id/Game_conteneurScore"
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+			        android:background="@drawable/background_score"
+			        android:orientation="vertical"
+			    	android:gravity="center"
+			        android:layout_weight="6"
+			        >
+			
+			        <TextView 
+			            android:id="@+id/Game_score"
+			            android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+			            android:text="5000"
+					    android:textSize="@dimen/score"
+			            android:textColor="@color/txt_score" />
+			        
+			    </LinearLayout>
+			    <TextView style="@style/divider" />
+				<TextView style="@style/divider" />
+				<TextView style="@style/divider" />
+			    <RelativeLayout 
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+			        android:layout_weight="4"
+	            	android:background="@drawable/background_interface"
+			        >
+			        
+			        <RelativeLayout
+			            
+					    android:layout_width="match_parent"
+					    android:layout_height="match_parent"
+					    android:layout_marginLeft="5dp"
+			            >
+					    <LinearLayout
+					        android:id="@+id/Game_grpModeInfo"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					 		android:layout_alignParentTop="true"
+					 		android:layout_centerHorizontal="true"
+					        android:layout_marginTop="20dp" >
+						    <LinearLayout
+					            android:id="@+id/Game_grpChrono"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:visibility="gone"
+							 	android:orientation="vertical"
+							 	android:gravity="center_horizontal" >
+							    <TextView 
+							        android:id="@+id/Game_txtChrono"
+							        android:layout_width="wrap_content"
+							 		android:layout_height="wrap_content"
+						        	android:text="@string/txt_timer"
+					        		android:textSize="@dimen/info_jeu" />
+							    <Chronometer
+							        android:id="@+id/Game_chrono"
+							        android:layout_width="wrap_content"
+							        android:layout_height="wrap_content"
+					        		android:textSize="@dimen/limiteur"/>   
+						    </LinearLayout>    
+								 		
+					        <LinearLayout
+					            android:id="@+id/Game_grpCoupsRestants"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+							 	android:orientation="vertical"
+							 	android:gravity="center_horizontal" >
+							    <TextView 
+							        android:id="@+id/Game_coupsRestants"
+							        android:layout_width="wrap_content"
+							 		android:layout_height="wrap_content"
+				        			android:text="@string/txt_coupsRestants"
+					       			android:textSize="@dimen/info_jeu" />
+							    
+							    <TextView 
+							        android:id="@+id/Game_nbrCoupsRestants"
+							        android:layout_marginTop="20sp"
+							        android:layout_width="wrap_content"
+							 		android:layout_height="wrap_content"
+					        		android:textSize="@dimen/limiteur" />
+						    </LinearLayout>  
+						</LinearLayout>  
+					    <LinearLayout
+				            android:id="@+id/Game_grpChaines"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+						 	android:layout_alignParentBottom="true"
+						 	android:orientation="horizontal"
+						 	android:layout_centerHorizontal="true"
+						 	android:layout_marginBottom="20dp" >
+					        <TextView 
+						        android:id="@+id/Game_chaines"
+						        android:layout_width="wrap_content"
+						 		android:layout_height="wrap_content"
+					        	android:text="@string/txt_chaines"
+						        android:textSize="@dimen/info_jeu"
+						        android:textColor="@color/txt_chaines" />
+						    <TextView 
+						        android:id="@+id/Game_nbrChaines"
+						        android:layout_width="wrap_content"
+						 		android:layout_height="wrap_content"
+					        	android:textSize="@dimen/info_jeu"
+						        android:textColor="@color/txt_chaines" />
+					    </LinearLayout>   
+					    
+			        </RelativeLayout>
+			    </RelativeLayout>
+		    </LinearLayout>
+	    </LinearLayout>
+		<TextView style="@style/divider" />
+		<LinearLayout  
+		        android:id="@+id/Game_buttons"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+		    	android:orientation="horizontal"
+		        android:layout_weight="4"
+		        >
+		    
+			    <ImageView 
+			        android:id="@+id/Game_recommencer"
+			        style="@style/boutonMenu"
+			 		android:background="@drawable/game_recommencer"
+			 		android:layout_weight="1"/>
+			    <TextView style="@style/v_divider" />
+			    <ImageView 
+			        android:id="@+id/Game_pause"
+			        style="@style/boutonMenu"
+			 		android:background="@drawable/game_pause"
+			 		android:layout_weight="1"/>
+			    <TextView style="@style/v_divider" />
+			    <ImageView 
+			        android:id="@+id/Game_quitter"
+			        style="@style/boutonMenu"
+			        android:background="@drawable/game_quitter"
+			 		android:layout_weight="1"/>
+	        
+	    </LinearLayout>
+	</LinearLayout>
+</RelativeLayout>
